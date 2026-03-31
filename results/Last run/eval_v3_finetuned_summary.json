@@ -1,0 +1,26 @@
+{
+  "A_training": {
+    "split": "FINETUNED / A_training",
+    "n_questions": 57,
+    "accuracy_pct": 57.9,
+    "all_correct": 13,
+    "partial": 35,
+    "all_wrong": 9
+  },
+  "B_hard_holdout": {
+    "split": "FINETUNED / B_hard_holdout",
+    "n_questions": 29,
+    "accuracy_pct": 32.8,
+    "all_correct": 5,
+    "partial": 10,
+    "all_wrong": 14
+  },
+  "C_master_holdout": {
+    "split": "FINETUNED / C_master_holdout",
+    "n_questions": 169,
+    "accuracy_pct": 71.2,
+    "all_correct": 101,
+    "partial": 37,
+    "all_wrong": 31
+  }
+}

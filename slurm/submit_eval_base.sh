@@ -1,0 +1,44 @@
+#!/bin/bash
+#SBATCH --job-name=eval-base
+#SBATCH --output=logs/eval_base_%j.log
+#SBATCH --error=logs/eval_base_%j.err
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=8
+#SBATCH --mem-per-cpu=12G
+#SBATCH --gres=gpu:1
+#SBATCH --partition=gpua100
+#SBATCH --time=24:00:00
+
+# ============================================================
+# Evaluate base model on 3 splits (255 questions x 4 gen)
+# Run in parallel with submit_eval_finetuned.sh
+# ============================================================
+
+echo "=== Eval V3 BASE started at $(date) ==="
+echo "Node: $(hostname)"
+echo "GPU:  $(nvidia-smi --query-gpu=name,memory.total --format=csv,noheader)"
+
+module purge
+module load apptainer/1.4.4/gcc-15.1.0
+
+mkdir -p "$WORKDIR/mytmp_eval_base"
+mkdir -p "$WORKDIR/fine_tuning_qwen/logs"
+
+export APPTAINER_CACHEDIR="$WORKDIR/.apptainer_cache"
+export HF_HOME="$WORKDIR/.cache/huggingface"
+export DATA_DIR="$WORKDIR/fine_tuning_qwen"
+export OUTPUT_DIR="$WORKDIR/fine_tuning_qwen"
+
+apptainer exec \
+  --nv \
+  --writable-tmpfs \
+  --bind "$WORKDIR":"$WORKDIR":rw \
+  --bind "$WORKDIR/mytmp_eval_base":/tmp \
+  --env HF_HOME="$HF_HOME" \
+  --env DATA_DIR="$DATA_DIR" \
+  --env OUTPUT_DIR="$OUTPUT_DIR" \
+  "$WORKDIR/unsloth_latest.sif" \
+  python "$WORKDIR/fine_tuning_qwen/evaluate_base.py"
+
+echo "=== Eval V3 BASE finished at $(date) ==="

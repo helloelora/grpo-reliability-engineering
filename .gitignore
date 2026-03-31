@@ -1,0 +1,61 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Training outputs
+outputs*/
+logs/
+*.log
+*.err
+
+# Model checkpoints
+lora_model*/
+grpo_saved_lora*/
+merged_model*/
+checkpoints/
+
+# Data — kept local only
+data/
+
+# Results — large JSON kept local, only summaries on GitHub
+results/Last run/eval_v3_base_A_training.json
+results/Last run/eval_v3_base_B_hard_holdout.json
+results/Last run/eval_v3_base_C_master_holdout.json
+results/Last run/eval_v3_finetuned_A_training.json
+results/Last run/eval_v3_finetuned_B_hard_holdout.json
+results/Last run/eval_v3_finetuned_C_master_holdout.json
+
+# Local-only files
+LOCAL_HISTORY.md
+
+# HuggingFace cache
+.cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Apptainer
+*.sif
+
+# Temporary
+mytmp*/
+
+# Claude
+.claude/
