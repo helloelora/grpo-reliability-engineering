@@ -512,35 +512,38 @@ Each question evaluated \textbf{4 times} with base Qwen3-8B:
 
 % ── Slide 13: Holdout & Frontier ──────────────────────────────
 \begin{frame}{Generalization \& comparison with frontier models}
-\begin{columns}[T]
-\column{0.48\textwidth}
-\textbf{54-question independent holdout:}
-\vspace{0.3em}
+    
+    \textbf{54-question independent holdout:}
+    \vspace{0.5em}
 
-\centering
-\begin{tabular}{@{}lccccc@{}}
-  \toprule
-  \textbf{Model} & \textbf{Acc.} & $\Delta$ & W$\to$R & R$\to$W & $p$ \\
-  \midrule
-  Base Qwen3-8B & 53.7\% & --- & --- & --- & --- \\
-  SFT & \textcolor{red}{\textbf{33.3\%}} & \textcolor{red}{$-20.4$} & 4 & 15 & \textbf{0.019} \\
-  GRPO from SFT & \textcolor{green!50!black}{\textbf{53.7\%}} & \textcolor{green!50!black}{$+0.0$} & 9 & 7 & 0.804 \\
-  \bottomrule
-\end{tabular}
+    % Tableau étalé sur toute la largeur
+    \centering
+    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lccccc@{}}
+        \toprule
+        \textbf{Model} & \textbf{Acc.} & $\Delta$ & W$\to$R & R$\to$W & $p$ \\
+        \midrule
+        Base Qwen3-8B & 53.7\% & --- & --- & --- & --- \\
+        SFT & \textcolor{red}{\textbf{33.3\%}} & \textcolor{red}{$-20.4$} & 4 & 15 & \textbf{0.019} \\
+        GRPO from scratch & 55.6\% & $+1.9$ & 3 & 2 & 1.000 \\
+        GRPO from SFT & 50.0\% & $-3.7$ & 7 & 9 & 0.803 \\
+        \bottomrule
+    \end{tabular*}
 
-\vspace{0.5em}
-\begin{alertblock}{The SFT Paradox}
-  SFT \textbf{degrades} generalization ($-20.4$pp, $p=0.019$)\\
-  yet is \textbf{essential} as GRPO initialization\\($+7.1$pp vs $+0$pp from scratch)\\[0.3em]
-  \small GRPO \textbf{redistributes} errors: gains 9, loses 7 vs.\ base
-\end{alertblock}
+    \vspace{1em}
 
-\small\textbf{Hypothesis:} SFT teaches domain format/vocabulary; GRPO optimizes reasoning on that foundation.
+    \begin{alertblock}{The SFT Paradox}
+        SFT \textbf{degrades} generalization ($-20.4$pp, $p=0.019$) yet is \textbf{essential} as GRPO initialization: $+7.5$pp in-distribution from SFT vs $+0.4$pp from scratch.
 
-\vspace{0.3em}
-{\footnotesize\color{gray} \textit{Note: 54 questions ($\approx$1.85pp each) --- insufficient to reliably detect small improvements or regressions. Results should be interpreted as directional.}}
+        \vspace{0.3em}
+        \small Neither GRPO variant significantly changes holdout performance (both $p > 0.8$).
+    \end{alertblock}
 
-\end{columns}
+    \vspace{0.5em}
+    \textbf{Hypothesis:} SFT teaches domain format/vocabulary; GRPO optimizes reasoning on that foundation.
+
+    \vfill % Pousse la note en bas de page
+    {\footnotesize\color{gray} \textit{Note: 54 questions ($\approx$1.85pp each) --- insufficient to reliably detect small improvements or regressions. Results should be interpreted as directional.}}
+
 \end{frame}
 
 % ── Slide: Frontier Model Comparison ───────────────────────────
@@ -553,7 +556,7 @@ Each question evaluated \textbf{4 times} with base Qwen3-8B:
   \toprule
   \textbf{Model} & \textbf{v4 (500q)} & \textbf{Holdout (54q)} \\
   \midrule
-  Claude Sonnet 4.6      & \textbf{92.4\%} & \textbf{81.1\%} \\
+  Claude Sonnet 4.6      92.4\% & 81.1\% \\
   o3-mini                & 86.4\% & 77.1\% \\
   Gemini 3.1 Pro         & 76.4\% & 82.6\%$^\dagger$ \\
   \midrule
@@ -574,12 +577,6 @@ Each question evaluated \textbf{4 times} with base Qwen3-8B:
   \item SFT accuracy measured via 10-fold CV (not directly comparable but informative)
   \item Gap to Claude Sonnet 4.6 (92.4\%) remains substantial
 \end{itemize}
-
-\vspace{0.5em}
-\begin{block}{\small Disclaimer}
-{\small The holdout set contains only 54 questions ($\approx$1.85pp per question). This sample size is \textbf{insufficient for statistically significant comparisons} between models. These results are \textbf{directional only} and should not be used to draw definitive conclusions about relative model performance.}
-\end{block}
-
 \end{columns}
 \end{frame}
 
