@@ -9,7 +9,7 @@ import torch
 from datetime import datetime
 from datasets import Dataset
 
-# PyTorch patch — must be before unsloth import
+# PyTorch patch - must be before unsloth import
 _orig_torch_mul = torch.Tensor.__mul__
 
 def _safe_tensor_mul(self, other):
@@ -59,7 +59,7 @@ DATASET_PATH = os.environ.get(
 
 NUM_EPOCHS    = 3
 LEARNING_RATE = 5e-6
-BETA          = 0.1  # DPO temperature — controls how strongly to prefer chosen over rejected
+BETA          = 0.1  # DPO temperature - controls how strongly to prefer chosen over rejected
 
 
 if __name__ == "__main__":

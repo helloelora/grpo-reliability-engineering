@@ -51,7 +51,7 @@ SYSTEM_PROMPT = """/no_think
 You are a Reliability Engineering Expert.
 Solve the user's problem step-by-step with rigorous mathematical reasoning.
 Rules for your final answer:
-- Write ONE single \\boxed{} at the very end of your response — your final answer only.
+- Write ONE single \\boxed{} at the very end of your response - your final answer only.
 - Do NOT use \\boxed{} for intermediate steps or calculations.
 Always put your single final numerical answer inside \\boxed{}."""
 
@@ -249,7 +249,7 @@ if __name__ == "__main__":
     tokenizer.apply_chat_template = _apply_no_think
 
     FastLanguageModel.for_inference(model)
-    print("BASE model loaded — no LoRA", flush=True)
+    print("BASE model loaded - no LoRA", flush=True)
 
     summary = {}
     for split_name, split_path in EVAL_SPLITS.items():

@@ -18,10 +18,10 @@ For the Qwen2.5-7B SFT experiment, we used 5-fold cross-validation on 281 questi
 **Dataset curation:**
 - Started from `master_dataset_cleaned_numeric.json` (190 questions, single numeric answer)
 - Generated 4 answers per question with the base model (temperature=0.8)
-- Kept only questions where the model had a mix of correct and wrong answers (not 100% correct, not 0% correct) — this ensures the RL has contrastive signal
+- Kept only questions where the model had a mix of correct and wrong answers (not 100% correct, not 0% correct) - this ensures the RL has contrastive signal
 - Result: 21 questions from master dataset
 - Same screening on `hard_numeric_generated.jsonl` (65 hard synthetic questions from Alex) → 36 kept
-- Final training set: `dataset_grpo_combined.json` — **57 questions**
+- Final training set: `dataset_grpo_combined.json` - **57 questions**
 
 **Training:** Qwen3-8B, LoRA r=32, 80 steps, DAPO loss, beta=0.001, temperature=0.8
 
@@ -32,7 +32,7 @@ For the Qwen2.5-7B SFT experiment, we used 5-fold cross-validation on 281 questi
 | B. Hard holdout (29q) | 29.3% | 32.8% | +3.4% | 7 | 5 | 17 |
 | C. Master holdout (169q) | 71.9% | 71.2% | -0.7% | 19 | 23 | 127 |
 
-McNemar test (on B+C, per generation): base correct → GRPO wrong = 46, base wrong → GRPO correct = 45. p = 1.00 — not significant.
+McNemar test (on B+C, per generation): base correct → GRPO wrong = 46, base wrong → GRPO correct = 45. p = 1.00 - not significant.
 
 **Example of improvement (split B):** fleet engine failure analysis, target=0.06516
 - Base: 0/4 correct, predictions=[0.021, 0.014, 0.023, 0.025]
@@ -40,7 +40,7 @@ McNemar test (on B+C, per generation): base correct → GRPO wrong = 46, base wr
 
 **Example of regression (split C):** Bayes theorem with 3 assembly plants, target=0.2841
 - Base: 4/4 correct, predictions=[0.2841, 0.2841, 0.2841, 0.2841]
-- GRPO: 3/4 correct, predictions=[0.2841, 0.00284, 0.2841, 0.2841] — one generation off by a factor 100
+- GRPO: 3/4 correct, predictions=[0.2841, 0.00284, 0.2841, 0.2841] - one generation off by a factor 100
 
 ---
 
@@ -48,7 +48,7 @@ McNemar test (on B+C, per generation): base correct → GRPO wrong = 46, base wr
 
 **Goal:** use the existing generations as preference pairs (correct answer = chosen, wrong answer = rejected) instead of RL exploration.
 
-**Dataset:** `dataset_dpo_pairs.json` — **233 preference pairs** extracted from the base model's 4 generations on all 255 questions (any question with at least 1 correct + 1 wrong answer gives pairs).
+**Dataset:** `dataset_dpo_pairs.json` - **233 preference pairs** extracted from the base model's 4 generations on all 255 questions (any question with at least 1 correct + 1 wrong answer gives pairs).
 
 **Training:** Qwen3-8B, LoRA r=32, 3 epochs, beta=0.1, lr=5e-6
 
@@ -59,7 +59,7 @@ McNemar test (on B+C, per generation): base correct → GRPO wrong = 46, base wr
 | B. Hard holdout (29q) | 29.3% | 32.8% | +3.4% | 7 | 6 | 16 |
 | C. Master holdout (12/169, partial) | 70.8% | 66.7% | -4.2% | 0 | 1 | 11 |
 
-McNemar test (on B+C, per generation): base correct → DPO wrong = 9, base wrong → DPO correct = 11. p = 0.82 — not significant.
+McNemar test (on B+C, per generation): base correct → DPO wrong = 9, base wrong → DPO correct = 11. p = 0.82 - not significant.
 
 Note: split C is partial (12/169 questions) because the evaluation job was killed before completing.
 
@@ -69,7 +69,7 @@ Note: split C is partial (12/169 questions) because the evaluation job was kille
 
 **Goal:** test if a non-reasoning model (no thinking mode) benefits more from fine-tuning, since it has a lower baseline and more room to improve.
 
-**Dataset:** `dataset_sft_combined.json` — **281 questions** (190 from master + 65 hard generated + 26 additional single-answer questions found in other dataset files). All answers normalized to plain numbers.
+**Dataset:** `dataset_sft_combined.json` - **281 questions** (190 from master + 65 hard generated + 26 additional single-answer questions found in other dataset files). All answers normalized to plain numbers.
 
 **Training:** Qwen2.5-7B-Instruct, LoRA r=16, 2 epochs, lr=2e-4, adamw_8bit, cosine scheduler, 5-fold cross-validation (~225 train / ~56 test per fold)
 
@@ -84,7 +84,7 @@ Note: split C is partial (12/169 questions) because the evaluation job was kille
 | 5 | 41.1% | 41.1% | 0.0% |
 | **Mean** | **36.3% +/- 4.7%** | **30.3% +/- 7.4%** | **-6.0%** |
 
-McNemar test: p = 0.607 — not significant. Base correct → SFT wrong: 9 questions. Base wrong → SFT correct: 6 questions.
+McNemar test: p = 0.607 - not significant. Base correct → SFT wrong: 9 questions. Base wrong → SFT correct: 6 questions.
 
 **Example of improvement (fold 1):** system reliability problem, target=0.9874
 - Base: wrong, predicted 0.1112
@@ -99,10 +99,10 @@ McNemar test: p = 0.607 — not significant. Base correct → SFT wrong: 9 quest
 ## Key takeaways
 
 - **No method produced statistically significant improvement** (GRPO p=1.00, DPO p=0.82, SFT p=0.61)
-- Qwen3-8B base is already strong (72% on master dataset) — hard to improve with small data
-- Qwen2.5-7B is weaker (36%) but SFT makes it worse, not better — same catastrophic forgetting pattern as our earlier Qwen3-14B SFT experiments
+- Qwen3-8B base is already strong (72% on master dataset) - hard to improve with small data
+- Qwen2.5-7B is weaker (36%) but SFT makes it worse, not better - same catastrophic forgetting pattern as our earlier Qwen3-14B SFT experiments
 - Alex's parallel SFT experiments on Qwen3-8B (17 experiments, best +2.3%) are also not statistically significant (p=0.5)
-- The "self-instruct ceiling effect" limits synthetic data quality — LLM-generated questions are systematically easier than real textbook problems
+- The "self-instruct ceiling effect" limits synthetic data quality - LLM-generated questions are systematically easier than real textbook problems
 
 ## Regex improvements made
 

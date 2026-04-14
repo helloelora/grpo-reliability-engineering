@@ -60,7 +60,7 @@ if "WORKDIR" in os.environ:
 SYSTEM_PROMPT = """/no_think
 You are a helpful math tutor. Solve the following problem step-by-step.
 Rules for your final answer:
-- Write ONE single \\boxed{} at the very end of your response — your final answer only.
+- Write ONE single \\boxed{} at the very end of your response - your final answer only.
 - Do NOT use \\boxed{} for intermediate steps or calculations.
 Always put your single final numerical answer inside \\boxed{}."""
 

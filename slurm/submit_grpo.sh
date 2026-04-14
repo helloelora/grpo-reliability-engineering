@@ -13,7 +13,7 @@
 #SBATCH --mail-user=elora.drouilhet@student-cs.fr
 
 # ============================================================
-# GRPO Training — Qwen3-14B Reliability Engineering
+# GRPO Training - Qwen3-14B Reliability Engineering
 # LoRA r=32, G=4 completions, β=0.001, 200 steps per fold
 # 5-fold CV with Claude 3.5 Sonnet judge
 # ============================================================

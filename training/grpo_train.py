@@ -1,7 +1,7 @@
 """
 GRPO Training: Qwen3-14B for Reliability Engineering
 
-Group Relative Policy Optimization (GRPO) — reinforcement learning approach
+Group Relative Policy Optimization (GRPO) - reinforcement learning approach
 that rewards correct reasoning without overwriting the base model's knowledge.
 
 Unlike SFT (which replaces the model's outputs with ours), GRPO:
@@ -10,7 +10,7 @@ Unlike SFT (which replaces the model's outputs with ours), GRPO:
   3. Reinforces completions that score above the group mean
   4. Keeps the model close to its original behavior (via KL penalty)
 
-This avoids catastrophic forgetting — the key failure mode of SFT on small datasets.
+This avoids catastrophic forgetting - the key failure mode of SFT on small datasets.
 
 Configuration:
     - Model: Qwen3-14B (4-bit quantized via Unsloth)
@@ -84,7 +84,7 @@ GRPO_LOSS_TYPE = "grpo"      # "grpo" or "dapo"
 MAX_STEPS = 100               # GRPO training steps per fold (increase if reward still climbing)
 LEARNING_RATE = 5e-6
 
-# Evaluation configuration — greedy (deterministic)
+# Evaluation configuration - greedy (deterministic)
 EVAL_THINKING_MODE = True
 EVAL_MAX_NEW_TOKENS = 16384
 EVAL_TEMPERATURE = 0.0
@@ -105,7 +105,7 @@ client = OpenAI(
     },
 )
 
-# System prompt — IDENTICAL to all previous experiments for fair comparison
+# System prompt - IDENTICAL to all previous experiments for fair comparison
 SYSTEM_PROMPT = """You are a Reliability Engineering Expert.
 Solve the user's problem step-by-step with rigorous mathematical reasoning.
 Use LaTeX for mathematical formulas.
@@ -368,7 +368,7 @@ def generate_answer(model, tokenizer, question):
 
 
 # ============================================================
-# LLM Judge (for post-training evaluation — identical to SFT)
+# LLM Judge (for post-training evaluation - identical to SFT)
 # ============================================================
 
 
@@ -448,7 +448,7 @@ def clear_cuda():
 
 if __name__ == "__main__":
     print("=" * 60)
-    print("GRPO TRAINING — Qwen3-14B Reliability Engineering")
+    print("GRPO TRAINING - Qwen3-14B Reliability Engineering")
     print(f"  LoRA r={LORA_R}, α={LORA_ALPHA}")
     print(f"  GRPO: G={NUM_GENERATIONS}, β={GRPO_BETA}, T={GRPO_TEMPERATURE}")
     print(f"  Loss: {GRPO_LOSS_TYPE}, Steps: {MAX_STEPS}")
@@ -469,7 +469,7 @@ if __name__ == "__main__":
 
     for fold, (train_idx, val_idx) in enumerate(kf.split(range(len(full_dataset)))):
         print(f"\n{'=' * 60}")
-        print(f"FOLD {fold + 1}/{N_FOLDS} — Train: {len(train_idx)}, Val: {len(val_idx)}")
+        print(f"FOLD {fold + 1}/{N_FOLDS} - Train: {len(train_idx)}, Val: {len(val_idx)}")
         print(f"{'=' * 60}")
 
         clear_cuda()
@@ -597,7 +597,7 @@ if __name__ == "__main__":
         json_results = {
             "metadata": {
                 "variant": "grpo",
-                "description": "GRPO (Group Relative Policy Optimization) — RL-based training",
+                "description": "GRPO (Group Relative Policy Optimization) - RL-based training",
                 "model": MODEL_NAME,
                 "lora_r": LORA_R,
                 "lora_alpha": LORA_ALPHA,
@@ -639,7 +639,7 @@ if __name__ == "__main__":
 
     # ── Final summary ────────────────────────────────────────────
     print(f"\n{'=' * 60}")
-    print(f"GRPO COMPLETE — Mean: {np.mean(fold_accuracies):.2f}% ± {np.std(fold_accuracies):.2f}%")
+    print(f"GRPO COMPLETE - Mean: {np.mean(fold_accuracies):.2f}% ± {np.std(fold_accuracies):.2f}%")
     print(f"Fold accuracies: {[f'{a:.2f}%' for a in fold_accuracies]}")
     print(f"Results saved to: {results_file}")
     print(f"{'=' * 60}")

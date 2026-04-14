@@ -19,7 +19,7 @@ We implement a custom GRPO training loop (no TRL dependency) with **dynamic samp
    - **Correctness** (5% relative tolerance against ground truth)
    - **Format** (presence of `\boxed{}` answer marker)
    - **Partial credit** for close answers
-3. If all G generations produce the same reward (all correct or all wrong), **discard and re-sample** a new question — this is the DAPO "dynamic sampling" that ensures every gradient step carries signal
+3. If all G generations produce the same reward (all correct or all wrong), **discard and re-sample** a new question - this is the DAPO "dynamic sampling" that ensures every gradient step carries signal
 4. Normalize rewards within the group (zero-mean, unit-variance)
 5. Update the policy to increase probability of above-average completions
 
@@ -27,17 +27,17 @@ We implement a custom GRPO training loop (no TRL dependency) with **dynamic samp
 
 Following the DeepSeek-R1 approach, the best configuration uses a **two-stage pipeline**:
 1. **SFT warm-start**: load Alex's SFT LoRA (trained on 600 non-mixed questions where the base model scores 0/4 or 4/4)
-2. **GRPO**: train on 266 "mixed" questions (where the base model scores 1/4 to 3/4) — these are the questions with actual learning signal
+2. **GRPO**: train on 266 "mixed" questions (where the base model scores 1/4 to 3/4) - these are the questions with actual learning signal
 
 ## Datasets
 
-All datasets are derived from textbook problems in reliability engineering (Modarres, Kaminskiy, Krivtsov — *Reliability Engineering and Risk Analysis*), with additional synthetic paraphrases.
+All datasets are derived from textbook problems in reliability engineering (Modarres, Kaminskiy, Krivtsov - *Reliability Engineering and Risk Analysis*), with additional synthetic paraphrases.
 
 | Dataset | Questions | Description | Used by |
 |---------|:---------:|-------------|---------|
 | `master_dataset_v4` | 866 | Full dataset: 280 base + 586 paraphrases | Source for all splits |
 | 266 "mixed" questions | 266 | Pre-screened from v4: base model gets 1/4 to 3/4 correct (has contrastive signal for RL) | GRPO training |
-| 600 non-mixed questions | 600 | Base model gets 0/4 or 4/4 correct (no contrastive signal for RL) — used for SFT warm-start only | SFT (Alex) |
+| 600 non-mixed questions | 600 | Base model gets 0/4 or 4/4 correct (no contrastive signal for RL) - used for SFT warm-start only | SFT (Alex) |
 | 54 independent holdout | 54 | Never seen during SFT or GRPO training | Out-of-distribution evaluation |
 
 **Lineage**: v2 (280) ⊂ v3 (501) ⊂ v4 (866). Strict subsets, growing only via paraphrases.
@@ -50,25 +50,25 @@ All datasets are derived from textbook problems in reliability engineering (Moda
 
 | Model | Accuracy | Delta vs Base | McNemar p |
 |-------|:--------:|:-------------:|:---------:|
-| **Qwen3-8B base** | 50.4% (134/266) | — | — |
+| **Qwen3-8B base** | 50.4% (134/266) | - | - |
 | SFT fold_4 (Alex) | 50.8% (135/266) | +0.4pp | n.s. |
 | GRPO exp10 ckpt-80 (no SFT) | 50.8% (135/266) | +0.4pp | n.s. |
-| GRPO exp7 ckpt-200 | 52.3% (139/266) | +1.9pp | — |
-| GRPO exp7 ckpt-100 | 54.1% (144/266) | +3.7pp | — |
-| **GRPO exp7 ckpt-80** | **57.9% (154/266)** | **+7.5pp** | — |
+| GRPO exp7 ckpt-200 | 52.3% (139/266) | +1.9pp | - |
+| GRPO exp7 ckpt-100 | 54.1% (144/266) | +3.7pp | - |
+| **GRPO exp7 ckpt-80** | **57.9% (154/266)** | **+7.5pp** | - |
 
 ### Out-of-distribution: 54 independent holdout questions
 
 | Model | Accuracy | Delta vs Base | McNemar p |
 |-------|:--------:|:-------------:|:---------:|
-| **Qwen3-8B base** | 53.7% (29/54) | — | — |
+| **Qwen3-8B base** | 53.7% (29/54) | - | - |
 | SFT fold_4 (Alex) | 33.3% (18/54) | **-20.4pp** | **0.022** |
 | GRPO exp7 ckpt-80 | 50.0% (27/54) | -3.7pp | 0.803 |
 | GRPO exp10 ckpt-200 (no SFT) | 55.6% (30/54) | +1.9pp | 1.000 |
 
 **Main findings**:
 - **GRPO with SFT warm-start achieves +7.5pp** on in-distribution questions (exp7 ckpt-80)
-- **GRPO preserves base-model generalization** on holdout — unlike SFT which causes -20.4pp catastrophic forgetting (p=0.022, significant)
+- **GRPO preserves base-model generalization** on holdout - unlike SFT which causes -20.4pp catastrophic forgetting (p=0.022, significant)
 - **SFT warm-start is essential**: GRPO from scratch (exp10) barely improves over base (+0.4pp)
 - **Early stopping is critical**: performance peaks at ~80 useful steps then declines (57.9% → 52.3% at step 200)
 

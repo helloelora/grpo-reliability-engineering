@@ -6,7 +6,7 @@
 | `dataset_sft_combined.json` | 281 | Master numeric (190) + hard generated (65) + 26 extras | Aggregated from earlier datasets |
 | `master_dataset_v3.jsonl` | 501 | Alex's exp18 training set: 280 base + 221 paraphrases | Alex's repo |
 | `master_dataset_v4.jsonl` | 866 | v3 + 365 new paraphrases | Alex's repo (latest) |
-| `eval_holdout_v4_minus_v3_minus_281.json` | 365 | Held-out: questions in v4 but not in v3 — never seen by Alex's SFT or our previous GRPOs | Computed locally |
+| `eval_holdout_v4_minus_v3_minus_281.json` | 365 | Held-out: questions in v4 but not in v3 - never seen by Alex's SFT or our previous GRPOs | Computed locally |
 
 **Lineage:** v2 (280) ⊂ v3 (501) ⊂ v4 (866). Strict subsets, growing only via paraphrases.
 
@@ -56,7 +56,7 @@
 
 ### Effect of the Unsloth-recommended fixes
 
-All exp 1–6bis use the four Unsloth-recommended GRPO settings. What each one fixes — and what it does **not** fix:
+All exp 1–6bis use the four Unsloth-recommended GRPO settings. What each one fixes - and what it does **not** fix:
 
 | Setting | What it fixes | What it does NOT fix |
 |---|---|---|
@@ -66,14 +66,14 @@ All exp 1–6bis use the four Unsloth-recommended GRPO settings. What each one f
 | `loss_type="dr_grpo"` | Removes the length-normalization bias of vanilla GRPO | Anything related to zero-variance steps |
 
 
-**−3.6% → +1.1%** — the fixes stopped GRPO from breaking the model
+**−3.6% → +1.1%** - the fixes stopped GRPO from breaking the model
 
 ## Deep analysis
 
 Three findings from the per-question JSON for exp 1 and exp 3 (file `eval_exp1_indist.json`).
 
 
-**Finding 1 — GRPO improves easy questions and breaks hard ones.** Bucketing by base response length (proxy for difficulty), the same pattern appears in both exp 1 and exp 5:
+**Finding 1 - GRPO improves easy questions and breaks hard ones.** Bucketing by base response length (proxy for difficulty), the same pattern appears in both exp 1 and exp 5:
 
 | Difficulty | n | Base | Exp 1 FT | Exp 5 FT |
 |------------|---|------|----------|----------|
@@ -83,7 +83,7 @@ Three findings from the per-question JSON for exp 1 and exp 3 (file `eval_exp1_i
 
 **Exp 5 (LoRA r=64, lr=1e-5) reproduces and amplifies the pattern**: bigger gains on easy/medium (+5.6% / +4.0%), bigger losses on hard (−14.5%). Higher capacity makes both effects stronger but the global delta stays small (+1.1%) because they cancel out.
 
-**Finding 2 — Errors are catastrophic, not marginal.** 
+**Finding 2 - Errors are catastrophic, not marginal.** 
 
 | Question snippet (unique in dataset) | Target | Base (correct) | FT (wrong) | Off by |
 |---------------------------------------|--------|---------------|------------|--------|
@@ -95,7 +95,7 @@ Three findings from the per-question JSON for exp 1 and exp 3 (file `eval_exp1_i
 
 GRPO learned shortcuts on easy/medium questions and blindly applies them to hard questions where they don't work at all.
 
-**Finding 3 — 42% of our training steps had zero gradient.** Logged every training step on the 57-question run (`training_samples_v3_hard.json`, 80 steps × 4 generations = 320 records) and counted how many of the 4 generations were correct at each step:
+**Finding 3 - 42% of our training steps had zero gradient.** Logged every training step on the 57-question run (`training_samples_v3_hard.json`, 80 steps × 4 generations = 320 records) and counted how many of the 4 generations were correct at each step:
 
 | n_correct/4 at step | # steps | Status |
 |---|---|---|

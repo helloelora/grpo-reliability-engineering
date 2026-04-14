@@ -6,7 +6,7 @@ All experiments use **Qwen3-8B** (4-bit quantized via Unsloth) with a custom GRP
 
 - **Training dataset**: 266 pre-screened "mixed" questions from master_dataset_v4 (questions where the base model gets 1/4 to 3/4 correct)
 - **Holdout**: 54 independent questions never seen during SFT or GRPO training
-- **SFT baseline**: Alex's fold_4 LoRA, trained on the 600 non-mixed questions from v4 (0/4 or 4/4 correct by base — no contrastive signal for RL)
+- **SFT baseline**: Alex's fold_4 LoRA, trained on the 600 non-mixed questions from v4 (0/4 or 4/4 correct by base - no contrastive signal for RL)
 - **Evaluation**: greedy-style (temperature=1.0, top_p=0.95, deterministic seed per question), 5% relative tolerance
 
 ---
@@ -28,8 +28,8 @@ All experiments: 200 useful steps, grad_accum=4, 4 generations/prompt, LoRA r/al
 
 | Model | Correct | /266 | Accuracy | Truncated | Delta vs Base |
 |-------|:-------:|:----:|:--------:|:---------:|:-------------:|
-| Qwen2.5-7B base | ~40 | 266 | 15.0% | 0 | — |
-| **Qwen3-8B base** | 134 | 266 | **50.4%** | 4 | — |
+| Qwen2.5-7B base | ~40 | 266 | 15.0% | 0 | - |
+| **Qwen3-8B base** | 134 | 266 | **50.4%** | 4 | - |
 | SFT fold_4 (Alex) | 135 | 266 | 50.8% | 8 | +0.4pp |
 | GRPO exp10 ckpt-80 (no SFT) | 135 | 266 | 50.8% | 1 | +0.4pp |
 | GRPO exp7 ckpt-200 | 139 | 266 | 52.3% | 6 | +1.9pp |
@@ -42,14 +42,14 @@ All experiments: 200 useful steps, grad_accum=4, 4 generations/prompt, LoRA r/al
 
 | Model | Correct | /54 | Accuracy | Truncated | Delta vs Base | McNemar p |
 |-------|:-------:|:---:|:--------:|:---------:|:-------------:|:---------:|
-| **Qwen3-8B base** | **29** | 54 | **53.7%** | 1 | — | — |
+| **Qwen3-8B base** | **29** | 54 | **53.7%** | 1 | - | - |
 | SFT fold_4 (Alex) | 18 | 54 | 33.3% | 2 | **-20.4pp** | **0.022** |
 | GRPO exp7 ckpt-80 | 27 | 54 | 50.0% | 2 | -3.7pp | 0.803 |
 | GRPO exp10 ckpt-200 (no SFT) | 30 | 54 | 55.6% | 0 | +1.9pp | 1.000 |
 
 **McNemar test** (per-question, continuity-corrected):
-- SFT fold_4 vs base: 15 regressions, 4 improvements → **p=0.022 (significant)** — SFT causes statistically significant degradation on unseen questions
-- GRPO exp7 ckpt-80 vs base: 9 regressions, 7 improvements → p=0.803 (not significant) — GRPO does not significantly degrade holdout performance
+- SFT fold_4 vs base: 15 regressions, 4 improvements → **p=0.022 (significant)** - SFT causes statistically significant degradation on unseen questions
+- GRPO exp7 ckpt-80 vs base: 9 regressions, 7 improvements → p=0.803 (not significant) - GRPO does not significantly degrade holdout performance
 - GRPO exp10 ckpt-200 vs base: 2 regressions, 3 improvements → p=1.000 (not significant)
 
 ---
@@ -95,7 +95,7 @@ These experiments used TRL's `GRPOTrainer` (before switching to a custom loop wi
 | Exp | LR | Steps | LoRA r/a | Dataset | Base | FT | Delta | McNemar p |
 |-----|:--:|:-----:|:--------:|---------|:----:|:--:|:-----:|:---------:|
 | **1** | 5e-6 | 220 | 32/32 | 281q | 63.7% | 63.0% | -0.7% | 0.864 |
-| **3** | 1e-5 | 220 | 32/32 | 281q | 63.7% | 64.1% | +0.4% | — |
+| **3** | 1e-5 | 220 | 32/32 | 281q | 63.7% | 64.1% | +0.4% | - |
 | **5** | 1e-5 | 180 | **64/64** | 281q | 63.7% | 64.8% | +1.1% | 0.760 |
 
 **Lesson**: without dynamic sampling, 42% of training steps had zero gradient (all 4 generations agreed). The TRL-based approach could not produce meaningful improvement.
@@ -110,7 +110,7 @@ These experiments used TRL's `GRPOTrainer` (before switching to a custom loop wi
 | 3/4 | 19 | useful gradient |
 | 4/4 | 23 | wasted (variance=0) |
 
-34/80 steps (42%) produced zero gradient — the empirical signature of the missing dynamic sampling that DAPO addresses.
+34/80 steps (42%) produced zero gradient - the empirical signature of the missing dynamic sampling that DAPO addresses.
 
 ---
 
@@ -122,9 +122,9 @@ These experiments used TRL's `GRPOTrainer` (before switching to a custom loop wi
 
 | Split | Base | DPO | Delta | McNemar p |
 |-------|:----:|:---:|:-----:|:---------:|
-| Hard holdout (29q) | 29.3% | 32.8% | +3.4% | — |
-| Master holdout (169q, partial) | 71.9% | 71.2% | -0.7% | — |
-| Combined (B+C) | — | — | — | 1.00 |
+| Hard holdout (29q) | 29.3% | 32.8% | +3.4% | - |
+| Master holdout (169q, partial) | 71.9% | 71.2% | -0.7% | - |
+| Combined (B+C) | - | - | - | 1.00 |
 
 Not significant.
 
@@ -149,7 +149,7 @@ McNemar p=0.607 (not significant). Same catastrophic forgetting pattern as Qwen3
 | Qwen2.5-7B SFT (best fold) | ~35% |
 | **Qwen3-8B base** | **50.4%** |
 
-The Qwen3-8B base model outperforms Qwen2.5-7B SFT by a wide margin — confirming that model selection matters more than fine-tuning.
+The Qwen3-8B base model outperforms Qwen2.5-7B SFT by a wide margin - confirming that model selection matters more than fine-tuning.
 
 ---
 

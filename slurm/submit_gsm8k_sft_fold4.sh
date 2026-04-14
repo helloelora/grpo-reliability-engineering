@@ -12,7 +12,7 @@
 #SBATCH --mail-type=END,FAIL
 #SBATCH --mail-user=elora.drouilhet@student-cs.fr
 
-# GSM8K benchmark — SFT fold_4 (catastrophic forgetting test)
+# GSM8K benchmark - SFT fold_4 (catastrophic forgetting test)
 # 1319 questions, ~6-10h on A100
 
 echo "Job started at $(date)"

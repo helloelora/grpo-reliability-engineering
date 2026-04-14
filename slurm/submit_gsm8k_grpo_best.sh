@@ -12,7 +12,7 @@
 #SBATCH --mail-type=END,FAIL
 #SBATCH --mail-user=elora.drouilhet@student-cs.fr
 
-# GSM8K benchmark — GRPO from SFT, step 80 (best config)
+# GSM8K benchmark - GRPO from SFT, step 80 (best config)
 # Tests if GRPO preserves general math reasoning
 # 1319 questions, ~6-10h on A100
 

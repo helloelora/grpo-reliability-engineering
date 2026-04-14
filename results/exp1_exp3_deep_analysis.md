@@ -1,4 +1,4 @@
-# Deep analysis — exp 1 and exp 3 (why GRPO didn't improve the model)
+# Deep analysis - exp 1 and exp 3 (why GRPO didn't improve the model)
 
 ## Setup recap
 
@@ -13,7 +13,7 @@
 | | Base | Exp 1 (lr=5e-6) | Exp 3 (lr=1e-5) |
 |---|------|-----------------|-----------------|
 | Accuracy | 63.7% (179/281) | 63.0% (177/281) | 64.1% (180/281) |
-| Delta | — | **−0.7%** | **+0.4%** |
+| Delta | - | **−0.7%** | **+0.4%** |
 
 In raw numbers, **exp 1 lost 2 questions, exp 3 gained 1 question**. Both deltas are within the noise floor of the random sampling. McNemar p = 0.86 for exp 1.
 
@@ -41,7 +41,7 @@ GRPO broke 18 answers and fixed 16. Net: −2 questions.
 
 GRPO broke 21 answers and fixed 22. Net: +1 question.
 
-**Key observation:** the model is **changing answers on ~13% of questions** (34 out of 281 for exp 1, 43 for exp 3). It's not "doing nothing" — it's actively replacing some answers, but the replacements are roughly half right and half wrong, so the net effect is zero.
+**Key observation:** the model is **changing answers on ~13% of questions** (34 out of 281 for exp 1, 43 for exp 3). It's not "doing nothing" - it's actively replacing some answers, but the replacements are roughly half right and half wrong, so the net effect is zero.
 
 ## The critical finding: difficulty stratification
 
@@ -49,9 +49,9 @@ I bucketed questions by **base response length** as a proxy for question difficu
 
 | Difficulty bucket | n | Base accuracy | Exp 1 accuracy | **Delta** |
 |-------------------|---|--------------|----------------|-----------|
-| **SHORT (<1500 chars)** — easy | 126 | 83.3% | 86.5% | **+3.2%** |
+| **SHORT (<1500 chars)** - easy | 126 | 83.3% | 86.5% | **+3.2%** |
 | **MEDIUM (1500-3000 chars)** | 100 | 53.0% | 54.0% | +1.0% |
-| **LONG (>3000 chars)** — hard | 55 | 38.2% | 25.5% | **−12.7%** |
+| **LONG (>3000 chars)** - hard | 55 | 38.2% | 25.5% | **−12.7%** |
 
 **This is the smoking gun.** The model:
 - Got **better on easy questions** (+3.2% on the 126 short ones)
@@ -118,7 +118,7 @@ The base model did the actual calculation (~3000 chars of iteration). The fine-t
 > ```
 
 **Exp 1 (WRONG, 4401 chars):**
-> Goes much further, computes more terms, eventually concludes "we need n=11 to get below 5%" (which is wrong — the right interpretation is k≤3).
+> Goes much further, computes more terms, eventually concludes "we need n=11 to get below 5%" (which is wrong - the right interpretation is k≤3).
 > ```
 > \boxed{11}
 > ```
@@ -133,7 +133,7 @@ The fine-tuned model **misinterpreted the problem entirely** and produced a long
 | Fixed (n=16) | 2311 | 2537 | +225 |
 | **Broken (n=18)** | **3419** | **3505** | **+86** |
 
-The model is **not converging on shorter responses** — it produces roughly the same length as base on hard questions, but with **wrong reasoning**.
+The model is **not converging on shorter responses** - it produces roughly the same length as base on hard questions, but with **wrong reasoning**.
 
 ## Explanation: what GRPO actually learned
 
@@ -157,17 +157,17 @@ The 281 questions are **highly heterogeneous**:
 GRPO with G=4 generations:
 - Easy questions → 4/4 correct → variance=0 → no gradient
 - Hard questions → 0/4 correct → variance=0 → no gradient
-- **Only the medium questions provide useful gradient signal** — and there's a confusion between "format reward" and "real reasoning reward" on these
+- **Only the medium questions provide useful gradient signal** - and there's a confusion between "format reward" and "real reasoning reward" on these
 
 The model ends up **regularizing toward the medium-difficulty pattern**, which doesn't generalize well to hard problems.
 
 ## What this tells us for the meeting
 
-1. **The −0.7% / +0.4% is misleading** — it's not "no effect", it's "two opposing effects that cancel"
-2. **GRPO hurts hard problems by 12.7%** — significant degradation on the questions that actually matter
-3. **GRPO helps easy problems by 3.2%** — small but real gain on questions the model already mostly handles
+1. **The −0.7% / +0.4% is misleading** - it's not "no effect", it's "two opposing effects that cancel"
+2. **GRPO hurts hard problems by 12.7%** - significant degradation on the questions that actually matter
+3. **GRPO helps easy problems by 3.2%** - small but real gain on questions the model already mostly handles
 4. **The model is changing 13% of its answers**, just not in a useful direction
-5. **Exp 3 (higher lr) doesn't change the pattern** — it just amplifies the chaos slightly
+5. **Exp 3 (higher lr) doesn't change the pattern** - it just amplifies the chaos slightly
 
 ## Conclusion
 

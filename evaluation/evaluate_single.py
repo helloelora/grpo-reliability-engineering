@@ -1,6 +1,6 @@
 """
 Evaluate a single LoRA model on a single dataset.
-Generic script — takes LORA_PATH and DATASET_PATH from env vars.
+Generic script - takes LORA_PATH and DATASET_PATH from env vars.
 Also evaluates the base model for comparison and runs McNemar test.
 """
 import os
@@ -53,7 +53,7 @@ SYSTEM_PROMPT = """/no_think
 You are a Reliability Engineering Expert.
 Solve the user's problem step-by-step with rigorous mathematical reasoning.
 Rules for your final answer:
-- Write ONE single \\boxed{} at the very end of your response — your final answer only.
+- Write ONE single \\boxed{} at the very end of your response - your final answer only.
 - Do NOT use \\boxed{} for intermediate steps or calculations.
 Always put your single final numerical answer inside \\boxed{}."""
 

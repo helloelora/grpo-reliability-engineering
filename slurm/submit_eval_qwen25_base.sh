@@ -12,7 +12,7 @@
 #SBATCH --mail-type=END,FAIL
 #SBATCH --mail-user=elora.drouilhet@student-cs.fr
 
-# Evaluate base Qwen2.5-7B — 190 questions x 4 gen x 5 folds
+# Evaluate base Qwen2.5-7B - 190 questions x 4 gen x 5 folds
 # Runs McNemar test if fine-tuned results are already available
 
 echo "Job started at $(date)"

@@ -1,7 +1,7 @@
 """
 Exp 7: Custom GRPO with DAPO-style dynamic sampling.
 
-No TRL dependency — pure PyTorch training loop with Unsloth for model/inference.
+No TRL dependency - pure PyTorch training loop with Unsloth for model/inference.
 Implements the exact dynamic sampling from the DAPO paper:
   "When all G generations produce the same reward, discard and re-sample."
 
@@ -122,7 +122,7 @@ SYSTEM_PROMPT = """/no_think
 You are a Reliability Engineering Expert.
 Solve the user's problem step-by-step with rigorous mathematical reasoning.
 Rules for your final answer:
-- Write ONE single \\boxed{} at the very end of your response — your final answer only.
+- Write ONE single \\boxed{} at the very end of your response - your final answer only.
 - Do NOT use \\boxed{} for intermediate steps or calculations.
 Always put your single final numerical answer inside \\boxed{}."""
 
@@ -262,7 +262,7 @@ def generate_responses(model, tokenizer, prompt_text, n, device):
                 top_p=0.95,
                 use_cache=True,
             )
-        response_ids = output[:, input_ids.shape[1]:].clone()  # [1, response_len] — clone to free full output
+        response_ids = output[:, input_ids.shape[1]:].clone()  # [1, response_len] - clone to free full output
         response_text = tokenizer.decode(response_ids[0], skip_special_tokens=True)
         results.append((response_text, response_ids, input_ids))
 
@@ -470,7 +470,7 @@ if __name__ == "__main__":
                 gen_results = generate_responses(model, tokenizer, prompt_text, NUM_GENERATIONS, device)
                 gc.collect()
                 torch.cuda.empty_cache()
-                # Switch back for gradient computation — KEEP eval mode to bypass checkpointing
+                # Switch back for gradient computation - KEEP eval mode to bypass checkpointing
                 FastLanguageModel.for_training(model)
                 model.eval()
                 # Re-enable LoRA gradients (for_training may have reset them)
@@ -488,11 +488,11 @@ if __name__ == "__main__":
 
                 # Check variance
                 if np.std(rewards_np) < 1e-8:
-                    # Zero variance — wasted, resample
+                    # Zero variance - wasted, resample
                     stats["wasted_steps"] += 1
                     n_c = sum(1 for r in rewards if r >= 0.4)
                     tag = "ALL_CORRECT" if n_c == NUM_GENERATIONS else "ALL_WRONG" if n_c == 0 else "SAME_REWARD"
-                    print(f"  [attempt {total_step}] SKIP ({tag}, rewards={rewards}) — resampling", flush=True)
+                    print(f"  [attempt {total_step}] SKIP ({tag}, rewards={rewards}) - resampling", flush=True)
                     if attempt < MAX_RESAMPLE_ATTEMPTS - 1:
                         stats["resample_events"] += 1
                     continue

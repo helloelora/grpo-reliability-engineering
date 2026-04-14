@@ -12,7 +12,7 @@
 #SBATCH --mail-type=END,FAIL
 #SBATCH --mail-user=elora.drouilhet@student-cs.fr
 
-# SFT Qwen2.5-7B — 5-fold CV, 190 questions, 3 epochs per fold
+# SFT Qwen2.5-7B - 5-fold CV, 190 questions, 3 epochs per fold
 
 echo "Job started at $(date)"
 echo "Node: $(hostname)"

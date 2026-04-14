@@ -38,7 +38,7 @@ For each initial bucket, where did the questions end up after training?
 | 1/4 | 6 | 1 (→2/4: 1) | 2 | 3 (→0/4: 3) | **−2** |
 | 2/4 | 14 | 5 (→3/4: 4, →4/4: 1) | 3 | 6 (→1/4: 4, →0/4: 2) | **−1** |
 | 3/4 | 13 | 5 (→4/4: 5) | 4 | 4 (→2/4: 3, →1/4: 1) | **+1** |
-| 4/4 | 16 | — | 10 | 6 (→3/4: 5, →2/4: 1) | **−6** |
+| 4/4 | 16 | - | 10 | 6 (→3/4: 5, →2/4: 1) | **−6** |
 | **Total** | **57** | **17** | **21** | **19** | **−2** |
 
 ### Key reading
@@ -46,7 +46,7 @@ For each initial bucket, where did the questions end up after training?
 - **The 16 "drifted to 4/4" don't represent 16 new wins.** They are 10 questions that were already at 4/4 (consolidated), 5 that were already at 3/4 (one extra correct generation), and **only 1 genuine improvement** (a 2/4 question that became 4/4).
 - **The 7 "drifted to 0/4" cost the model real competence.** 5 of them came from questions where the base had partial knowledge (1/4 or 2/4) and the training erased it.
 - **The 4/4 bucket leaks**: 6 out of 16 already-perfect questions lost at least one correct generation after training.
-- **The hard end (0/4) does see small motion upward** (+6 improvements), but none reaches a confident state — they hover at 1/4 or 2/4.
+- **The hard end (0/4) does see small motion upward** (+6 improvements), but none reaches a confident state - they hover at 1/4 or 2/4.
 
 ## Net interpretation
 
@@ -59,6 +59,6 @@ The model becomes slightly more confident on what it already knew, and loses som
 
 ## Conclusion for the meeting
 
-When asked *"isn't 16 questions becoming 4/4 a good sign?"*, the per-bucket table answers it directly: **15 of those 16 were already at 3/4 or 4/4 on the base** — the training only added at most one correct generation. Only **1 question** out of 57 represents a clear new capability. On the other side, **6 questions lost partial competence** (dropped from 1/4 or 2/4 down to 0/4, or from 4/4 down to 2/4).
+When asked *"isn't 16 questions becoming 4/4 a good sign?"*, the per-bucket table answers it directly: **15 of those 16 were already at 3/4 or 4/4 on the base** - the training only added at most one correct generation. Only **1 question** out of 57 represents a clear new capability. On the other side, **6 questions lost partial competence** (dropped from 1/4 or 2/4 down to 0/4, or from 4/4 down to 2/4).
 
 The headline "16 → 4/4 vs 7 → 0/4" is misleading without the per-bucket decomposition. Net movement is essentially flat (+17 improved, −19 degraded, 21 stable), and the qualitative gain is one question.

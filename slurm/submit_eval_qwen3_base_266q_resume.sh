@@ -12,7 +12,7 @@
 #SBATCH --mail-type=END,FAIL
 #SBATCH --mail-user=elora.drouilhet@student-cs.fr
 
-# Resume Qwen3-8B BASE eval on 266q — only the last 4 questions (263-266)
+# Resume Qwen3-8B BASE eval on 266q - only the last 4 questions (263-266)
 # Original job 533785 completed questions 1-262, timed out before finishing
 
 echo "Job started at $(date)"

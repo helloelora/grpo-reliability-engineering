@@ -12,7 +12,7 @@
 #SBATCH --mail-type=END,FAIL
 #SBATCH --mail-user=elora.drouilhet@student-cs.fr
 
-# DPO training — 233 preference pairs from base model generations
+# DPO training - 233 preference pairs from base model generations
 
 echo "Job started at $(date)"
 echo "Node: $(hostname)"

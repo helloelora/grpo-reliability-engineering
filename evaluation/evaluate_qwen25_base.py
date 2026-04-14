@@ -13,7 +13,7 @@ from datetime import datetime
 from sklearn.model_selection import KFold
 from scipy.stats import binomtest
 
-# PyTorch patch — must be before unsloth import
+# PyTorch patch - must be before unsloth import
 _orig_torch_mul = torch.Tensor.__mul__
 
 def _safe_tensor_mul(self, other):
