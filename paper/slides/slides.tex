@@ -529,25 +529,27 @@ $\to$ Waste rate: \textbf{42\% $\to$ 23\%}
 
 \vspace{0.3em}
 \centering
-\begin{tabular}{@{}lccc@{}}
+\begin{tabular}{@{}lcccc@{}}
   \toprule
-  & & \textbf{Exp 1--5} & \textbf{Exp 7} \\
-  \textbf{Difficulty} & $n$ & (TRL) & (custom) \\
+  & \multicolumn{2}{c}{\textbf{Exp 1--5} (TRL)} & \multicolumn{2}{c}{\textbf{Exp 7} (custom)} \\
+  \cmidrule(lr){2-3} \cmidrule(lr){4-5}
+  \textbf{Difficulty} & Base & GRPO & Base & GRPO \\
   \midrule
-  Easy & 126/186 & \textcolor{green!50!black}{+5.6pp} & \textcolor{green!50!black}{\textbf{95.2\%}} \\
-  Hard & 55/112 & \textcolor{red}{\textbf{$-$14.5pp}} & \textcolor{green!50!black}{\textbf{47.3\%}} \\
+  Easy & 83\% & 89\% & 100\% & \textcolor{green!50!black}{\textbf{95\%}} \\
+  Hard & 38\% & \textcolor{red}{\textbf{24\%}} & 0\% & \textcolor{green!50!black}{\textbf{47\%}} \\
   \bottomrule
 \end{tabular}
 
 \vspace{0.3em}
 \raggedright
 {\footnotesize
-\textbf{Exp 1--5:} $\Delta$ vs base on 281q (no screening).\\
-\textbf{Exp 7:} accuracy on 298 unseen questions, split by base screening score (4/4 = easy, 0/4 = hard).
+\textbf{Exp 1--5:} 281q, no screening, difficulty by response length.\\
+\textbf{Exp 7:} 298 unseen questions, 4/4 = easy, 0/4 = hard.
 }
 
 \vspace{0.3em}
-\small \textbf{Key:} screening + dynamic sampling + custom loop fixed the hard-question problem. GRPO now \textbf{solves 47\%} of previously impossible questions while preserving 95\% of easy ones.
+\small \textbf{Before:} GRPO \textbf{broke} hard questions (38\%$\to$24\%).\\
+\textbf{After:} GRPO \textbf{solves} 47\% of previously impossible questions while preserving 95\% of easy ones.
 \end{columns}
 \end{frame}
 
