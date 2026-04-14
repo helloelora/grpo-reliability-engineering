@@ -1,417 +1,646 @@
+"""
+GRPO Training: Qwen3-14B for Reliability Engineering
+
+Group Relative Policy Optimization (GRPO) — reinforcement learning approach
+that rewards correct reasoning without overwriting the base model's knowledge.
+
+Unlike SFT (which replaces the model's outputs with ours), GRPO:
+  1. Generates G completions per question
+  2. Scores each with reward functions (correctness + format)
+  3. Reinforces completions that score above the group mean
+  4. Keeps the model close to its original behavior (via KL penalty)
+
+This avoids catastrophic forgetting — the key failure mode of SFT on small datasets.
+
+Configuration:
+    - Model: Qwen3-14B (4-bit quantized via Unsloth)
+    - LoRA: r=32, alpha=32 (moderate capacity)
+    - GRPO: G=4 completions, beta=0.001 (light KL), DAPO loss
+    - Reward: LLM judge (Claude 3.5 Sonnet) + format adherence
+    - Eval: greedy decoding, 5-fold CV, same judge
+    - Data format: conversational (system + user prompt)
+
+Reference:
+    DeepSeek-R1 paper: https://arxiv.org/abs/2402.03300
+"""
+
 import os
-import gc
-import sys
-import json
-import random
-import traceback
-import re
-import numpy as np
-import torch
-from datetime import datetime
-from datasets import Dataset
-from transformers import TrainerCallback
 
-# PyTorch patch — must be before unsloth import
-_orig_torch_mul = torch.Tensor.__mul__
-
-def _safe_tensor_mul(self, other):
-    if (
-        isinstance(other, torch.Tensor)
-        and self.dim() == 2
-        and other.dim() == 2
-        and self.shape[0] == other.shape[0]
-        and self.shape[1] != other.shape[1]
-        and abs(self.shape[1] - other.shape[1]) < 200
-    ):
-        _s = min(self.shape[1], other.shape[1])
-        return _orig_torch_mul(self[:, :_s], other[:, :_s])
-    return _orig_torch_mul(self, other)
-
-torch.Tensor.__mul__ = _safe_tensor_mul
-print("Applied torch.Tensor.__mul__ patch (Qwen3 overhead fix)", flush=True)
-
-from unsloth import FastLanguageModel
-from trl import GRPOConfig, GRPOTrainer
-
-
-# Paths
-SCRIPT_DIR   = os.path.dirname(os.path.abspath(__file__))
-STATS_PATH   = os.path.join(SCRIPT_DIR, "live_training_stats.txt")
-SAMPLES_PATH = os.path.join(SCRIPT_DIR, "training_samples.json")
-
-_global_step = {"n": 0}
-SAVE_SAMPLE_EVERY_N_STEPS = 1
-
+# ─── RUCHE HPC Environment Setup ────────────────────────────────
 if "WORKDIR" in os.environ:
     hf_cache = os.path.join(os.environ["WORKDIR"], ".cache", "huggingface")
     os.environ["HF_HOME"] = hf_cache
+    os.environ["TRANSFORMERS_CACHE"] = os.path.join(hf_cache, "hub")
+    os.environ["HF_DATASETS_CACHE"] = os.path.join(hf_cache, "datasets")
     os.makedirs(hf_cache, exist_ok=True)
+else:
+    os.environ.setdefault("HF_HOME", "/tmp/hf_cache")
+    os.makedirs(os.environ["HF_HOME"], exist_ok=True)
+# ─────────────────────────────────────────────────────────────────
 
+import gc
+import json
+import random
+import re
+import time
+import numpy as np
+import torch
+from tqdm import tqdm
+from datetime import datetime
+from openai import OpenAI
+from sklearn.model_selection import KFold
+from datasets import Dataset
+from unsloth import FastLanguageModel
+from trl import GRPOConfig, GRPOTrainer
 
-# Monitoring callback
-class GRPOStatsCallback(TrainerCallback):
-    def __init__(self, output_file):
-        self.output_file = output_file
-        with open(self.output_file, "w", encoding="utf-8") as f:
-            f.write(f"Training Start: {datetime.now()}\n")
-            f.write("Step | reward | correctness | boxed_fmt | loss | grad_norm\n")
-            f.write("-" * 100 + "\n")
-
-    def on_log(self, args, state, control, logs=None, **kwargs):
-        if not logs:
-            return
-        with open(self.output_file, "a", encoding="utf-8") as f:
-            step        = state.global_step
-            reward      = logs.get("reward",                              float("nan"))
-            correctness = logs.get("rewards/reward_correctness",          float("nan"))
-            fmt         = logs.get("rewards/reward_boxed_format",         float("nan"))
-            loss        = logs.get("loss",                                float("nan"))
-            grad_norm   = logs.get("grad_norm",                           float("nan"))
-            kl          = logs.get("kl",                                  float("nan"))
-            clip_ratio  = logs.get("clipfrac",                            float("nan"))
-            f.write(
-                f"Step {step:3d} | "
-                f"reward={reward:.4f} | "
-                f"correctness={correctness:.4f} | "
-                f"boxed_fmt={fmt:.4f} | "
-                f"loss={loss:.6f} | "
-                f"grad_norm={grad_norm:.4f} | "
-                f"kl={kl:.4f} | "
-                f"clip_ratio={clip_ratio:.4f}\n"
-            )
-
-
+# ============================================================
 # Configuration
+# ============================================================
+
 SEED = 3407
 random.seed(SEED)
 np.random.seed(SEED)
 torch.manual_seed(SEED)
+torch.cuda.manual_seed_all(SEED)
 
-MODEL_NAME  = "unsloth/Qwen3-8B-unsloth-bnb-4bit"
+MODEL_NAME = "unsloth/Qwen3-14B-unsloth-bnb-4bit"
 MAX_SEQ_LEN = 8192
-
 DATASET_PATH = os.environ.get(
     "DATASET_PATH",
-    os.path.join(os.path.dirname(SCRIPT_DIR), "data", "dataset_grpo_combined.json")
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "dataset_alex.json"),
 )
 
-NUM_GENERATIONS       = 4
-MAX_PROMPT_LENGTH     = 1024
-MAX_COMPLETION_LENGTH = 6144
-GEN_MAX_NEW_TOKENS    = 6144
-MAX_STEPS             = 80
-LEARNING_RATE         = 5e-6
-LORA_R                = 32
-LORA_ALPHA            = 32
+# LoRA configuration
+LORA_R = 32
+LORA_ALPHA = 32
 
-SYSTEM_PROMPT = """/no_think
-You are a Reliability Engineering Expert.
+# GRPO configuration
+NUM_GENERATIONS = 4          # G completions per prompt
+MAX_COMPLETION_LENGTH = 4096  # max tokens per completion (fits 4×4096 in A100 40GB)
+MAX_PROMPT_LENGTH = 1024      # max tokens for the prompt
+GRPO_BETA = 0.001            # KL penalty (DeepSeek-R1 value)
+GRPO_TEMPERATURE = 0.7       # sampling temperature for generations
+GRPO_LOSS_TYPE = "grpo"      # "grpo" or "dapo"
+MAX_STEPS = 100               # GRPO training steps per fold (increase if reward still climbing)
+LEARNING_RATE = 5e-6
+
+# Evaluation configuration — greedy (deterministic)
+EVAL_THINKING_MODE = True
+EVAL_MAX_NEW_TOKENS = 16384
+EVAL_TEMPERATURE = 0.0
+
+# Judge configuration (OpenRouter)
+JUDGE_API_KEY = os.environ.get(
+    "OPENROUTER_API_KEY",
+    "REDACTED",
+)
+JUDGE_BASE_URL = "https://openrouter.ai/api/v1"
+JUDGE_MODEL = "anthropic/claude-3.5-sonnet"
+
+client = OpenAI(
+    api_key=JUDGE_API_KEY,
+    base_url=JUDGE_BASE_URL,
+    default_headers={
+        "HTTP-Referer": "https://github.com/helloelora",
+        "X-Title": "Reliability-GRPO",
+    },
+)
+
+# System prompt — IDENTICAL to all previous experiments for fair comparison
+SYSTEM_PROMPT = """You are a Reliability Engineering Expert.
 Solve the user's problem step-by-step with rigorous mathematical reasoning.
-Rules for your final answer:
-- Write ONE single \\boxed{} at the very end of your response — your final answer only.
-- Do NOT use \\boxed{} for intermediate steps or calculations.
-Always put your single final numerical answer inside \\boxed{}."""
+Use LaTeX for mathematical formulas.
+Be concise: focus on the key calculation steps, avoid repeating the question or adding unnecessary preamble.
+Always conclude with a clearly stated final answer including numerical values and units when applicable."""
 
 
+# ============================================================
+# Dataset preparation for GRPO
+# ============================================================
+
+
+def load_and_prepare_dataset(path):
+    """
+    Load dataset and format for GRPOTrainer.
+
+    GRPOTrainer expects a 'prompt' column in conversational format
+    (list of message dicts) and any extra columns for reward functions.
+    """
+    with open(path, "r", encoding="utf-8") as f:
+        raw = json.load(f)
+
+    records = []
+    for item in raw:
+        records.append({
+            "prompt": [
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": item["question"]},
+            ],
+            "answer": item["answer"],
+            "question": item["question"],
+            "reasoning": item.get("reasoning", ""),
+        })
+
+    return Dataset.from_list(records)
+
+
+# ============================================================
 # Reward functions
-
-_BOXED_RE = re.compile(r"\\boxed\s*\{((?:[^{}]|\{[^{}]*\})*)\}", re.DOTALL)
-
-_LATEX_SCI_RE = re.compile(
-    r"(-?[\d]+\.?\d*)\s*"
-    r"(?:\\times|\\cdot|\u00d7|\*)\s*"
-    r"10\s*\^?\s*\{?\s*([+-]?\d+)\s*\}?",
-    re.DOTALL
-)
-
-_FRACTION_RE = re.compile(r"(-?\d+(?:\.\d+)?)\s*/\s*(\d+(?:\.\d+)?)")
+# ============================================================
 
 
-def _extract_boxed_values(text: str, last_only: bool = False) -> list:
-    """Extract numeric values from \\boxed{}, handling %, scientific notation,
-    fractions, thousands separators, and European decimal commas."""
-    values = []
-    for content in _BOXED_RE.findall(text):
-        sci_match = _LATEX_SCI_RE.search(content)
-        if sci_match:
-            base = float(sci_match.group(1))
-            exp  = int(sci_match.group(2))
-            values.append(base * (10 ** exp))
-            continue
+def reward_correctness(completions, answer, question, **kwargs):
+    """
+    Core reward: use LLM judge to check correctness.
 
-        is_percentage = False
-        cleaned = content
-        if re.search(r'[\d]\s*\\?%', content):
-            is_percentage = True
-            cleaned = re.sub(r'\\?%', '', content)
-
-        normalized = re.sub(r'(\d{2,}),(\d{3})(?!\d)', r'\1\2', cleaned)
-        normalized = re.sub(r'([1-9]),(\d{3})(?!\d)', r'\1\2', normalized)
-        normalized = normalized.replace(',', '.')
-
-        frac_match = _FRACTION_RE.search(normalized)
-        if frac_match:
-            num = float(frac_match.group(1))
-            den = float(frac_match.group(2))
-            if den != 0:
-                val = num / den
-                if is_percentage:
-                    val /= 100
-                values.append(val)
-                continue
-
-        nums = re.findall(r"-?[\d]+\.?\d*(?:[eE][+-]?\d+)?", normalized)
-        for n in nums:
-            try:
-                val = float(n)
-                if is_percentage:
-                    val /= 100
-                values.append(val)
-            except ValueError:
-                pass
-
-    if last_only and values:
-        return [values[-1]]
-    return values
-
-
-def reward_correctness(completions, target_numeric, **kwargs):
-    """Numeric accuracy of the last \\boxed{} value.
-    Tolerance tiers: <=0.1% -> 1.0 / <=1% -> 0.8 / <=5% -> 0.4 / >5% -> 0.01"""
+    Returns +2.0 for correct, -1.0 for incorrect.
+    This is the same Claude 3.5 Sonnet judge used in all SFT experiments.
+    """
     rewards = []
-    for completion, targets_json in zip(completions, target_numeric):
-        response = completion[0]["content"] if isinstance(completion, list) else str(completion)
-        clean    = re.sub(r"<think>.*?</think>", "", response, flags=re.DOTALL).strip()
-        targets  = json.loads(targets_json)
+    for completion, gt_answer, q in zip(completions, answer, question):
+        response_text = completion[0]["content"] if isinstance(completion, list) else str(completion)
 
-        all_boxes = _BOXED_RE.findall(clean)
-        n_boxes   = len(all_boxes)
+        # Extract the final answer from the response
+        final_answer = _extract_final_answer(response_text)
 
-        if n_boxes > 2:
-            rewards.append(-0.3)
-            continue
+        judge_prompt = f"""You are a STRICT impartial exam grader for Reliability Engineering.
 
-        preds = _extract_boxed_values(clean, last_only=True)
+Compare Student's Answer with the Ground Truth.
 
-        if not preds:
-            rewards.append(0.0)
-            continue
+--- QUESTION ---
+{q}
 
-        scores = []
-        for t in targets:
-            err = abs(preds[0] - t) / (abs(t) + 1e-9)
-            if err <= 0.001:  s = 1.0
-            elif err <= 0.01: s = 0.8
-            elif err <= 0.05: s = 0.4
-            else:             s = 0.01
-            scores.append(s)
-        rewards.append(float(sum(scores) / len(scores)))
+--- GROUND TRUTH ---
+{gt_answer}
+
+--- STUDENT'S ANSWER ---
+{final_answer}
+
+GRADING RULES:
+1. GIBBERISH: If the student's answer is repetitive, nonsensical, empty, or contains unrelated spam, mark is_correct=false.
+2. STRICT MATH: Numerical final result must be within 5.0% margin of the ground truth (when applicable).
+3. LOGIC: If the student provides reasoning, it must be coherent; do not invent missing steps.
+4. PARTIAL CREDIT: If the student's reasoning is sound and arrives at the right concept/formula but has minor rounding differences, still mark is_correct=true.
+5. OUTPUT: Return ONLY valid JSON with keys:
+   - "is_correct": boolean
+   - "explanation": string (brief justification)
+"""
+        try:
+            resp = client.chat.completions.create(
+                model=JUDGE_MODEL,
+                messages=[{"role": "user", "content": judge_prompt}],
+                temperature=0,
+                response_format={"type": "json_object"},
+            )
+            raw_content = resp.choices[0].message.content
+            try:
+                data = json.loads(raw_content)
+            except json.JSONDecodeError:
+                match = re.search(r'\{.*?"is_correct".*?\}', raw_content, re.DOTALL)
+                data = json.loads(match.group()) if match else {"is_correct": False}
+
+            is_correct = bool(data.get("is_correct", False))
+            rewards.append(2.0 if is_correct else -1.0)
+
+        except Exception as e:
+            print(f"  [Judge error] {e}")
+            rewards.append(0.0)  # Neutral on API failure
+
     return rewards
 
 
-def reward_boxed_format(completions, target_numeric=None, **kwargs):
-    """Format enforcement. Penalty -0.5 for missing \\boxed{} or hedging (>2 boxed)."""
+def reward_format(completions, **kwargs):
+    """
+    Format reward: encourage structured responses with a final answer.
+
+    +1.0 if response contains "Final Answer" marker
+    +0.5 if response has some mathematical content (LaTeX)
+    -0.5 if response is too short (< 50 chars) or empty
+    """
     rewards = []
-    _global_step["n"] += 1
-    step = _global_step["n"]
-
-    sample    = completions[0][0]["content"] if isinstance(completions[0], list) else str(completions[0])
-    has_boxed = "\\boxed{" in sample
-    truncated = not sample.strip().endswith("}")
-    n_boxes_sample = len(_BOXED_RE.findall(sample))
-
-    print(
-        f"\n[step={step}] len={len(sample):,} | "
-        f"boxed={'yes' if has_boxed else 'NO'} | "
-        f"n_boxed={n_boxes_sample} | "
-        f"truncated={'YES' if (truncated and not has_boxed) else 'no'} | "
-        f"tail={repr(sample[-80:])}",
-        flush=True
-    )
-    with open(STATS_PATH, "a", encoding="utf-8") as f:
-        f.write(
-            f"  [SAMPLE step={step}] "
-            f"len={len(sample):,} | "
-            f"n_boxed={n_boxes_sample} | "
-            f"boxed={'YES' if has_boxed else 'NO':3s} | "
-            f"trunc={'YES' if (truncated and not has_boxed) else 'no':5s} | "
-            f"tail={repr(sample[-50:])}\n"
-        )
-
-    if step % SAVE_SAMPLE_EVERY_N_STEPS == 0:
-        questions = kwargs.get("question",       [None] * len(completions))
-        targets   = kwargs.get("target_numeric", [None] * len(completions))
-        new_entries = []
-
-        for idx, completion in enumerate(completions):
-            response = completion[0]["content"] if isinstance(completion, list) else str(completion)
-            hb       = "\\boxed{" in response
-            tr       = not response.strip().endswith("}")
-            n_boxes  = len(_BOXED_RE.findall(response))
-
-            last_val = _extract_boxed_values(
-                re.sub(r"<think>.*?</think>", "", response, flags=re.DOTALL),
-                last_only=True
-            )
-
-            target_val = None
-            est_correct = None
-            if targets[idx] is not None:
-                try:
-                    t_list = json.loads(targets[idx]) if isinstance(targets[idx], str) else targets[idx]
-                    if t_list and last_val:
-                        t = t_list[0]
-                        err = abs(last_val[0] - t) / (abs(t) + 1e-9)
-                        est_correct = err <= 0.05
-                        target_val  = t
-                except Exception:
-                    pass
-
-            new_entries.append({
-                "step":            step,
-                "completion_id":   idx,
-                "question":        questions[idx] if idx < len(questions) else None,
-                "target":          target_val,
-                "target_raw":      targets[idx] if idx < len(targets) else None,
-                "response":        response,
-                "char_count":      len(response),
-                "has_boxed":       hb,
-                "n_boxed":         n_boxes,
-                "last_boxed_value": last_val[0] if last_val else None,
-                "est_correct":     est_correct,
-                "truncated":       tr and not hb,
-                "timestamp":       datetime.now().isoformat(),
-            })
-
-        existing = []
-        if os.path.exists(SAMPLES_PATH):
-            try:
-                with open(SAMPLES_PATH, "r", encoding="utf-8") as f:
-                    existing = json.load(f)
-            except (json.JSONDecodeError, OSError):
-                pass
-        existing.extend(new_entries)
-        with open(SAMPLES_PATH, "w", encoding="utf-8") as f:
-            json.dump(existing, f, indent=2, ensure_ascii=False)
-
     for completion in completions:
         response = completion[0]["content"] if isinstance(completion, list) else str(completion)
-        n_b = len(_BOXED_RE.findall(response))
-        if n_b > 2:
-            score = -0.5
-        elif "\\boxed{" in response:
-            score = 0.0
-        elif "\\boxed" in response:
-            score = -0.1
-        else:
-            score = -0.5
-        rewards.append(float(score))
+        score = 0.0
+
+        # Check for final answer marker
+        if re.search(r"\*\*Final Answer[:\*]*\*\*", response):
+            score += 1.0
+        elif re.search(r"final answer|the answer is", response, re.IGNORECASE):
+            score += 0.5
+
+        # Check for mathematical content (LaTeX)
+        if re.search(r"\$.*?\$|\\frac|\\lambda|\\exp|\\int|\\sum", response):
+            score += 0.5
+
+        # Penalize empty or very short responses
+        if len(response.strip()) < 50:
+            score -= 0.5
+
+        # Penalize excessive repetition
+        lines = response.strip().split("\n")
+        if len(lines) > 5:
+            unique_lines = set(l.strip() for l in lines if l.strip())
+            if len(unique_lines) < len(lines) * 0.3:
+                score -= 1.0
+
+        rewards.append(score)
+
     return rewards
 
 
-if __name__ == "__main__":
-    if not os.path.exists(DATASET_PATH):
-        print(f"Dataset not found: {DATASET_PATH}")
-        sys.exit(1)
+def reward_reasoning_length(completions, **kwargs):
+    """
+    Mild reward for substantive reasoning (not too short, not too long).
 
-    with open(DATASET_PATH, "r", encoding="utf-8") as f:
-        raw_data = json.load(f)
+    Encourages responses between 200-2000 chars (the sweet spot for
+    reliability engineering problems).
+    """
+    rewards = []
+    for completion in completions:
+        response = completion[0]["content"] if isinstance(completion, list) else str(completion)
+        length = len(response.strip())
 
-    full_ds = Dataset.from_list([{
-        "prompt": [
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user",   "content": i["question"]}
-        ],
-        "answer":         i["answer"],
-        "target_numeric": json.dumps(i["target_numeric"]),
-        "question":       i["question"],
-    } for i in raw_data])
+        if length < 100:
+            rewards.append(-0.5)
+        elif length < 200:
+            rewards.append(0.0)
+        elif length <= 2000:
+            rewards.append(0.5)
+        elif length <= 4000:
+            rewards.append(0.0)
+        else:
+            rewards.append(-0.3)  # Mild penalty for verbosity
 
-    print(f"Dataset: {len(full_ds)} samples", flush=True)
+    return rewards
 
-    indices = list(range(len(full_ds)))
-    random.shuffle(indices)
-    full_ds = full_ds.select(indices)
 
+# ============================================================
+# Answer extraction (identical to SFT experiments)
+# ============================================================
+
+
+def _extract_final_answer(text):
+    """Extract the final answer from a Qwen3 response, handling <think> blocks."""
+    cleaned = re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL).strip()
+
+    if "<think>" in cleaned:
+        cleaned = re.sub(r"<think>.*$", "", cleaned, flags=re.DOTALL).strip()
+
+    if not cleaned:
+        after_think = re.split(r"</think>", text)
+        if len(after_think) > 1:
+            cleaned = after_think[-1].strip()
+        else:
+            fa_match = re.search(r"\*\*Final Answer[:\*]*\*\*(.+)", text, re.DOTALL)
+            if fa_match:
+                cleaned = "**Final Answer:**" + fa_match.group(1).strip()
+            else:
+                paragraphs = [p.strip() for p in text.split("\n\n") if p.strip() and len(p.strip()) > 20]
+                cleaned = paragraphs[-1] if paragraphs else "[No final answer produced]"
+
+    return _truncate_repetitions(cleaned)
+
+
+def _truncate_repetitions(text, max_repeats=3):
+    """Detect and truncate excessive line/word repetitions."""
+    lines = text.split("\n")
+    result_lines = []
+    prev_line = None
+    repeat_count = 0
+
+    for line in lines:
+        stripped = line.strip()
+        if stripped == prev_line and stripped:
+            repeat_count += 1
+            if repeat_count >= max_repeats:
+                continue
+        else:
+            repeat_count = 0
+            prev_line = stripped
+        result_lines.append(line)
+
+    result = "\n".join(result_lines)
+    result = re.sub(r"(\b\w{3,30}\b)(\s+\1){4,}", r"\1", result)
+
+    parts = result.split("**Final Answer:**")
+    if len(parts) > 2:
+        result = parts[0] + "**Final Answer:**" + parts[1]
+
+    return result.strip()
+
+
+# ============================================================
+# Generation (for post-training evaluation)
+# ============================================================
+
+
+@torch.inference_mode()
+def generate_answer(model, tokenizer, question):
+    """Generate an answer using greedy decoding (deterministic)."""
+    FastLanguageModel.for_inference(model)
+
+    messages = [
+        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "user", "content": question},
+    ]
+    input_ids = tokenizer.apply_chat_template(
+        messages, tokenize=True, add_generation_prompt=True,
+        enable_thinking=EVAL_THINKING_MODE, return_tensors="pt",
+    ).to("cuda")
+
+    gen_kwargs = dict(
+        max_new_tokens=EVAL_MAX_NEW_TOKENS,
+        use_cache=True,
+        do_sample=False,
+        repetition_penalty=1.15,
+        no_repeat_ngram_size=10,
+    )
+
+    outputs = model.generate(input_ids, **gen_kwargs)
+    output_ids = outputs[0][input_ids.shape[1]:].tolist()
+    raw = tokenizer.decode(output_ids, skip_special_tokens=False)
+
+    n_tokens = len(output_ids)
+    had_thinking = "<think>" in raw
+    raw_clean = tokenizer.decode(output_ids, skip_special_tokens=True)
+    answer = _extract_final_answer(raw_clean)
+
+    return answer, n_tokens, had_thinking, raw_clean
+
+
+# ============================================================
+# LLM Judge (for post-training evaluation — identical to SFT)
+# ============================================================
+
+
+def judge_single(sample, student_answer):
+    """Evaluate a student answer against ground truth using an LLM judge."""
+    judge_prompt = f"""You are a STRICT impartial exam grader for Reliability Engineering.
+
+Compare Student's Answer with the Ground Truth.
+
+--- QUESTION ---
+{sample['question']}
+
+--- GROUND TRUTH ---
+{sample['answer']}
+
+--- STUDENT'S ANSWER ---
+{student_answer}
+
+GRADING RULES:
+1. GIBBERISH: If the student's answer is repetitive, nonsensical, empty, or contains unrelated spam, mark is_correct=false.
+2. STRICT MATH: Numerical final result must be within 5.0% margin of the ground truth (when applicable).
+3. LOGIC: If the student provides reasoning, it must be coherent; do not invent missing steps.
+4. PARTIAL CREDIT: If the student's reasoning is sound and arrives at the right concept/formula but has minor rounding differences, still mark is_correct=true.
+5. OUTPUT: Return ONLY valid JSON with keys:
+   - "is_correct": boolean
+   - "explanation": string (brief justification)
+"""
+    for attempt in range(3):
+        try:
+            resp = client.chat.completions.create(
+                model=JUDGE_MODEL,
+                messages=[{"role": "user", "content": judge_prompt}],
+                temperature=0,
+                response_format={"type": "json_object"},
+            )
+            raw_content = resp.choices[0].message.content
+            try:
+                data = json.loads(raw_content)
+            except json.JSONDecodeError:
+                match = re.search(r'\{.*?"is_correct".*?\}', raw_content, re.DOTALL)
+                data = json.loads(match.group()) if match else {"is_correct": False, "explanation": "Parse error"}
+
+            return {
+                "question": sample["question"],
+                "target": sample["answer"],
+                "student_answer": student_answer,
+                "is_correct": bool(data.get("is_correct", False)),
+                "explanation": str(data.get("explanation", "")),
+            }
+        except Exception as e:
+            if attempt < 2:
+                time.sleep(2 ** attempt)
+                continue
+            return {
+                "question": sample.get("question", ""),
+                "target": sample.get("answer", ""),
+                "student_answer": student_answer,
+                "is_correct": False,
+                "explanation": f"Judge API error: {e}",
+            }
+
+
+# ============================================================
+# Memory management
+# ============================================================
+
+
+def clear_cuda():
     gc.collect()
     torch.cuda.empty_cache()
+    torch.cuda.synchronize()
 
-    model, tokenizer = FastLanguageModel.from_pretrained(
-        model_name=MODEL_NAME, max_seq_length=MAX_SEQ_LEN, load_in_4bit=True
-    )
-    tokenizer.padding_side = "left"
-    if tokenizer.pad_token is None:
-        tokenizer.pad_token = tokenizer.eos_token
 
-    _orig_apply = tokenizer.apply_chat_template
-    def _apply_no_think(conversation, **kwargs):
-        kwargs["enable_thinking"] = False
-        return _orig_apply(conversation, **kwargs)
-    tokenizer.apply_chat_template = _apply_no_think
-    print("Applied enable_thinking=False", flush=True)
+# ============================================================
+# Main: 5-fold cross-validation with GRPO
+# ============================================================
 
-    model = FastLanguageModel.get_peft_model(
-        model,
-        r=LORA_R,
-        lora_alpha=LORA_ALPHA,
-        target_modules=["q_proj", "k_proj", "v_proj", "o_proj",
-                        "gate_proj", "up_proj", "down_proj"],
-        use_gradient_checkpointing="unsloth",
-    )
+if __name__ == "__main__":
+    print("=" * 60)
+    print("GRPO TRAINING — Qwen3-14B Reliability Engineering")
+    print(f"  LoRA r={LORA_R}, α={LORA_ALPHA}")
+    print(f"  GRPO: G={NUM_GENERATIONS}, β={GRPO_BETA}, T={GRPO_TEMPERATURE}")
+    print(f"  Loss: {GRPO_LOSS_TYPE}, Steps: {MAX_STEPS}")
+    print(f"  SEED={SEED}")
+    print("=" * 60)
 
-    training_args = GRPOConfig(
-        num_generations=NUM_GENERATIONS,
-        max_completion_length=MAX_COMPLETION_LENGTH,
-        max_prompt_length=MAX_PROMPT_LENGTH,
-        generation_kwargs={
-            "max_new_tokens": GEN_MAX_NEW_TOKENS,
-            "do_sample":      True,
-            "temperature":    0.8,
-            "use_cache":      False,
-        },
-        mask_truncated_completions=True,
-        loss_type="dapo",
-        beta=0.001,
-        learning_rate=LEARNING_RATE,
-        per_device_train_batch_size=1,
-        gradient_accumulation_steps=4,
-        max_steps=MAX_STEPS,
-        bf16=True,
-        output_dir=os.path.join(SCRIPT_DIR, "outputs"),
-        save_strategy="steps",
-        save_steps=10,
-        save_total_limit=3,
-        report_to="none",
-        logging_steps=1,
-        remove_unused_columns=False,
-    )
+    # Load dataset
+    print(f"\nLoading dataset from {DATASET_PATH}...")
+    full_dataset = load_and_prepare_dataset(DATASET_PATH)
+    print(f"Loaded {len(full_dataset)} samples")
 
-    trainer = GRPOTrainer(
-        model=model,
-        processing_class=tokenizer,
-        reward_funcs=[reward_correctness, reward_boxed_format],
-        args=training_args,
-        train_dataset=full_ds,
-        callbacks=[GRPOStatsCallback(output_file=STATS_PATH)],
-    )
+    N_FOLDS = 5
+    kf = KFold(n_splits=N_FOLDS, shuffle=True, random_state=SEED)
+    fold_accuracies = []
+    all_results = []
+    run_timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    results_file = f"evaluation_results_grpo_{run_timestamp}.json"
 
-    print(f"Training started, live log: tail -f {STATS_PATH}", flush=True)
+    for fold, (train_idx, val_idx) in enumerate(kf.split(range(len(full_dataset)))):
+        print(f"\n{'=' * 60}")
+        print(f"FOLD {fold + 1}/{N_FOLDS} — Train: {len(train_idx)}, Val: {len(val_idx)}")
+        print(f"{'=' * 60}")
 
-    try:
+        clear_cuda()
+
+        # ── 1. Load fresh model ──────────────────────────────────
+        print("\n  Loading model...")
+        model, tokenizer = FastLanguageModel.from_pretrained(
+            model_name=MODEL_NAME,
+            max_seq_length=MAX_SEQ_LEN,
+            load_in_4bit=True,
+        )
+
+        # ── 2. Add LoRA ─────────────────────────────────────────
+        model = FastLanguageModel.get_peft_model(
+            model,
+            r=LORA_R,
+            lora_alpha=LORA_ALPHA,
+            target_modules=[
+                "q_proj", "k_proj", "v_proj", "o_proj",
+                "gate_proj", "up_proj", "down_proj",
+            ],
+            lora_dropout=0,
+            use_gradient_checkpointing="unsloth",
+            random_state=SEED,
+        )
+
+        # ── 3. Prepare training data ────────────────────────────
+        train_ds = full_dataset.select(train_idx)
+        print(f"  Training on {len(train_ds)} samples with GRPO")
+
+        # ── 4. GRPO Training ────────────────────────────────────
+        training_args = GRPOConfig(
+            # Generation
+            num_generations=NUM_GENERATIONS,
+            max_completion_length=MAX_COMPLETION_LENGTH,
+            max_prompt_length=MAX_PROMPT_LENGTH,
+            temperature=GRPO_TEMPERATURE,
+
+            # GRPO specific
+            beta=GRPO_BETA,
+            loss_type=GRPO_LOSS_TYPE,
+            num_iterations=1,
+
+            # Training
+            learning_rate=LEARNING_RATE,
+            per_device_train_batch_size=NUM_GENERATIONS,
+            gradient_accumulation_steps=4,
+            max_steps=MAX_STEPS,
+            optim="adamw_8bit",
+            weight_decay=0.01,
+            warmup_ratio=0.1,
+            lr_scheduler_type="cosine",
+            max_grad_norm=1.0,
+
+            # Infrastructure
+            bf16=True,
+            seed=SEED,
+            logging_steps=5,
+            output_dir=f"outputs_grpo_fold_{fold}",
+            save_strategy="no",
+            report_to="none",
+            remove_unused_columns=False,  # Keep extra columns for reward funcs
+        )
+
+        trainer = GRPOTrainer(
+            model=model,
+            processing_class=tokenizer,
+            reward_funcs=[
+                reward_correctness,
+                reward_format,
+                reward_reasoning_length,
+            ],
+            args=training_args,
+            train_dataset=train_ds,
+        )
+
+        print("  Starting GRPO training...")
         trainer.train()
-    except Exception as e:
-        diag = {
-            "timestamp":  datetime.now().isoformat(),
-            "error_type": type(e).__name__,
-            "error":      str(e),
-            "traceback":  traceback.format_exc(),
-        }
-        with open(os.path.join(SCRIPT_DIR, "diag.json"), "w") as f:
-            json.dump(diag, f, indent=2, ensure_ascii=False)
-        print("Training failed, see diag.json")
-        raise
+        print("  GRPO training complete.")
 
-    lora_path = os.path.join(SCRIPT_DIR, "lora_model")
-    model.save_pretrained(lora_path)
-    print(f"Saved LoRA to: {lora_path}", flush=True)
-    print("Training complete.", flush=True)
+        # Save LoRA adapter for this fold
+        lora_path = f"grpo_saved_lora_fold_{fold}"
+        model.save_pretrained(lora_path)
+        tokenizer.save_pretrained(lora_path)
+        print(f"  LoRA saved to {lora_path}")
+
+        # ── 5. Evaluate on validation set ────────────────────────
+        print(f"\n  Evaluating fold {fold + 1} ({len(val_idx)} samples)...")
+
+        fold_correct = 0
+        fold_results = []
+        token_counts = []
+
+        for i in tqdm(range(len(val_idx)), desc=f"Eval fold {fold + 1}"):
+            idx = int(val_idx[i])
+            sample = {
+                "question": full_dataset[idx]["question"],
+                "answer": full_dataset[idx]["answer"],
+            }
+
+            ans, n_tok, had_thinking, raw_response = generate_answer(
+                model, tokenizer, sample["question"]
+            )
+            judged = judge_single(sample, ans)
+            judged.update({
+                "fold": fold + 1,
+                "sample_index": idx,
+                "token_count": n_tok,
+                "had_thinking": had_thinking,
+                "raw_response": raw_response,
+            })
+            fold_results.append(judged)
+            token_counts.append(n_tok)
+            if judged["is_correct"]:
+                fold_correct += 1
+
+        fold_acc = fold_correct / len(val_idx) * 100
+        fold_accuracies.append(fold_acc)
+        all_results.extend(fold_results)
+
+        print(f"  Fold {fold + 1}: {fold_acc:.2f}% ({fold_correct}/{len(val_idx)}), "
+              f"tokens: mean={np.mean(token_counts):.0f}, max={max(token_counts)}")
+
+        # ── 6. Save incremental results ──────────────────────────
+        json_results = {
+            "metadata": {
+                "variant": "grpo",
+                "description": "GRPO (Group Relative Policy Optimization) — RL-based training",
+                "model": MODEL_NAME,
+                "lora_r": LORA_R,
+                "lora_alpha": LORA_ALPHA,
+                "grpo_config": {
+                    "num_generations": NUM_GENERATIONS,
+                    "beta": GRPO_BETA,
+                    "temperature": GRPO_TEMPERATURE,
+                    "loss_type": GRPO_LOSS_TYPE,
+                    "max_steps": MAX_STEPS,
+                    "max_completion_length": MAX_COMPLETION_LENGTH,
+                },
+                "learning_rate": LEARNING_RATE,
+                "eval_temperature": EVAL_TEMPERATURE,
+                "judge_model": JUDGE_MODEL,
+                "reward_functions": [
+                    "reward_correctness (LLM judge, +2/-1)",
+                    "reward_format (final answer marker, +1/-0.5)",
+                    "reward_reasoning_length (200-2000 chars, +0.5/-0.5)",
+                ],
+                "n_folds": N_FOLDS,
+                "folds_completed": fold + 1,
+                "total_samples": len(full_dataset),
+                "seed": SEED,
+                "timestamp": run_timestamp,
+            },
+            "summary": {
+                "fold_accuracies": fold_accuracies,
+                "mean_accuracy": float(np.mean(fold_accuracies)),
+                "std_accuracy": float(np.std(fold_accuracies)) if len(fold_accuracies) > 1 else 0.0,
+            },
+            "all_results": all_results,
+        }
+        with open(results_file, "w", encoding="utf-8") as f:
+            json.dump(json_results, f, indent=2, ensure_ascii=False)
+
+        # Cleanup
+        del trainer, model, tokenizer
+        clear_cuda()
+
+    # ── Final summary ────────────────────────────────────────────
+    print(f"\n{'=' * 60}")
+    print(f"GRPO COMPLETE — Mean: {np.mean(fold_accuracies):.2f}% ± {np.std(fold_accuracies):.2f}%")
+    print(f"Fold accuracies: {[f'{a:.2f}%' for a in fold_accuracies]}")
+    print(f"Results saved to: {results_file}")
+    print(f"{'=' * 60}")

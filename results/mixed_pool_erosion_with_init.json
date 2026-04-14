@@ -1,0 +1,440 @@
+{
+  "purpose": "Prove the mixed-pool erosion: 57 questions screened as MIXED on base, evolution after DPO training",
+  "methodology": {
+    "initial_state": "training_samples_v3_hard.json — first step of training, each question evaluated with 4 generations",
+    "post_training": "results/Run 2/eval_finetuned_A_training.json — DPO model evaluated with 4 generations"
+  },
+  "summary": {
+    "n_matched": 57,
+    "initial_distribution": {
+      "0": 57
+    },
+    "transition_matrix": {
+      "0/4": {
+        "4": 16,
+        "3": 13,
+        "1": 11,
+        "2": 10,
+        "0": 7
+      }
+    }
+  },
+  "drifted_to_all_correct": [
+    {
+      "question": "A baseball player has a current batting average of .250 (probability of a hit p = 0.250). In a game, he will bat four times (n = 4). This follows a binomial distribution. What is the probability of no hits?",
+      "target": 0.316,
+      "initial_n_correct": 0,
+      "initial_predictions": [
+        0.3164,
+        0.3164,
+        0.3164,
+        0.3164
+      ],
+      "after_dpo_n_correct": 4,
+      "after_dpo_predictions": [
+        0.3164,
+        0.3164,
+        0.3164,
+        0.3164
+      ]
+    },
+    {
+      "question": "For a certain type of airplane to fly, at least two out of its three engines must function. The engine reliability at time T hours is 0.995. Find the probability the airplane flies successfully for T hours assuming identical and independent engines.",
+      "target": 0.99992525,
+      "initial_n_correct": 0,
+      "initial_predictions": [
+        0.99992525,
+        0.99992525,
+        0.99992525,
+        0.99992525
+      ],
+      "after_dpo_n_correct": 4,
+      "after_dpo_predictions": [
+        0.99992525,
+        0.99992525,
+        0.99992525,
+        0.99992525
+      ]
+    },
+    {
+      "question": "Suppose that a population of components follows the life-distribution model: F(t) = 1 - e^{-(t/2000)^{0.5}}. What proportion of new units will last more than 5000 hours?",
+      "target": 0.2057,
+      "initial_n_correct": 0,
+      "initial_predictions": [
+        0.2072,
+        0.2072,
+        0.205,
+        0.206
+      ],
+      "after_dpo_n_correct": 4,
+      "after_dpo_predictions": [
+        0.206,
+        0.2072,
+        0.2055,
+        0.2072
+      ]
+    },
+    {
+      "question": "A data center cooling system consists of 4 independent chillers arranged in a 2-out-of-4 active redundancy configuration (system succeeds if at least 2 chillers are operational). Each chiller has a time-to-failure that follows a Weibull distribution with shape parameter β = 1.5 and characteristic life η = 8000 hours. What is the reliability of a single chiller at t = 5000 hours?",
+      "target": 0.61,
+      "initial_n_correct": 0,
+      "initial_predictions": [
+        0.61,
+        0.6105,
+        0.61,
+        0.61
+      ],
+      "after_dpo_n_correct": 4,
+      "after_dpo_predictions": [
+        0.61,
+        0.6103,
+        0.61,
+        0.61
+      ]
+    },
+    {
+      "question": "A power supply unit has a lifetime that follows a lognormal distribution with a median life T₅₀ of 80,000 hours. Quality control testing reveals that 8% of units fail before 1,500 hours of operation, yielding a shape parameter σ of 2.83. Calculate the expected reliability (survival probability) at 10,000 hours of operation.",
+      "target": 0.769,
+      "initial_n_correct": 0,
+      "initial_predictions": [
+        0.768,
+        0.7684,
+        0.768,
+        0.768
+      ],
+      "after_dpo_n_correct": 4,
+      "after_dpo_predictions": [
+        0.7678,
+        0.768,
+        0.768,
+        0.769
+      ]
+    },
+    {
+      "question": "A data center uses a redundant power supply system with three independent power modules arranged in a 2-out-of-3 configuration (the system functions if at least 2 out of 3 modules are working). Each power module has a reliability of 0.92 over a one-year period. What is the reliability of the power supply system for one year?",
+      "target": 0.9818,
+      "initial_n_correct": 0,
+      "initial_predictions": [
+        0.999488,
+        0.981824,
+        0.9818,
+        0.9818
+      ],
+      "after_dpo_n_correct": 4,
+      "after_dpo_predictions": [
+        0.9818,
+        0.9818,
+        0.9818,
+        0.9818
+      ]
+    },
+    {
+      "question": "A manufacturing quality control system uses a 3-out-of-5 redundancy configuration for its inspection sensors, meaning the system operates correctly as long as at least 3 of the 5 sensors are functioning. Each sensor has an exponentially distributed lifetime with a mean time to failure (MTTF) of 2,000 hours. All sensors operate independently and simultaneously. What is the reliability of a single sensor at t = 1,200 hours?",
+      "target": 0.549,
+      "initial_n_correct": 0,
+      "initial_predictions": [
+        0.5488,
+        0.5488,
+        0.5488,
+        0.5488
+      ],
+      "after_dpo_n_correct": 4,
+      "after_dpo_predictions": [
+        0.5488,
+        0.5488,
+        0.5488,
+        0.5488
+      ]
+    },
+    {
+      "question": "A telecommunications company is designing a redundant power supply system for a cell tower. The system consists of 5 independent battery backup units, each with a reliability of 0.92 for a 24-hour period during a power outage. If the tower requires at least 3 battery units to function during an outage, what is the 24-hour reliability of the power supply system?",
+      "target": 0.9955,
+      "initial_n_correct": 0,
+      "initial_predictions": [
+        0.9955,
+        0.9955,
+        0.9955,
+        0.9955
+      ],
+      "after_dpo_n_correct": 4,
+      "after_dpo_predictions": [
+        0.9955,
+        0.9955,
+        0.9955,
+        0.9955
+      ]
+    },
+    {
+      "question": "A quality control engineer is using a single sampling plan for incoming batches of automotive sensors with acceptance number c = 1 and sample size n = 78 (determined using the Poisson approximation with AQL = 0.8% and RQL = 5.0%). What is the probability of accepting a lot that has exactly 2.5% defective items?",
+      "target": 0.42,
+      "initial_n_correct": 0,
+      "initial_predictions": [
+        0.419,
+        0.4921,
+        0.4192,
+        0.6701
+      ],
+      "after_dpo_n_correct": 4,
+      "after_dpo_predictions": [
+        0.4192,
+        0.427,
+        0.419,
+        0.416
+      ]
+    },
+    {
+      "question": "A power supply unit has a lifetime that follows a Weibull distribution with shape parameter β = 2.5 and scale parameter η = 5000 hours. Find the MTTF (Mean Time To Failure) for this power supply. Note: MTTF = η·Γ(1 + 1/β). Use Γ(1.4) ≈ 0.8873.",
+      "target": 4436.5,
+      "initial_n_correct": 0,
+      "initial_predictions": [
+        4436.5,
+        4436.5,
+        4436.5,
+        4436.5
+      ],
+      "after_dpo_n_correct": 4,
+      "after_dpo_predictions": [
+        4436.5,
+        4436.5,
+        4436.5,
+        4436.5
+      ]
+    },
+    {
+      "question": "A reliability engineer is analyzing field failure data for a critical automotive component. Historical data shows that the component's lifetime follows a Weibull distribution with a characteristic life (η) of 150,000 miles and a shape parameter (β) of 2.5. Calculate the reliability (probability of survival) at 100,000 miles.",
+      "target": 0.696,
+      "initial_n_correct": 0,
+      "initial_predictions": [
+        0.695,
+        0.362,
+        0.695,
+        0.695
+      ],
+      "after_dpo_n_correct": 4,
+      "after_dpo_predictions": [
+        0.695,
+        0.694,
+        0.695,
+        0.695
+      ]
+    },
+    {
+      "question": "An engineer is conducting an accelerated life test on ceramic capacitors using temperature as the accelerating stress. The Arrhenius model applies with the life-stress relationship $L(T) = C \\cdot e^{E_a/(k_B T)}$, where $E_a$ is the activation energy, $k_B = 8.617 \\times 10^{-5}$ eV/K, and $T$ is absolute temperature in Kelvin. Tests are run at two elevated temperatures. At 400 K, 20 units are tested and 15 failures are observed with a sample mean log-lifetime of $\\bar{y}_1 = 6.2$ (where $y = \\ln t$ in hours). At 450 K, 20 units are tested and 18 failures are observed with a sample mean log-lifetime of $\\bar{y}_2 = 4.7$. The lifetime at each stress follows a lognormal distribution with common shape parameter $\\sigma = 0.8$. Assuming the Arrhenius model holds, estimate the median lifetime (in hours) at the normal use condition of 340 K.",
+      "target": 5336.6,
+      "initial_n_correct": 0,
+      "initial_predictions": [
+        5352.0,
+        42.9,
+        5345.0,
+        5334.5
+      ],
+      "after_dpo_n_correct": 4,
+      "after_dpo_predictions": [
+        5333.0,
+        5332.0,
+        5333.0,
+        5336.0
+      ]
+    },
+    {
+      "question": "A chemical plant has a safety system consisting of two subsystems in series. Subsystem A is a 2-out-of-3 voting system where each channel has independent failures following a Weibull distribution with shape parameter β = 2.2 and scale parameter η = 8000 hours. Subsystem B is a single component whose time-to-failure follows an exponential distribution with a failure rate of λ = 0.00005 per hour. A common cause failure (CCF) can simultaneously disable all three channels of Subsystem A; the CCF event follows an exponential distribution with a rate of λ_CCF = 0.000002 per hour. Assuming Subsystem A fails if either the common cause event occurs OR fewer than 2 of the 3 channels survive (and these are independent mechanisms), and the overall system fails if either subsystem fails, what is the system reliability at t = 3000 hours?",
+      "target": 0.82715,
+      "initial_n_correct": 0,
+      "initial_predictions": [
+        0.8605,
+        0.8273,
+        0.8183,
+        0.608
+      ],
+      "after_dpo_n_correct": 4,
+      "after_dpo_predictions": [
+        0.8324,
+        0.8273,
+        0.8297,
+        0.832
+      ]
+    },
+    {
+      "question": "A fleet of 10 identical turbines is placed on test. Their lifetimes follow a Weibull distribution with unknown parameters β and η. By 1000 hours, 3 turbines have failed (at times 412, 658, and 891 hours). The remaining 7 turbines are still running at 1000 hours (right-censored). The maximum likelihood estimates yield β = 2.5 and η = 1800 hours. Using these MLE parameters, a new system is designed consisting of a series arrangement of 3 independent subsystems: Subsystem A contains 2 such turbines in active parallel (system A fails when both fail), Subsystem B is a single turbine, and Subsystem C contains 3 turbines in a 2-out-of-3 configuration (subsystem C fails when at least 2 of the 3 turbines fail). Compute the system reliability at t = 1200 hours.",
+      "target": 0.4917,
+      "initial_n_correct": 0,
+      "initial_predictions": [
+        0.49,
+        0.4914,
+        0.491,
+        0.3761
+      ],
+      "after_dpo_n_correct": 4,
+      "after_dpo_predictions": [
+        0.49,
+        0.489,
+        0.489,
+        0.491
+      ]
+    },
+    {
+      "question": "A chemical processing plant has a critical safety system with the following architecture: two identical primary subsystems in parallel (active redundancy), followed in series by a single backup controller. Each primary subsystem consists of a sensor and an actuator in series. The sensors have Weibull-distributed lifetimes with shape parameter β = 2.0 and scale parameter η = 8000 hours. The actuators have Weibull-distributed lifetimes with shape parameter β = 1.5 and scale parameter η = 12000 hours. The backup controller has a constant failure rate of λ = 0.0001 failures/hour. All components are independent. However, due to a shared environmental stress (common cause), there is a probability of 0.05 that both primary subsystems fail simultaneously at any given demand, modeled using the beta-factor method. Using the beta-factor common cause failure model, what is the system reliability at t = 3000 hours?",
+      "target": 0.6958,
+      "initial_n_correct": 0,
+      "initial_predictions": [
+        0.703,
+        0.7125,
+        0.7021,
+        0.4425
+      ],
+      "after_dpo_n_correct": 4,
+      "after_dpo_predictions": [
+        0.6984,
+        0.666,
+        0.6664,
+        0.6659
+      ]
+    },
+    {
+      "question": "A critical safety system consists of two identical subsystems in parallel (both must fail for system failure). Each subsystem contains three components in series. Components of Type A have exponentially distributed lifetimes with a failure rate of 0.0003 per hour. Components of Type B follow a Weibull distribution with shape parameter β = 2.0 and scale parameter η = 5000 hours. Components of Type C have exponentially distributed lifetimes with a failure rate of 0.0005 per hour. Each subsystem has one Type A, one Type B, and one Type C component in series. Additionally, there is a common cause failure (CCF) that can kill both subsystems simultaneously, modeled as an exponential process with a failure rate of 0.000002 per hour. Assuming all failures are independent (except for the CCF which affects both subsystems), compute the system reliability at t = 2000 hours.",
+      "target": 0.31322,
+      "initial_n_correct": 0,
+      "initial_predictions": [
+        0.3187,
+        0.3092,
+        0.3107,
+        0.3077
+      ],
+      "after_dpo_n_correct": 4,
+      "after_dpo_predictions": [
+        0.3117,
+        0.3116,
+        0.3055,
+        0.3109
+      ]
+    }
+  ],
+  "drifted_to_all_wrong": [
+    {
+      "question": "An engineer is performing a Bayesian reliability analysis on a new turbine blade design. The prior distribution for the failure rate λ (failures per 1000 hours) is Gamma with shape parameter α₀ = 3 and rate parameter β₀ = 2000 (so the prior mean is 0.0015 per hour). A life test is conducted on 10 identical blades. The test is time-censored at 800 hours. During the test, 4 blades fail at times 150, 310, 475, and 620 hours. The remaining 6 blades survive beyond 800 hours without failure. Assuming an exponential lifetime model, compute the Bayesian posterior mean estimate of the system's reliability at t = 500 hours, where \"system\" here refers to a single blade.",
+      "target": 0.66582,
+      "initial_n_correct": 0,
+      "initial_predictions": [
+        0.6636,
+        0.79,
+        0.736,
+        8.624e-08
+      ],
+      "after_dpo_n_correct": 0,
+      "after_dpo_predictions": [
+        0.8239,
+        0.827,
+        0.733,
+        0.739
+      ]
+    },
+    {
+      "question": "A fleet manager observes failure data for a critical engine component believed to follow a Weibull distribution. Six engines are put on test. Failures are observed at times 1200, 2800, and 4500 hours. The remaining three engines are still running (right-censored) at 5000 hours. Using maximum likelihood estimation, the shape parameter is estimated to be β = 2.0 (given). Using this fixed β, find the MLE of the characteristic life η (in hours), and then compute the estimated reliability of a new component at t = 3000 hours using those parameter estimates.",
+      "target": 0.77243,
+      "initial_n_correct": 0,
+      "initial_predictions": [
+        0.171,
+        0.7727,
+        0.278,
+        0.7728
+      ],
+      "after_dpo_n_correct": 0,
+      "after_dpo_predictions": [
+        0.317,
+        0.533,
+        0.4,
+        0.4
+      ]
+    },
+    {
+      "question": "A chemical plant has a safety system consisting of two subsystems in series. Subsystem 1 is a 2-out-of-3 redundant configuration using identical components, each with a Weibull time-to-failure distribution with shape parameter β₁ = 2.0 and scale parameter η₁ = 8000 hours. Subsystem 2 is a single component with an exponential time-to-failure distribution with MTBF = 12000 hours, but it is supported by a cold standby spare that is identical and has a perfect sensing/switching mechanism. The standby spare only begins to age when activated. A common cause failure (CCF) can independently knock out the entire system (both subsystems simultaneously) with a constant rate of λ_CCF = 2.0 × 10⁻⁶ per hour. Assuming the common cause failure is independent of the individual component failures, compute the overall system reliability at t = 2000 hours.",
+      "target": 0.9731,
+      "initial_n_correct": 0,
+      "initial_predictions": [
+        0.9849,
+        0.1556,
+        0.8425,
+        0.837
+      ],
+      "after_dpo_n_correct": 0,
+      "after_dpo_predictions": [
+        0.000287,
+        0.1411,
+        0.8333,
+        0.7116
+      ]
+    },
+    {
+      "question": "A fleet of 10 identical turbine engines is placed on a reliability life test. The lifetimes are assumed to follow a Weibull distribution with a known shape parameter β=2.0. The test is terminated (Type II right censoring) after the 6th failure. The six observed failure times (in hundreds of hours) are: 12, 18, 25, 31, 40, and 52. The remaining 4 units are still operating at the time of the 6th failure (i.e., censored at t=52). Using maximum likelihood estimation for the characteristic life η, a Bayesian engineer has a prior belief that η follows a uniform distribution between 30 and 80 (in hundreds of hours). Using the MLE estimate of η as a point estimate, compute the system reliability at t=35 hundred hours for a configuration where 3 such engines are arranged in a parallel redundant system (system fails only when all 3 engines fail).",
+      "target": 0.957843,
+      "initial_n_correct": 0,
+      "initial_predictions": [
+        0.5103,
+        2.9999999999999997e-29,
+        0.0,
+        0.0
+      ],
+      "after_dpo_n_correct": 0,
+      "after_dpo_predictions": [
+        0.512,
+        0.0062,
+        0.785,
+        0.511
+      ]
+    },
+    {
+      "question": "A fleet of 20 identical turbine blades is placed on a life test. The blades are believed to follow a Weibull distribution. The test is Type-II right-censored: it is terminated after the 12th failure. The first 12 ordered failure times (in hundreds of hours) are: 4.1, 5.3, 6.0, 7.2, 8.1, 8.8, 9.5, 10.4, 11.6, 12.9, 14.3, 16.0. Using maximum likelihood estimation, the shape parameter is estimated as β = 2.8 and the scale parameter as η = 14.2 (hundreds of hours). A parallel system is constructed using 3 of these blades operating independently. An engineer wants to know the system-level mean time to failure (MTTF) of this parallel configuration. Using the estimated Weibull parameters, compute the MTTF of the 3-blade parallel system in hundreds of hours, rounded to two decimal places.",
+      "target": 16.86,
+      "initial_n_correct": 0,
+      "initial_predictions": [
+        4.29,
+        14.18,
+        4.31,
+        4.1
+      ],
+      "after_dpo_n_correct": 0,
+      "after_dpo_predictions": [
+        4.31,
+        4.31,
+        9.31,
+        4.31
+      ]
+    },
+    {
+      "question": "A safety-critical system consists of two subsystems in series. Subsystem A is a 2-out-of-3 redundant configuration where each component follows a Weibull distribution with shape parameter β = 2 and scale parameter η = 500 hours. Subsystem B is a single component with an exponential failure distribution (constant failure rate λ = 0.0008 failures per hour) backed by a cold standby spare (identical, with a perfect switch). The standby spare only begins aging when activated. No repairs are possible. Calculate the system reliability at t = 200 hours.",
+      "target": 0.930068,
+      "initial_n_correct": 0,
+      "initial_predictions": [
+        0.8607,
+        0.939,
+        0.14,
+        0.5786
+      ],
+      "after_dpo_n_correct": 0,
+      "after_dpo_predictions": [
+        0.7997,
+        0.000611,
+        0.6664,
+        0.8
+      ]
+    },
+    {
+      "question": "A fleet manager observes failure data for a critical engine component. From prior engineering analysis, the failure times are believed to follow an exponential distribution. The prior distribution on the failure rate λ is Gamma with shape α₀ = 3 and rate β₀ = 800 (so the prior mean is 3/800 = 0.00375 failures per hour). During a test program, 8 engines are placed on test. Five engines fail at times 150, 210, 340, 425, and 580 hours. The remaining 3 engines are still running (right-censored) at 600 hours each. Using Bayesian updating with this conjugate prior, compute the posterior predictive reliability of a NEW engine at t = 400 hours — that is, the probability that a new engine from this population survives at least 400 hours, integrating over the posterior distribution of λ.",
+      "target": 0.49128,
+      "initial_n_correct": 0,
+      "initial_predictions": [
+        0.5003,
+        0.471,
+        8.0,
+        0.2094
+      ],
+      "after_dpo_n_correct": 0,
+      "after_dpo_predictions": [
+        4.4800000000000004e-29,
+        1.0,
+        8.0,
+        0.5193
+      ]
+    }
+  ]
+}

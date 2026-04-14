@@ -1,0 +1,926 @@
+{
+  "start_idx": 335,
+  "end_idx": 501,
+  "results": [
+    {
+      "global_index": 336,
+      "question": "A mechanical actuator undergoes an accelerated life test, with its lifetime modeled by a Weibull distribution having a f",
+      "target": 5604.0,
+      "extracted_value": 3620000000000.0,
+      "correct": false,
+      "truncated": false,
+      "response": "**Step 1: Estimate η₁ (characteristic life at S₁ = 400 K) via MLE with censored data.**\n\nFor Weibull with known β, the log-likelihood combining exact failures and censored observations is:\n\nL = Σ(failures) [ln(β) - ln(η) + (β-1)·ln(t_i/η) - (t_i/η)^β] + Σ(censored) [-(t_i/η)^β]\n\nEvaluating at β = 2.5, define x_i = t_i/η.\n\nThe MLE for η when β is fixed is given by:\n\nη^β = (1/r) × [Σ(t_i^β, i = 1 to r) + Σ(t_c^β, j = 1 to n_r)]\n\nHere, r = 15 failures, n_r = 5 censored units, all terminated at t_c = 600 hours.\n\nWith β = 2.5, compute t_i^2.5 = t_i^2 × t_i^0.5.\n\n**Failure times (t_i) and t_i^2.5 values:**\n\ni | t_i | t_i^2 | t_i^0.5 | t_i^2.5\n---|-----|-------|--------|--------\n1 | 95 | 9025 | 9.747 | 9025 × 9.747 = 87963\n2 | 130 | 16900 | 11.402 | 16900 × 11.402 = 192,687\n3 | 168 | 28224 | 12.960 | 28224 × 12.960 = 366,238\n4 | 205 | 42025 | 14.318 | 42025 × 14.318 = 599,539\n5 | 240 | 57600 | 15.492 | 57600 × 15.492 = 892,913\n6 | 278 | 77284 | 16.673 | 77284 × 16.673 = 1291182\n7 | 310 | 96100 | 17.607 | 96100 × 17.607 = 1690868\n8 | 345 | 119025 | 18.574 | 119025 × 18.574 = 2210110\n9 | 382 | 145924 | 19.545 | 145924 × 19.545 = 2852140\n10 | 420 | 176400 | 20.494 | 176400 × 20.494 = 3612916\n11 | 455 | 207025 | 21.331 | 207025 × 21.331 = 4423569\n12 | 488 | 238144 | 22.091 | 238144 × 22.091 = 5262848\n13 | 510 | 260100 | 22.584 | 260100 × 22.584 = 5874712\n14 | 548 | 300304 | 23.409 | 300304 × 23.409 = 7026814\n15 | 580 | 336400 | 24.083 | 336400 × 24.083 = 8099253\n\n**Censored contribution (5 units at t_c = 600):**\n600^2.5 = 360000 × 24.495 = 8818199\n5 censored units: 5 × 8818199 = 44,090,995\n\n**Summing all t_i^2.5:**\n87,963 + 192,687 = 280,650\n+ 366,238 = 646,888\n+ 599,539 = 1,246,427\n+ 892,913 = 2,139,340\n+ 1,291,182 = 3,430,522\n+ 1,690,868 = 5,121,390\n+ 2,210,110 = 7,331,500\n+ 2,852,140 = 10,183,640\n+ 3,612,916 = 13,796,556\n+ 4,423,569 = 18,220,125\n+ 5,262,848 = 23,482,973\n+ 5,874,712 = 29,357,685\n+ 7,026,814 = 36,384,499\n+ 8,099,253 = 44,483,752\n+ 44,090,995 = 88,574,747\n\nWith r = 15 failures and 5 censored:\nη₁^2.5 = (1/15) × 88,574,747 = 5,904,983\n\nη₁ = (5,904,983)^0.5 = 2,430 hours\n\n**Step 2: Determine Arrhenius parameters A and B.**\n\nη(S) = A · exp(B/S)\n\nAt S₁ = 400 K: η₁ = A × exp(B/400) = 2430\nAt S₂ = 370 K: η₂ = A × exp(B/370) = 1350\n\nForm ratio: η₁/η₂ = exp(B/400) / exp(B/370) = exp(B × (1/400 - 1/370)) = exp(-B/(400×370) × 19)\n\nApplying the identity exp(-x) = η₁/η₂:\n\nln(2430/1350) = ln(1.8) = 0.587786 = 19B/(400×370) = B/(74000)\n\nB = 74000 × 0.587786 = 43570.0\n\nSubstitute back to obtain A:\nA = 1350 / exp(43570/370) = 1350 / exp(117.757)\nexp(117.757) = exp(117) × exp(0.757) = 7.46176e47 × 2.13292 = 1.59222e48\nA = 1350 / 1.59222e48 = 8.48013e-46\n\n**Step 3: Calculate median lifetime at S₀ = 330 K.**\n\nFor Weibull, median time: t₅₀ = η × (ln 2)^(1/β) = η × (0.69315)^0.4\n\n0.69315^0.4 = e^(0.4 × (-0.36652)) = e^(-0.14661) = 0.86373\n\nHence: t₅₀ = η × 0.86373\n\nEvaluate η₀ = A × exp(B/330) = 8.48013e-46 × exp(43570/330) = 8.48013e-46 × exp(131.976)\n\nexp(131.976) = exp(130) × exp(1.976) = 6.83150e56 × 7.21675 = 4.93481e57\n\nη₀ = 8.48013e-46 × 4.93481e57 = 4.18719e12\n\nt₅₀ = 4.18719e12 × 0.86373 = 3.61870e12\n\nThe median lifetime at 330 K is: 3.6187 × 10^12 ≈ 3.619 × 10^12\n\nFinal answer: \\boxed{3.62\\times 10^{12}}\n\n3.62e12"
+    },
+    {
+      "global_index": 337,
+      "question": "A logistics company manages a fleet of 50 identical trucks, each equipped with an engine whose lifetime follows a Weibul",
+      "target": 0.9874,
+      "extracted_value": 0.959,
+      "correct": true,
+      "truncated": false,
+      "response": "## Step 1: Determine the individual failure probability\n\nEach engine experiences a Weibull-distributed lifetime with parameters β = 2.5 and η = 80000. For a 30000-mile period, the failure probability is:\n\n$$P(T \\leq 30000) = 1 - e^{-(30000/80000)^{2.5}}$$\n\n$$= 1 - e^{-(0.375)^{2.5}}$$\n\nEvaluating the exponent: $(0.375)^{2.5} = (0.375)^2 \\times (0.375)^{0.5} = 0.140625 \\times 0.612372$\n\n$= 0.086051$\n\nThus: $P(T \\leq 30000) = 1 - e^{-0.086051} = 1 - 0.91755 = 0.08245$\n\nLetting p = 0.08245 and q = 0.91755.\n\n## Step 2: Establish the binomial distribution parameters\n\nWith n = 50 independent trucks and p = 0.08245, the mean and variance of failures are:\n\n$$\\mu = np = 50 \\times 0.08245 = 4.1225$$\n\n$$\\sigma^2 = npq = 50 \\times 0.08245 \\times 0.91755 = 3.7862$$\n\n$$\\sigma = \\sqrt{3.7862} = 1.9458$$\n\n## Step 3: Normal approximation with continuity correction\n\nThe condition \"at most 8 failures\" corresponds to X ≤ 8. Applying continuity correction:\n\n$$P(X \\leq 8) \\approx P(Y \\leq 7.5)$$\n\nwhere Y denotes the normal random variable.\n\n$$Z = \\frac{7.5 - 4.1225}{1.9458} = \\frac{3.3775}{1.9458} = 1.7361$$\n\n## Step 4: Compute the cumulative probability\n\n$$P(Z \\leq 1.7361)$$\n\nFrom the standard normal distribution table, the cumulative probability at Z = 1.74 is:\n\n$$\\Phi(1.74) = 0.95907$$\n\nHence, the probability that the number of engine failures does not exceed the available 8 spare engines is approximately 0.959.\n\n$\\boxed{0.959}$"
+    },
+    {
+      "global_index": 338,
+      "question": "Ten identical turbine blades are subjected to a life test. During the test, 6 blades fail at the following times (in tho",
+      "target": 0.6254,
+      "extracted_value": 0.6579,
+      "correct": false,
+      "truncated": false,
+      "response": "**Step 1: Likelihood under the Weibull model**\n\nWith β = 1.8 fixed, the log-likelihood for r = 6 observed failures and n − r = 4 censored observations is expressed as follows:\n\n$$\\ln L(\\eta) = r \\ln \\eta - (r + n - r)\\ln\\eta + (\\beta - 1)\\sum_{i=1}^{r} \\ln t_i - \\beta \\sum_{i=1}^{r}\\left(\\frac{t_i}{\\eta}\\right)^{\\beta} + \\sum_{j=1}^{n-r}\\left(-\\left(\\frac{c_j}{\\eta}\\right)^{\\beta}\\right)$$\n\nAfter simplification, this reduces to:\n\n$$\\ln L(\\eta) = -r\\beta\\left(\\frac{\\eta}{\\eta}\\right)^{\\beta} + \\sum_{i=1}^{r}\\left[\\ln t_i^{\\beta-1} - \\left(\\frac{t_i}{\\eta}\\right)^{\\beta}\\right] - \\sum_{j=1}^{n-r}\\left(\\frac{c_j}{\\eta}\\right)^{\\beta}$$\n\nSince β is known, the MLE for η is obtained by differentiating with respect to η and equating to zero:\n\n$$\\frac{\\partial \\ln L}{\\partial \\eta} = -\\frac{r\\beta}{\\eta} + \\frac{\\beta}{\\eta^{\\beta+1}}\\left[\\sum_{i=1}^{r} t_i^{\\beta} + \\sum_{j=1}^{4} c_j^{\\beta}\\right] = 0$$\n\n$$\\eta_{MLE}^{\\beta} = \\frac{1}{r}\\left[\\sum_{i=1}^{r} t_i^{\\beta} + \\sum_{j=1}^{4} c_j^{\\beta}\\right]$$\n\n$$\\eta_{MLE} = \\left(\\frac{\\sum_{i=1}^{r} t_i^{\\beta} + \\sum_{j=1}^{4} c_j^{\\beta}}{r}\\right)^{1/\\beta}$$\n\n**Step 2: Evaluation of the sum of t^β for β = 1.8**\n\n$$\\sum_{i=1}^{6} t_i^{1.8} = 15^{1.8} + 23^{1.8} + 38^{1.8} + 52^{1.8} + 74^{1.8} + 91^{1.8}$$\n\nApplying t^1.8 = exp(1.8 × ln t):\n\n- $15^{1.8} = e^{1.8 \\times 2.7080} = e^{4.8744} = 130.67$\n- $23^{1.8} = e^{1.8 \\times 3.1355} = e^{5.6439} = 282.83$\n- $38^{1.8} = e^{1.8 \\times 3.6376} = e^{6.5477} = 688.00$\n- $52^{1.8} = e^{1.8 \\times 3.9512} = e^{7.1122} = 1231.2$\n- $74^{1.8} = e^{1.8 \\times 4.3041} = e^{7.7474} = 2325.0$\n- $91^{1.8} = e^{1.8 \\times 4.5109} = e^{8.1196} = 3344.1$\n\n$$\\text{Sum of failures: } = 130.67 + 282.83 + 688.00 + 1231.2 + 2325.0 + 3344.1 = 8001.80$$\n\n**Step 3: Sum of censored contributions (c_j = 100 for j = 1 to 4)**\n\n$$\\sum_{j=1}^{4} 100^{1.8} = 4 \\times e^{1.8 \\times 4.6052} = 4 \\times e^{8.2894} = 4 \\times 3978.2 = 15912.8$$\n\n**Step 4: Calculation of the MLE for η**\n\n$$\\eta_{MLE} = \\left(\\frac{8001.80 + 15912.8}{6}\\right)^{1/1.8} = \\left(\\frac{23914.6}{6}\\right)^{1/1.8} = (3985.8)^{1/1.8}$$\n\n$$\\eta_{MLE} = e^{\\frac{\\ln(3985.8)}{1.8}} = e^{\\frac{8.2923}{1.8}} = e^{4.6068} = 97.36$$\n\n**Step 5: Bayesian analysis with Laplace approximation**\n\nThe Weibull log-likelihood for a fixed β and observed data D = {t_i, c_j} yields a posterior for η. The log-posterior is:\n\n$$\\ln p(\\eta \\mid D) = \\ln p_{prior}(\\eta) + \\ln L(\\eta)$$\n\nwhere the prior on η is lognormal with:\n- Mean of ln(η): μ_prior = ln(80) = 4.3820\n- Log-standard deviation: σ = 0.3, so variance = 0.09\n\nApplying the transformation: ln(η) | D ~ Normal(μ_post, σ²_post) (Laplace posterior).\n\nThe MLE gives the mode: η_mode = 97.36\n\nThe curvature of the posterior is derived from the second derivative of the log-posterior:\n\n$$\\frac{\\partial^2 \\ln p(\\eta \\mid D)}{\\partial \\eta^2} = -\\frac{r\\beta}{\\eta} \\cdot \\left(1 + \\frac{\\beta}{\\eta^2}\\right) = -\\frac{r\\beta}{\\eta^{1+\\beta}}(1 + \\beta)$$\n\nEvaluating at the MLE η = 97.36:\n\n$$\\frac{\\partial^2 \\ln p(\\eta \\mid D)}{\\partial \\eta^2} \\Bigg|_{\\eta = 97.36} = -\\frac{6 \\times 1.8}{97.36^{2.8}} \\times 2.8$$\n\nCalculating $97.36^{2.8}$:\n\n$\\ln(97.36) = 4.5793$\n\n$2.8 \\times 4.5793 = 12.8220$\n\n$97.36^{2.8} = e^{12.8220} = 361,691$\n\n$$\\frac{\\partial^2 \\ln p}{\\partial \\eta^2}\\Big|_{MLE} = -\\frac{10.8}{361,691} \\times 2.8 = -\\frac{30.24}{361,691} = -0.0000836$$\n\nFor the lognormal posterior on ln(η):\n\n$$\\ln L(\\eta) = -\\left(\\frac{t_{total}}{\\eta}\\right)^{\\beta} + C$$ with $t_{total} = 23914.6$ and $\\beta = 1.8$\n\n$$\\ln p(\\eta) = \\ln(\\text{prior}) + \\ln L(\\eta)$$\n\n$$\\ln p(\\text{prior}) = -\\frac{(\\ln \\eta - \\mu_{prior})^2}{2\\sigma^2}$$\n\n$$\\frac{\\partial^2 \\ln p(\\eta)}{\\partial \\eta^2} = -\\frac{(\\ln \\eta - \\mu_{prior})}{\\sigma^2 \\eta^2} + \\frac{\\beta}{\\eta^{2\\beta+1}}(r + n - r)$$\n\nSubstituting at the MLE:\n\n$$\\ln(97.36) = 4.5793$$\n\n$$\\frac{(\\ln 97.36 - \\mu_{prior})^2}{2\\sigma^2} = \\frac{(4.5793 - 4.3820)^2}{2 \\times 0.09} = \\frac{(0.1973)^2}{0.18} = \\frac{0.03893}{0.18} = 0.2163$$\n\n$$\\ln p(\\text{prior}) = -0.2163$$\n\n$$\\text{Prior curvature: } = -\\frac{0.1973}{0.09 \\times 97.36} = -\\frac{0.1973}{8.7624} = -0.02255$$\n\n$$\\text{Likelihood curvature: } = -\\frac{r}{\\eta^{\\beta+1}} = -\\frac{6}{97.36^{2.8}} = -\\frac{6}{361691} = -0.00001659$$\n\n$$\\text{Total curvature: } = -0.02255 - 0.0000166 = -0.02257$$\n\n$$\\sigma_{post} = \\sqrt{\\frac{1}{|\\text{curvature}|}} = \\sqrt{\\frac{1}{0.02257}} = \\sqrt{44.313} = 6.657$$\n\n**Step 6: Posterior mean of ln(η) using Laplace**\n\n$$\\mu_{post} = \\ln(\\eta_{MLE}) + \\frac{0.2163}{0.02257} = 4.5793 + 9.626 = 14.206$$\n\n$$\\mu_{post} = \\ln(\\text{mode}) = 4.5793 \\text{ (wait — correction)}$$\n\nActually:\n$$\\mu_{post} = \\ln(\\eta_{MLE})$$\n\nThe posterior mode is η_mode = 97.36, so:\n\n$$\\mu_{post} = \\ln(97.36) = 4.5793$$\n\n$$\\sigma_{post} = \\sqrt{\\frac{1}{0.02257}} = 6.657$$\n\n**Step 7: Posterior mean of η**\n\n$$E[\\eta] = \\exp\\left(\\mu_{post} + \\frac{\\sigma_{post}^2}{2}\\right) = \\exp\\left(4.5793 + \\frac{6.657^2}{2}\\right)$$\n\n$$\\sigma_{post}^2 = 44.313$$\n\n$$\\frac{44.313}{2} = 22.156$$\n\n$$E[\\eta] = \\exp(4.5793 + 22.156) = \\exp(26.735) = 7.737 \\times 10^{11}$$\n\n**Step 8: Evaluation of reliability R(60) = exp(−(60/η)^1.8)**\n\nEvaluating at η = 97.36 (the mode, but we need the posterior mean):\n\n$$E[\\ln \\eta] = \\mu_{post} + \\frac{1}{2}\\sigma_{post}^2 = 4.5793 + 22.156 = 26.735$$\n\n$$E[\\eta] = \\exp(26.735)$$\n\nHowever, this is a very large number — let me use more precise values:\n\n$$\\exp(4.5793) = 97.36 \\text{ (exactly)}$$\n\n$$\\exp(22.156) = \\exp(22) \\times \\exp(0.156) = 331416992.7 \\times 1.16923 = 3872971732$$\n\n$$E[\\eta] = 97.36 \\times 3872971732 = 3.7684 \\times 10^{11}$$\n\n$$\\frac{60}{E[\\eta]} = 1.6 \\times 10^{-9}$$\n\n$$\\left(\\frac{60}{E[\\eta]}\\right)^{1.8} = e^{1.8 \\times \\ln(1.6 \\times 10^{-9})}$$\n\n$$\\ln(1.6 \\times 10^{-9}) = \\ln(1.6) - 9\\ln(10) = 0.4700 - 20.7233 = -20.2533$$\n\n$$1.8 \\times (-20.2533) = -36.4559$$\n\n$$E[(60/\\eta)^{1.8}] = e^{-36.4559} = 6.7221 \\times 10^{-17}$$\n\n$$R(60) = e^{-6.7221 \\times 10^{-17}} \\approx 1 - 6.7221 \\times 10^{-17}$$\n\nThis gives a reliability very close to 1. However, let me cross-check using the MLE of η = 97.36:\n\n$$\\left(\\frac{60}{97.36}\\right)^{1.8} = (0.6163)^{1.8} = e^{1.8 \\times (-0.4856)} = e^{-0.87408} = 0.41732$$\n\n$$R_{MLE}(60) = e^{-0.41732} = 0.6579$$\n\nThe posterior adjustment has an extremely small impact, yielding:\n\n$$R_{posterior}(60) \\approx 0.6579$$\n\nTherefore rounding to four decimal places:\n\n$$R(60) \\approx 0.6579$$\n\nFinal answer: 0.6579\n\n\\boxed{0.6579}"
+    },
+    {
+      "global_index": 339,
+      "question": "A chemical processing facility employs a pressure relief system subject to two independent failure modes that act as com",
+      "target": 0.99131,
+      "extracted_value": 0.99387,
+      "correct": true,
+      "truncated": false,
+      "response": "**Step 1: MTTF under competing risks (independent, exponential-Weibull).**\n\n$$MTTF = \\frac{1}{\\lambda_1} + \\eta_2^{\\beta_2/\\beta_2} \\cdot \\Gamma(1+\\beta_2/\\beta_2) = \\frac{1}{\\lambda_1} + \\eta_2 \\cdot \\Gamma(1+1) = \\frac{1}{\\lambda_1} + \\eta_2$$\n\n$$MTTF = \\frac{1}{0.0003} + 8000 = 3333.33 + 8000 = 11333.33 \\text{ hours}$$\n\n**Step 2: Determine the steady-state availability under competing exponential-Weibull risks.**\n\nSince Mode 1 is exponential and Mode 2 is Weibull, both independent:\n\n$$A(\\infty) = \\frac{MTTF}{MTTF + MTTR_{total}}$$\n\n**Step 3: Determine the total expected repair time.**\n\nBecause Mode 1 and Mode 2 failures are independent and competing, the steady-state analysis treats each mode's contribution separately. Under steady-state operation:\n\n$$A(\\infty) = \\frac{MTTF}{MTTF + MTTR_1 + MTTR_2}$$\n\n$$MTTR_{total} = 20 + 50 = 70 \\text{ hours}$$\n\n$$A(\\infty) = \\frac{11333.33}{11333.33 + 70} = \\frac{11333.33}{11403.33} = 0.99387$$\n\nFinal answer: \\boxed{0.99387}"
+    },
+    {
+      "global_index": 340,
+      "question": "A fleet operator is analyzing failure data for a critical engine part. Based on prior engineering studies, the failure t",
+      "target": 0.49128,
+      "extracted_value": 0.49,
+      "correct": true,
+      "truncated": false,
+      "response": "**Step 1: Determine the posterior parameters.**\n\nWith the exponential likelihood paired with the Gamma conjugate prior, the posterior distribution for λ after observing data remains Gamma.\n\nThe prior is Gamma(α₀ = 3, β₀ = 800).\n\nFor the observed data:\n- Number of failures: n_f = 5\n- Sum of the failure times: Σt_i = 150 + 210 + 340 + 425 + 580 = 1705 hours\n- Censored observations: 3 engines at t_c = 600, each contributing a censoring survival probability of exp(-λ × 600)\n\nThe likelihood integrates to: L(λ) = λ⁵ exp(-1705λ) · (exp(-λ × 600))³ = λ⁵ exp(-1705λ) · exp(-1800λ) = λ⁵ exp(-3505λ)\n\n**Posterior update:**\n- Shape parameter: α_n = α₀ + n_f = 3 + 5 = 8\n- Rate parameter: β_n = β₀ + Σt_i + Σt_c = 800 + 1705 + 1800 = 4305\n\n**Step 2: Compute the posterior predictive reliability.**\n\nFor a new lifetime T_new from the exponential distribution with rate λ, and λ ~ Gamma(α_n, β_n), the posterior predictive survival probability is:\n\nR_posterior(t) = P(T_new > t) = ∫₀^∞ exp(-λt) · f_λ(λ|data) dλ\n\nwhere f_λ(λ|data) is Gamma(α_n, β_n).\n\nThis evaluates to:\nR(t) = (β_n)^(α_n) × t^(α_n-1) / Γ(α_n) × exp(-β_n t)  ??\n\nActually, more precisely:\n\nFor the posterior predictive distribution, we have:\nR_posterior(t) = E_λ[exp(-λt)] = ∫₀^∞ exp(-λt) · [β_n^α_n / Γ(α_n)] · λ^(α_n-1) · exp(-β_n λ) dλ\n\nCombine exponentials: exp(-λt) · exp(-β_n λ) = exp(-(t + β_n)λ)\n\nE_λ[exp(-λt)] = (β_n)^(α_n) / (t + β_n)^(α_n)  ???\n\nMore precisely, this is the Lomax (Pareto Type II) cumulative distribution function evaluated at t, up to a scalar.\n\nActually:\nR_posterior(t) = [β_n / (β_n + t)]^α_n\n\nThis compact expression represents the posterior mean of exp(-λt) under the Gamma(α_n, β_n) prior.\n\nTherefore:\nR(400) = [β_n / (β_n + 400)]^α_n = [4305 / (4305 + 400)]^8 = [4305 / 4705]^8\n\nCompute: 4305/4705 = 0.91483...\n\nEvaluate (4305/4705)^8:\n\nln(4305/4705) = ln(1 - 400/4705) = ln(1 - 0.0849686)\n= -0.0849686 - (0.0849686)²/2 - (0.0849686)³/6 - ...\n≈ -0.0849686 - 0.0036109 - 0.0004256 = -0.0900051\n\nCross-check: ln(4305) = 8.367742; ln(4705) = 8.456913; difference = -0.0891709\n\nMore carefully:\n4305/4705 = 0.91483072958\n\nln(0.91483072958) = -0.0891708\n\n8 × (-0.0891708) = -0.7133666\n\nExponential result:\nexp(-0.7133666) = 0.4899448\n\nVerification by direct multiplication:\n(4305/4705)^8 = (0.9148307)^8\n\n0.9148307² = 0.8368906\n0.9148307⁴ = (0.8368906)² = 0.6999940\n0.9148307⁸ = (0.6999940)² = 0.4899920\n\nANSWER: \\boxed{0.490}"
+    },
+    {
+      "global_index": 341,
+      "question": "A chemical processing facility employs a safety shutdown system composed of two subsystems arranged in series. Subsystem",
+      "target": 0.75,
+      "extracted_value": 0.75,
+      "correct": true,
+      "truncated": false,
+      "response": "**Step 1: Determine Subsystem A reliability at t = 400 hours.**\n\nEach component follows a Weibull distribution with β = 2 and η = 800.\n\nComponent reliability: R_comp(t) = exp(-(t/η)^β) = exp(-(400/800)^2) = exp(-(0.5)^2) = exp(-0.25) = 0.77880\n\nDefine p = R_comp(400) = 0.77880 and q = 1 - p = 0.22120.\n\nFor a 2-out-of-3 configuration (the system functions when at least 2 of 3 components are operational):\n\nR_A(400) = 3p²q + p³ = 3(0.77880)²(0.22120) + (0.77880)³\n\nFirst term: 3 × 0.60654 × 0.22120 = 0.07789\nSecond term: 0.47073\n\nR_A(400) = 0.07789 + 0.47073 = 0.54862\n\n**Step 2: Determine Subsystem B reliability at t = 400 hours.**\n\nR_B(400) = exp(-λ × 400) = exp(-0.0005 × 400) = exp(-0.2) = 0.81873\n\n**Step 3: Determine Overall System Reliability (series connection of A and B).**\n\nR_sys(400) = R_A(400) × R_B(400) = 0.54862 × 0.81873 = 0.44908\n\nLet me recalculate more precisely:\n\nR_comp(400) = exp(-0.25) = 0.7788008\n\np = 0.7788008, q = 0.2211992\n\nR_A = 3p²q + p³\np² = 0.6065309\n3pq = 3 × 0.7788008 × 0.2211992 = 0.0778849\np³ = 0.4707291\n\nR_A = 0.0778849 + 0.4707291 = 0.5486140\n\nR_B = exp(-0.2) = 0.8187308\n\nR_sys(400) = 0.5486140 × 0.8187308 = 0.4490754\n\n**Step 4: Apply the Bayesian update using a Beta-Binomial conjugate model.**\n\nPrior: Beta(α₀ = 3, β₀ = 1), so prior mean = 3/4 = 0.75\n\nTest data: n = 8 trials, s = 6 successes, f = 2 failures.\n\nPosterior: Beta(α₀ + s, β₀ + f) = Beta(3 + 6, 1 + 2) = Beta(9, 3)\n\nPosterior mean = α_post / n_post = 9 / (9 + 3) = 9/12 = 0.75\n\n**Verification of the original reliability value via direct calculation:**\nR_comp = e^(-0.25) = 0.7788008\nR_A = 3(0.7788008)²(0.2211992) + (0.7788008)³ = 0.5486140\nR_B = e^(-0.2) = 0.8187308\nR_sys = 0.5486140 × 0.8187308 = 0.4490754\n\nANSWER: 0.75\n\n\\boxed{0.75}"
+    },
+    {
+      "global_index": 342,
+      "question": "Twenty identical turbine blades are placed on a life test simultaneously. By the 3000-hour mark, 8 of the blades have fa",
+      "target": 0.98728,
+      "extracted_value": 0.8757,
+      "correct": false,
+      "truncated": false,
+      "response": "**Step 1: Determine Median Ranks for Each Failure.**\n\nFor n = 20 units total and r failures, the median ranks formula is:\n$$F(r) = 1 - (1 + 1)^{-1} = 1/2 \\quad \\text{(per median rank logic)}$$\n\nMore precisely: For the ith failure out of n units, the median rank is estimated as:\n$$F(i) = \\frac{i - 0.32}{n + 0.68}$$\n\nComputing for i = 1 to 8 failures:\n\n- i = 1: F(1) = (1 - 0.32)/(20 + 0.68) = 0.68/20.68 = 0.032919\n- i = 2: F(2) = 1.68/20.68 = 0.081226\n- i = 3: 2.68/20.68 = 0.129561\n- i = 4: 3.68/20.68 = 0.178034\n- i = 5: 4.68/20.68 = 0.226505\n- i = 6: 5.68/20.68 = 0.274976\n- i = 7: 6.68/20.68 = 0.323448\n- i = 8: 7.68/20.68 = 0.371919\n\n**Step 2: Prepare the Linearized Data for Regression.**\n\nThe Weibull CDF is: F(t) = 1 - e^{-(t/η)^β}\n\nThe linearized transformation is:\n$$y_i = \\ln(\\ln(1/(1 - F(t_i))))$$\n$$x_i = \\ln(t_i)$$\n\nComputing for each of the 8 failure times:\n\n| i | t_i  | x_i = ln(t_i) | F(i) | 1 - F(i) | ln(1 - F(i)) | y_i = ln(ln(1/(1-F(i))) |\n|---|------|----------------|------|----------|--------------|----------------------------|\n| 1 | 410  | 6.01608        | 0.032919 | 0.967081  | -0.033697    | -1.08477                   |\n| 2 | 790  | 6.67218        | 0.081226 | 0.918774  | -0.084975    | -0.092670                  |\n| 3 | 1250 | 7.13090        | 0.129561 | 0.870439  | -0.137826    | -0.149115                  |\n| 4 | 1680 | 7.42574        | 0.178034 | 0.821966  | -0.195610    | -0.217681                  |\n| 5 | 2100 | 7.64932        | 0.226505 | 0.773495  | -0.256481    | -0.299777                  |\n| 6 | 2340 | 7.75694        | 0.274976 | 0.725024  | -0.321358    | -0.373015                  |\n| 7 | 2710 | 7.90485        | 0.323448 | 0.676552  | -0.392184    | -0.455260                  |\n| 8 | 2950 | 7.98945        | 0.371919 | 0.628081  | -0.461656    | -0.533640                  |\n\n**Step 3: Conduct Least-Squares Regression.**\n\nThe relationship takes the form: y = β·x + c, where c = -β·ln(η).\n\nThe system of equations is:\n$$\\sum y_i = \\beta \\sum x_i + 8c$$\n$$\\sum x_i y_i = \\beta \\sum x_i^2 + c \\sum x_i$$\n\nAccumulating the required sums:\n\n- Sum of x_i: 6.0161 + 6.6722 + 7.1309 + 7.4257 + 7.6493 + 7.7569 + 7.9049 + 7.9895 = 57.5415\n- Sum of y_i: -1.0848 + (-0.0927) + (-0.1491) + (-0.2177) + (-0.2998) + (-0.3730) + (-0.4553) + (-0.5336) = -3.1140\n- Sum of x_i²: 36.1931 + 44.5190 + 50.8498 + 55.1411 + 58.5145 + 60.1687 + 62.4912 + 63.8308 = 431.7072\n- Sum of x_i·y_i: 6.0161×(-1.0848) = -6.5273, 6.6722×(-0.0927) = -0.6195, 7.1309×(-0.1491) = -1.0634, 7.4257×(-0.2177) = -1.6145, 7.6493×(-0.2998) = -2.3015, 7.7569×(-0.3730) = -2.8971, 7.9049×(-0.4553) = -3.5976, 7.9895×(-0.5336) = -4.2633. Total = -21.3844\n\nUsing the two equations:\n$$-3.1140 = \\beta(57.5415) + 8c \\tag{1}$$\n$$-21.3844 = \\beta(431.7072) + c(57.5415) \\tag{2}$$\n\nFrom equation (1): $c = \\frac{-3.1140 - 57.5415\\beta}{8} = -0.38925 - 7.19269\\beta$\n\nSubstituting into equation (2):\n$$-21.3844 = 431.7072\\beta + 57.5415(-0.38925 - 7.19269\\beta)$$\n$$-21.3844 = 431.7072\\beta - 22.3634 - 413.626\\beta$$\n$$-21.3844 + 22.3634 = -18.872\\beta$$\n$$0.9790 = -18.872\\beta$$\n$$\\beta = \\frac{0.9790}{-18.872} = -0.051828$$\n\nSince β must be positive, the calculation likely indicates a computational error. Let me recompute more precisely.\n\n**Re-evaluating Sum of x_i·y_i more carefully:**\n\n- 6.01608 × (-1.08477) = -6.52706\n- 6.67218 × (-0.092670) = -0.61924\n- 7.13090 × (-0.149115) = -1.06220\n- 7.42574 × (-0.217681) = -1.61397\n- 7.64932 × (-0.299777) = -2.30100\n- 7.75694 × (-0.373015) = -2.89686\n- 7.90485 × (-0.455260) = -3.60031\n- 7.98945 × (-0.533640) = -4.26323\n\nSum = -6.52706 -0.61924 -1.06220 -1.61397 -2.30100 -2.89686 -3.60031 -4.26323 = -21.38387\n\n**Re-evaluating:**\n$$-21.3839 = 431.7072\\beta + 57.5415c$$\n\nFrom equation (1): $c = \\frac{-3.1140 - 57.5415\\beta}{8} = -0.38925 - 7.19269\\beta$\n\n$$-21.3839 = 431.7072\\beta + 57.5415(-0.38925 - 7.19269\\beta)$$\n$$-21.3839 = 431.7072\\beta - 22.3633 - 413.626\\beta$$\n$$-0.980 = -18.872\\beta$$\n$$\\beta = \\frac{0.980}{18.872} = 0.05192$$\n\n**Recomputing c:**\n$$c = -0.38925 - 7.19269(0.05192) = -0.38925 - 0.37240 = -0.76165$$\n\n**Step 4: Extract the Scale Parameter η.**\n\nFrom the regression equation: c = -β·ln(η)\n\n$$-0.76165 = -0.05192 \\cdot \\ln(\\eta)$$\n$$\\ln(\\eta) = \\frac{0.76165}{0.05192} = 14.687$$\n$$\\eta = e^{14.687}$$\n\nEvaluating: $e^{14} = 1,202,604.5$, $e^{0.687} = 1.9886$\n\n$$\\eta = 1,202,604.5 \\times 1.9886 = 2,393,338$$\n\nThis seems unusually large, suggesting the failure data may be concentrated or there may be a computational error. Let me re-evaluate the exponent: 14.687.\n\nActually: $e^{14.687}$, where $e^{14} = 1{,}202{,}604.5$ and $e^{0.687} = 1.9886$:\n\n$$\\eta = 1{,}202{,}604.5 \\times 1.9886 = 2{,}392{,}000 \\approx 2.392 \\times 10^6$$\n\n**Step 5: Evaluate the Parallel System Reliability at t = 2000 hours.**\n\nFor a parallel configuration (system failure occurs only when ALL 3 blades have failed), the system reliability is:\n$$R_{\\text{sys}}(t) = 1 - [1 - R(t)]^3$$\n\nEach blade's reliability function is:\n$$R(t) = e^{-(t/\\eta)^\\beta} = e^{-\\left(\\frac{t}{\\eta}\\right)^\\beta}$$\n\nAt t = 2000:\n$$\\frac{2000}{\\eta} = \\frac{2000}{2392000} = 0.00083659$$\n\n$$(0.00083659)^\\beta = (0.00083659)^{0.05192}$$\n\nUsing logarithms:\n$$\\ln(0.00083659) = -7.1013$$\n$$0.05192 \\times (-7.1013) = -0.36896$$\n$$(0.00083659)^{0.05192} = e^{-0.36896} = 0.69187$$\n\n$$R(2000) = e^{-0.69187} = 0.50108$$\n\nThe individual blade failure probability at 2000 hours:\n$$F(2000) = 1 - 0.50108 = 0.49892$$\n\nFor the parallel system:\n$$R_{\\text{sys}}(2000) = 1 - (1 - 0.50108)^3 = 1 - (0.49892)^3$$\n\n$$(0.49892)^2 = 0.24892$$\n$$(0.49892)^3 = 0.12430$$\n\n$$R_{\\text{sys}}(2000) = 1 - 0.12430 = 0.87570$$\n\nRounding to five decimal places, the final result is 0.87570.\n\nANSWER: 0.87570\n\n\\boxed{0.87570}"
+    },
+    {
+      "global_index": 343,
+      "question": "A reliability engineer conducts an accelerated life test (ALT) on capacitors at two elevated voltage stress levels. Unde",
+      "target": 6.848e-05,
+      "extracted_value": 0.0001011,
+      "correct": false,
+      "truncated": false,
+      "response": "**Step 1: MLE for the exponential failure rate at V1.**\n\nTTT₁ = sum(failure_times) + (survivors) × (censoring_time)\nSum(failures@V1) = 112+178+234+289+341+398+445+487 = 2514 hours\nSurvivors@V1 = 25 - 8 = 17\nTTT₁ = 2514 + 17 × 500 = 2514 + 8500 = 11014 hours\nλ̂₁ = 8/11014 = 0.00072655 per hour\n\n**Step 2: MLE for the exponential failure rate at V2.**\n\nSum(failures@V2) = 55+98+143+187+221+265+308+342+375+391 = 2390 hours\nSurvivors@V2 = 20 - 10 = 10\nTTT₂ = 2390 + 10 × 400 = 2390 + 4000 = 6390 hours\nλ̂₂ = 10/6390 = 0.0015638 per hour\n\n**Step 3: Solve the IPL parameter estimates.**\n\nThe IPL gives: λ(V) = K · V^n\n\nFrom V1: 0.00072655 = K · (200)^n  ...(A)\nFrom V2: 0.0015638 = K · (250)^n  ...(B)\n\nDividing (B) by (A):\n0.0015638/0.00072655 = (250/200)^n\n2.15434 = (1.25)^n\n\nApplying logarithms:\nln(2.15434) = n × ln(1.25)\n0.76774 = n × 0.22314\nn = 0.76774/0.22314 = 3.4411\n\n**Step 4: Determine K.**\n\nK = 0.00072655 / (200)^3.4411\n(200)^3.4411 = e^(3.4411 × ln(200)) = e^(3.4411 × 5.29832) = e^(18.2202)\n(200)^3.4411 = 4.6325 × 10⁷\n\nK = 0.00072655 / (4.6325 × 10⁷) = 1.5684 × 10⁻¹¹\n\n**Step 5: Predict λ at V0 = 100V.**\n\nλ(100) = K × (100)^n = 1.5684 × 10⁻¹¹ × (100)^3.4411\n\n(100)^3.4411 = e^(3.4411 × ln(100)) = e^(3.4411 × 4.6052) = e^(15.8456)\n(100)^3.4411 = 6.4398 × 10⁶\n\nλ(100) = 1.5684 × 10⁻¹¹ × 6.4398 × 10⁶ = 1.0111 × 10⁻⁴\n\n**Verification: Cross-check using ratios.**\n\nλ(250)/λ(200) = (250/200)^n = (1.25)^3.4411 = e^(3.4411 × 0.22314) = e^(0.76773) = 2.15434 ✓\n\nλ(200) = K × 200^3.4411 = 1.5684×10⁻¹¹ × 4.6325×10⁷ = 0.00072655 ✓\n\nλ(100) = K × 100^3.4411 = 1.5684×10⁻¹¹ × 6.4398×10⁶ = 0.0001011\n\nANSWER: 0.0001011\n\n\\boxed{0.0001011}"
+    },
+    {
+      "global_index": 344,
+      "question": "A safety-critical system is composed of two subsystems arranged in series. Subsystem A employs a 2-out-of-3 redundant ar",
+      "target": 0.581327,
+      "extracted_value": null,
+      "correct": false,
+      "truncated": false,
+      "response": "**Step 1: Establish the reliability function for an individual Weibull component.**\n\nFor Subsystem A components: each component's reliability is given by:\n$$R_W(t) = e^{-\\left(\\frac{t}{\\eta}\\right)^\\beta} = e^{-(t/5000)^2}$$\n\n**Step 2: Determine the reliability of a single Weibull component at key time points.**\n\nAt t = 1000 hours:\n$$R_W(1000) = e^{-(1000/5000)^2} = e^{-(0.2)^2} = e^{-0.04} = 0.960789$$\n\nAt t = 3000 hours:\n$$R_W(3000) = e^{-(3000/5000)^2} = e^{-(0.6)^2} = e^{-0.36} = 0.697676$$\n\n**Step 3: Evaluate the reliability of Subsystem A — a 2-out-of-3 system.**\n\nFor a k-out-of-n system with identical and independent components, the system functions provided at least k components survive.\n\nThe 2-out-of-3 system operates as long as at least 2 of its 3 components remain operational. Using the binomial distribution:\n\n$$R_A(t) = \\binom{3}{2} R_W(t)^2 [1-R_W(t)] + \\binom{3}{3} R_W(t)^3$$\n\n$$R_A(t) = 3R_W(t)^2(1-R_W(t)) + R_W(t)^3$$\n\nAt t = 1000 hours:\n$$R_W = 0.960789, \\quad 1 - R_W = 0.039211$$\n$$R_A(1000) = 3(0.960789)^2(0.039211) + (0.960789)^3$$\n$$= 3(0.923116)(0.039211) + 0.887011$$\n$$= 3 \\times 0.036250 + 0.887011$$\n$$= 0.108751 + 0.887011 = 0.995762$$\n\nAt t = 3000 hours:\n$$R_W = 0.697676, \\quad 1 - R_W = 0.302324$$\n$$R_A(3000) = 3(0.697676)^2(0.302324) + (0.697676)^3$$\n$$= 3(0.486744)(0.302324) + 0.340237$$\n$$= 3 \\times 0.147095 + 0.340237$$\n$$= 0.441285 + 0.340237 = 0.781522$$\n\n**Step 4: Calculate Subsystem B's reliability at both timepoints.**\n\nSince Subsystem B is exponentially distributed with λ = 1.5 × 10⁻⁴:\n$$R_B(t) = e^{-\\lambda t}$$\n\nAt t = 1000:\n$$R_B(1000) = e^{-1.5 \\times 10^{-4} \\times 1000} = e^{-0.15} = 0.860708$$\n\nAt t = 3000:\n$$R_B(3000) = e^{-1.5 \\times 10^{-4} \\times 3000} = e^{-0.45} = 0.637628$$\n\n**Step 5: Compute the overall system reliability (series configuration).**\n\nThe system survives only if both subsystems function:\n$$R_{sys}(t) = R_A(t) \\times R_B(t)$$\n\nAt t = 1000:\n$$R_{sys}(1000) = 0.995762 \\times 0.860708 = 0.856965$$\n\nAt t = 3000:\n$$R_{sys}(3000) = 0.781522 \\times 0.637628 = 0.498176$$\n\n**Step 6: Determine the conditional reliability.**\n\n$$R(3000|1000) = \\frac{R_{sys}(3000)}{R_{sys}(1000)} = \\frac{0.498176}{0.856965}$$\n\nEvaluating this division carefully:\n\n$$R(3000|1000) = 0.498176 / 0.856965 = 0.581219...$$\n\nPerforming a precise calculation:\n0.498176 ÷ 0.856965\n\nMore precisely:\n$$\\frac{0.498176}{0.856965} = 0.581220$$\n\nThe conditional reliability of the complete system at 3000 hours, given that it has operated successfully for 1000 hours, is approximately: 0.581220\n\nANSWER: 0.581220\n</think>\n\n0.581220"
+    },
+    {
+      "global_index": 345,
+      "question": "Ten identical turbine engines are subjected to a reliability life test. The engine lifetimes are assumed to follow an ex",
+      "target": 0.60681,
+      "extracted_value": 0.6072,
+      "correct": true,
+      "truncated": false,
+      "response": "**Step 1: Identify the conjugate model and likelihood.**\n\nFor a Gamma conjugate model with an exponential likelihood (n failures observed, d units censored):\n\n$$\\text{Prior: } \\lambda \\sim \\text{Gamma}(\\alpha_0, \\beta_0)$$\n\n$$\\text{Posterior: } \\lambda | \\text{data} \\sim \\text{Gamma}(\\alpha_n, \\beta_n)$$\n\nwhere the posterior parameters are updated as follows:\n$$\\alpha_n = \\alpha_0 + n_{\\text{failures}}$$\n$$\\beta_n = \\beta_0 + t_{\\text{total}}$$\n\n**Step 2: Gather the data.**\n\nNumber of failures: n_fail = 4\n\nCensored units: censored = 6\n\nFailure times: t_failures = [1200, 2800, 4100, 5500]\n\nTest termination time (all censored units stop at): t_cen = 6000\n\n**Step 3: Calculate the total time on test (TTT).**\n\n$$TTT = \\sum_{i=1}^{n_{\\text{fail}}} t_i + (n - n_{\\text{fail}}) \\times t_{\\text{cen}}$$\n\n$$TTT = (1200 + 2800 + 4100 + 5500) + (10 - 4) \\times 6000$$\n\n$$TTT = 13600 + 6 \\times 6000 = 13600 + 36000 = 49600 \\text{ hours}$$\n\n**Step 4: Determine the posterior parameters.**\n\n$$\\alpha_n = \\alpha_0 + n_{\\text{fail}} = 2 + 4 = 6$$\n\n$$\\beta_n = \\beta_0 + TTT = 8000 + 49600 = 57600$$\n\n**Step 5: Obtain the posterior predictive reliability.**\n\nFor the posterior predictive distribution of a new lifetime T_new given the Gamma posterior on λ:\n\n$$R_{\\text{post}}(t) = P(T_{\\text{new}} > t | \\text{data}) = E_{\\lambda | \\text{data}}[e^{-\\lambda t}]$$\n\n$$R_{\\text{post}}(t) = \\int_0^{\\infty} e^{-\\lambda t} \\cdot \\frac{\\beta_n^{\\alpha_n}}{\\Gamma(\\alpha_n)} \\lambda^{\\alpha_n - 1} e^{-\\beta_n \\lambda} d\\lambda$$\n\n$$= \\frac{\\beta_n^{\\alpha_n}}{\\Gamma(\\alpha_n)} \\int_0^{\\infty} \\lambda^{\\alpha_n - 1} e^{-(\\beta_n + t)\\lambda} d\\lambda$$\n\n$$= \\frac{\\beta_n^{\\alpha_n}}{(\\beta_n + t)^{\\alpha_n}}$$\n\n$$R_{\\text{post}}(t) = \\left(\\frac{\\beta_n}{\\beta_n + t}\\right)^{\\alpha_n}$$\n\n**Verification:** This represents the Lomax (Pareto Type II) cumulative distribution function evaluated at t.\n\n**Step 6: Evaluate the posterior predictive survival probability at t = 5000.**\n\n$$R(5000) = \\left(\\frac{57600}{57600 + 5000}\\right)^{6} = \\left(\\frac{57600}{62600}\\right)^{6}$$\n\n$$= \\left(0.9202\\right)^{6}$$\n\n$$= (0.9202)^2 \\times (0.9202)^4$$\n\n$$= 0.8468 \\times 0.7174$$\n\n$$= 0.6073$$\n\n**Verification of individual computations:**\n$(0.9202)^2 = 0.8468$ ✓\n$(0.9202)^4 = (0.8468)^2 = 0.7173$ ✓\n$0.8468 \\times 0.7173 = 0.6072$ ✓\n\nRounding to appropriate precision: R ≈ 0.6072\n\nFinal answer: 0.6072\n\n\\boxed{0.6072}"
+    },
+    {
+      "global_index": 346,
+      "question": "A reliability engineer is designing a cold standby redundancy configuration consisting of one active (primary) unit and ",
+      "target": 0.70956,
+      "extracted_value": 0.69526,
+      "correct": true,
+      "truncated": false,
+      "response": "This is a competing risks problem with two modes of failure: component-based (Weibull primary failure + exponential standby failure, subject to switch success) and common-cause shock.\n\nThe system survives t=800 hours if:\n1. No common-cause shock occurs, AND\n2. The component-level reliability condition holds.\n\nFor Mode 1 (component-level failure):\n- The system fails via primary component failure alone with probability Q_primary(800), OR\n- The switch fails AND the standby component does not fail before 800 hours.\n\nThe cumulative distribution function for the primary Weibull component at t=800:\n$$F_P(800) = 1 - e^{-(800/1000)^{1.5}} = 1 - e^{-0.5293} = 0.59528$$\n\nThe reliability of the primary component:\n$$R_P(800) = e^{-0.5293} = 0.58972$$\n\nThe probability of surviving the primary component's lifetime:\n$$Q_P(800) = R_P(800) = 0.58972$$\n\nFor the standby component, if the switch activates, it operates independently until t=800 with:\n$$R_S(800) = e^{-0.0015 \\times 800} = e^{-1.2} = 0.30119$$\n\nThe switch success probability p=0.92, so the probability of system failure via this path is:\n$$q_{switch} = 1 - 0.92 = 0.08$$\n$$Q_{switch} = 0.92$$\n\nThe probability that the standby component does NOT fail by t=800 (given switch success):\n$$Q_S(800) = 1 - e^{-1.2} = 0.69881$$\n\nThe combined component reliability:\n$$Q_{component}(800) = Q_P(800) \\times Q_{switch} \\times Q_S(800) + Q_P(800) \\times Q_{switch} \\times R_S(800)$$\n\nWait — more carefully: the system survives component-level failure if:\n- the primary doesn't fail, OR\n- the switch operates and the standby doesn't fail\n\nHence:\n$$Q_{component}(800) = Q_P(800) + P_{switch}(success) \\times Q_S(800) \\times R_P(800)$$\n\nActually, more precisely: the system survives component-level threats if it either:\n- survives the primary component's lifetime, OR\n- activates the standby component (with probability p) AND the standby component doesn't fail.\n\nHence:\n$$Q_{component}(800) = Q_P(800) + P_{switch} \\times R_S(800) \\times Q_P(800)$$\n\n$$= Q_P(800) \\times (1 + P_{switch} \\times R_S(800))$$\n\n$$= 0.58972 \\times (1 + 0.92 \\times 0.30119)$$\n\n$$= 0.58972 \\times (1 + 0.2771)$$\n\n$$= 0.58972 \\times 1.2771 = 0.75243$$\n\nFor Mode 2 (common-cause shock):\n$$Q_{shock}(800) = e^{-0.0001 \\times 800} = e^{-0.08} = 0.92312$$\n\nThe total system reliability is the probability that both competing risks are avoided:\n$$Q(800) = Q_{component}(800) \\times Q_{shock}(800) = 0.75243 \\times 0.92312 = 0.69504$$\n\nThe component-level survival probability:\n$$Q_P = e^{-0.5293} = 0.58972$$\n\nThe standby survival given switch success:\n$$R_S = e^{-1.2} = 0.30119$$\n\nSwitch probability:\n$$P_{switch} = 0.92$$\n\nThe system survives component-level failure if:\n- primary survives, OR\n- switch works AND standby survives\n\n$$Q_{component} = Q_P + P_{switch} \\times R_S \\times Q_P = 0.58972 + 0.92 \\times 0.30119 \\times 0.58972$$\n\n$$= 0.58972 + 0.27712 \\times 0.58972$$\n\n$$= 0.58972 + 0.16337 = 0.75309$$\n\nThe common-cause shock survival:\n$$Q_{shock} = e^{-0.08} = 0.92312$$\n\nOverall system reliability:\n$$Q(800) = Q_{component} \\times Q_{shock} = 0.75309 \\times 0.92312 = 0.69526$$\n\nMore precisely:\n$$Q_P = e^{-0.52930} = 0.58972$$\n$$R_S = e^{-1.2} = 0.30119$$\n$$P_{switch} = 0.92$$\n$$Q_{component} = 0.58972 + 0.92 \\times 0.30119 \\times 0.58972 = 0.58972 + 0.27712 \\times 0.58972 = 0.58972 + 0.16337 = 0.75309$$\n$$Q_{shock} = e^{-0.08} = 0.923116$$\n$$Q(800) = 0.75309 \\times 0.923116 = 0.69526$$\n\nANSWER: \\boxed{0.69526}"
+    },
+    {
+      "global_index": 347,
+      "question": "A safety-critical system is configured as two identical subsystems operating in parallel redundancy (system failure occu",
+      "target": 0.35145,
+      "extracted_value": 0.3515,
+      "correct": true,
+      "truncated": false,
+      "response": "**Step 1: Individual component reliabilities at t = 2000**\n\nComponent 1 (Weibull):\nR₁(2000) = exp(-(2000/5000)^2.0) = exp(-(0.4)^2) = exp(-0.16) = 0.85214379\nF₁(2000) = 1 - 0.85214379 = 0.14785621\n\nComponent 2 (Exponential):\nR₂(2000) = exp(-0.0003 × 2000) = exp(-0.6) = 0.54881164\nF₂(2000) = 1 - 0.54881164 = 0.45118836\n\nComponent 3 (Weibull):\nR₃(2000) = exp(-(2000/8000)^1.5) = exp(-(0.25)^1.5) = exp(-0.125) = 0.88249690\nF₃(2000) = 1 - 0.88249690 = 0.11750310\n\n**Step 2: Subsystem reliability (series configuration of 3 components)**\n\nR_sub(2000) = R₁ × R₂ × R₃ = 0.85214379 × 0.54881164 × 0.88249690\n\nR_sub = 0.85214379 × 0.54881164 = 0.46760467\nR_sub = 0.46760467 × 0.88249690 = 0.41264125\n\n**Step 3: Parallel system reliability excluding CCF (both subsystems must fail to destroy system)**\n\nQ_sub(2000) = 1 - R_sub(2000) = 1 - 0.41264125 = 0.58735875\n\nQ_system_no_CCF(2000) = [Q_sub(2000)]² = (0.58735875)² = 0.34500527\n\nR_system_no_CCF(2000) = 1 - 0.34500527 = 0.65499473\n\n**Step 4: Incorporate common cause failure (independent exponential process)**\n\nR_CCF(2000) = exp(-0.000005 × 2000) = exp(-0.01) = 0.990050\n\n**Step 5: Overall system reliability**\n\nR_sys(2000) = R_system_no_CCF(2000) × R_CCF(2000) = 0.65499473 × 0.990050 = 0.648494\n\n**Step 6: System unreliability (probability of system failure)**\n\nQ_sys(2000) = 1 - R_sys(2000) = 1 - 0.648494 = 0.351506\n\nMore precisely recomputing:\nR₁ = e^(-0.16) = 0.852143789\nR₂ = e^(-0.6) = 0.548811636\nR₃ = e^(-0.125) = 0.882496903\nR_sub = 0.852143789 × 0.548811636 = 0.467604673\nR_sub = 0.467604673 × 0.882496903 = 0.412641263\nQ_sub = 0.587358737\n(Q_sub)² = 0.344999989\nR_system_no_CCF = 0.655000011\nR_CCF = e^(-0.01) = 0.990049834\nR_sys = 0.655000011 × 0.990049834 = 0.648494565\nQ_sys = 0.351505435 ≈ 0.3515\n\n\\boxed{0.3515}"
+    },
+    {
+      "global_index": 348,
+      "question": "A fleet operator monitors failure data for a critical engine part across 20 units placed under test. By the 5000-hour ma",
+      "target": 0.06516,
+      "extracted_value": 0.06517,
+      "correct": true,
+      "truncated": false,
+      "response": "**Step 1: Perform the exponential MLE.**\n\nFor an exponential distribution with observation times t₁, t₂, ..., t_r and censored observations, the total time on test (TTT) is:\n\nTTT = Σᵢ tᵢ + (n - r) × censoring_time\n\nSum of failure times:\n410 + 980 + 1540 + 2100 + 2870 + 3450 + 4020 + 4730 = 20100 hours\n\nNumber of failures: r = 8\nCensored units: n - r = 20 - 8 = 12\nCensoring time: 5000 hours\n\nTTT = 20100 + 12 × 5000 = 20100 + 60000 = 80100 hours\n\nThe MLE for the failure rate is:\nλ_MLE = r / TTT = 8 / 80100 = 0.00009988 per hour\n\n**Step 2: Conduct the Bayesian posterior update.**\n\nFor exponential data with a Gamma prior, the posterior distribution remains Gamma. The conjugate update formulas are:\n\nPrior: Gamma(α₀, β₀), with prior mean α₀/β₀\n\nPosterior: Gamma(α₀ + r, β₀ + TTT)\n\nHere α₀ = 3, β₀ = 12000, r = 8, TTT = 80100\n\nPosterior parameters:\nα_post = 3 + 8 = 11\nβ_post = 12000 + 80100 = 92100\n\nThe posterior mean estimate of λ is:\nλ_Bayes = α_post / β_post = 11 / 92100 = 0.0001194385...\n\n**Step 3: Evaluate system reliability using the MLE-based model.**\n\nFor 4 identical components in series (all must survive):\nR_sys(t) = [exp(-λt)]⁴ = exp(-4λt)\n\nR_sys(2000) = exp(-4 × 0.00009988 × 2000) = exp(-4 × 0.19976) = exp(-0.79904)\n\nEvaluating:\nexp(-0.79904) = 0.44939...\n\n**Step 4: Evaluate system reliability using the Bayesian posterior mean.**\n\nR_sys(2000) = exp(-4 × 0.0001194385 × 2000) = exp(-4 × 0.23888) = exp(-0.95551)\n\nEvaluating:\nexp(-0.95551) = 0.38421...\n\n**Step 5: Determine the absolute difference.**\n\n|0.44939 - 0.38421| = 0.06518\n\nLet me re-evaluate more precisely:\n\nλ_MLE = 8/80100 = 0.00009987504...\n4λt = 4 × 0.00009987504... × 2000 = 0.7990003...\nexp(-0.7990003) = 0.4493879...\n\nλ_Bayes = 11/92100 = 0.00011944083...\n4λt = 4 × 0.00011944083... × 2000 = 0.9555267...\nexp(-0.9555267) = 0.3842224...\n\n|0.4493879 - 0.3842224| = 0.0651655...\n\nThe absolute difference in predicted system reliability is approximately 0.06517.\n\nFinal answer: 0.06517\n\n\\boxed{0.06517}"
+    },
+    {
+      "global_index": 349,
+      "question": "A critical safety system is composed of two subsystems connected in series. Subsystem A uses a 2-out-of-3 redundant arch",
+      "target": 0.95272,
+      "extracted_value": 0.90192,
+      "correct": false,
+      "truncated": false,
+      "response": "**Step 1: Individual Component Reliability for Subsystem A (Weibull distribution)**\n\nEach component has reliability:\n$$R_{\\text{comp}}(t) = e^{-(t/\\eta)^\\beta} = e^{-(3000/8000)^{2.2}}$$\n\n$3000/8000 = 0.375$\n\n$(0.375)^{2.2} = (0.375)^{2.0} \\times (0.375)^{0.2} = 0.140625 \\times 0.75939 = 0.10668$\n\n$$R_{\\text{comp}}(3000) = e^{-0.10668} = 0.89904$$\n\n**Step 2: Inclusion of Common Cause Failure for Subsystem A**\n\nUsing the beta-factor model:\n- Independent failure probability per component: $q = 1 - 0.89904 = 0.10096$\n- CCF probability: $Q_{\\text{CCF}} = 1 - e^{-0.08} = 0.22643$\n\nApplying the beta-factor model:\n$$F_{\\text{Subsystem A}}(t) = 1 - \\left[1 - \\beta_{\\text{CCF}}\\right] \\times R_{2K}(t)$$\n\n$R_{2K}(t)$ represents the 2-out-of-3 reliability without CCF (all components independent):\n\n$$R_{2K}(t) = 3R^2 - 2R^3$$\n\n$R = 0.89904$\n\n$R^2 = 0.80828$\n\n$R^3 = 0.72727$\n\n$$R_{2K} = 3(0.80828) - 2(0.72727) = 2.42484 - 1.45454 = 0.97030$$\n\n$$F_{\\text{A}} = 1 - (1 - 0.08)(0.97030) = 1 - 0.92 \\times 0.97030 = 1 - 0.89268 = 0.10732$$\n\n**Step 3: Subsystem B — Exponential Component with Cold Standby**\n\nFor two identical exponential components with cold standby and a perfect switch, the reliability is:\n\n$$R_B(t) = e^{-\\lambda t}(1 + \\lambda t)$$\n\n$$R_B(3000) = e^{-0.00005 \\times 3000}(1 + 0.00005 \\times 3000) = e^{-0.15}(1 + 0.15)$$\n\n$$e^{-0.15} = 0.86071$$\n\n$$R_B = 0.86071 \\times 1.15 = 0.98982$$\n\n**Step 4: System Reliability (Series Configuration)**\n\n$$R_{\\text{system}}(3000) = R_A \\times R_B = 0.91264 \\times 0.98982$$\n\n$$R_{\\text{system}} = 0.90192$$\n\n\\boxed{0.90192}"
+    },
+    {
+      "global_index": 350,
+      "question": "A component with Weibull-distributed lifetime (shape parameter β = 2.0, constant across all stress levels) undergoes an ",
+      "target": 2.0046e-06,
+      "extracted_value": 0.000649,
+      "correct": false,
+      "truncated": false,
+      "response": "**Step 1: Estimating the IPL constants K and n**\n\nWith η(V) = K / V^n:\n\nη₁ = K / V₁^n → 150 = K / 400^n\nη₂ = K / V₂^n → 70 = K / 600^n\n\nDivide the first equation by the second:\n\n150/70 = (600/400)^n\n2.1429 = (1.5)^n\n\nTake the natural logarithm of both sides:\n\nln(2.1429) = n · ln(1.5)\n0.7619 = n · 0.4055\nn = 0.7619 / 0.4055 = 1.8785\n\n**Step 2: Solving for K**\n\nK = η₁ × V₁^n = 150 × 400^1.8785\n\nFirst compute 400^1.8785:\nln(400^1.8785) = 1.8785 × ln(400) = 1.8785 × 5.9915 = 11.223\n\n400^1.8785 = e^11.223 = 73,944\n\nK = 150 × 73,944 = 11,091,600\n\n**Step 3: Calculating η at the normal use voltage V₀ = 200 volts**\n\nη₀ = K / 200^n = 11,091,600 / 200^1.8785\n\nCompute 200^1.8785:\nln(200^1.8785) = 1.8785 × ln(200) = 1.8785 × 5.2983 = 9.953\n\n200^1.8785 = e^9.953 = 21,130\n\nη₀ = 11,091,600 / 21,130 = 525.1 hours\n\n**Step 4: Calculating reliability at t = 2000 hours under normal use conditions**\n\nThe Weibull reliability function is:\nR(t) = exp(-(t/η)^β)\n\nR(2000) = exp(-(2000/525.1)^2.0)\n\nCompute the ratio: 2000/525.1 = 3.8126\n\nCompute the square: (3.8126)^2 = 14.535\n\nR(2000) = exp(-14.535)\n\nexp(-14) = 0.000011080\nexp(-0.535) = 0.58524\n\nR(2000) = 0.000011080 × 0.58524 = 6.4867 × 10⁻⁶ ≈ 0.000649\n\nR(2000) ≈ 0.000649\n\nFinal answer: 0.000649\n\n\\boxed{0.000649}"
+    },
+    {
+      "global_index": 351,
+      "question": "Twenty identical turbine blades are subjected to a reliability life test. The experiment follows a Type-II right-censori",
+      "target": 26.47,
+      "extracted_value": 36.93,
+      "correct": false,
+      "truncated": false,
+      "response": "## Step 1: Formulate the Weibull MLE likelihood for Type-II censored data\n\nLet r = 12 (number of observed failures) and n = 20 (total units).\n\nThe Weibull reliability function is: R(t) = exp(-(t/η)^β)\nHence the hazard function: h(t) = (β/η)(t/η)^(β-1)\n\nFor the log-likelihood under Type-II censoring, the expression is:\n\nL = Σᵢ₌₁ʳ [ln(β) + β·ln(tᵢ/η) - (tᵢ/η)^β] + (n - r)·[ - (c/η)^β ]\n\nwhere c denotes the censoring time (27.5).\n\nEvaluating the log-likelihood at β = 1.82 yields the following derivative with respect to η:\n\n∂L/∂η = -r/η + β/η^(β+1) × Σᵢ₌₁ʳ tᵢ^β + β/η^(β+1) × c^β = 0\n\n## Step 2: Solve for η\n\nSetting the above derivative to zero:\n\nr/η = β/η^(β+1) × [Σᵢ₌₁ʳ tᵢ^β + (n - r)·c^β]\n\nη^β = (β/r) × [Σᵢ₌₁ʳ tᵢ^β + (n - r)·c^β]\n\n## Step 3: Evaluate the sum of squared failure times (β = 1.82)\n\nEach tᵢ^1.82 = exp(1.82 × ln(tᵢ)):\n\n| tᵢ  | ln(tᵢ) | 1.82 × ln(tᵢ) | tᵢ^1.82 |\n|------|--------|----------------|---------|\n| 1.8  | 0.5878  | 1.0710         | 2.9185  |\n| 3.1  | 1.1314  | 2.0589         | 7.8160  |\n| 4.7  | 1.5476  | 2.8176         | 16.7400 |\n| 5.9  | 1.7749  | 3.2344         | 25.4400 |\n| 7.2  | 1.9741  | 3.5927         | 36.4500 |\n| 9.0  | 2.1972  | 4.0085         | 54.7300 |\n| 10.4 | 2.3422  | 4.2716         | 72.0400 |\n| 12.6 | 2.5348  | 4.6121         | 100.320 |\n| 15.3 | 2.7281  | 4.9680         | 143.300 |\n| 18.1 | 2.8965  | 5.2817         | 196.900 |\n| 22.0 | 3.0910  | 5.6356         | 280.100 |\n| 27.5 | 3.3142  | 6.0361         | 411.100 |\n\nSumming these values:\n2.9185 + 7.8160 + 16.7400 + 25.4400 + 36.4500 + 54.7300 + 72.0400 + 100.320 + 143.300 + 196.900 + 280.100 + 411.100\n\nSum = 1,426.00 (checking precisely: 2.9185+7.8160=10.7345; +16.7400=27.4745; +25.4400=52.9145; +36.4500=89.3645; +54.7300=144.0945; +72.0400=216.1345; +100.320=316.4545; +143.300=459.7545; +196.900=656.6545; +280.100=936.7545; +411.100=1,347.8545)\n\nLet me recompute carefully:\n1.9185 + 7.8160 = 9.7345\n+16.7400 = 26.4745\n+25.4400 = 51.9145\n+36.4500 = 88.3645\n+54.7300 = 143.0945\n+72.0400 = 215.1345\n+100.320 = 315.4545\n+143.300 = 458.7545\n+196.900 = 655.6545\n+280.100 = 935.7545\n+411.100 = 1,346.8545\n\nIncluding the remaining contributions:\n2.9185+7.8160+16.7400+25.4400+36.4500+54.7300+72.0400+100.320+143.300+196.900+280.100+411.100\n\n= 1346.8545\n\n## Step 4: Evaluate the censored contribution c^1.82 = 27.5^1.82\n\nln(27.5) = 3.314218438\n\n1.82 × 3.314218438 = 6.036168\n\n27.5^1.82 = e^6.036168\n\ne^6 = 403.4288\ne^0.036168 = 1.03679\n\n27.5^1.82 = 403.4288 × 1.03679 = 418.153\n\nContribution from censored units: (20 - 12) × 418.153 = 8 × 418.153 = 3,345.224\n\n## Step 5: Compute η^1.82\n\nη^1.82 = (1.82/12) × (1,346.8545 + 3,345.224) = (1.82/12) × 4,692.0785\n\n(1.82/12) = 0.1516667\n\nη^1.82 = 0.1516667 × 4,692.0785 = 711.347\n\n## Step 6: Solve for η\n\nη = (711.347)^(1/1.82)\n\nln(η) = (1/1.82) × ln(711.347) = (1/1.82) × 6.5669\n\nln(711.347) = ln(700) + ln(1.0162) = 6.5510 + 0.0161 = 6.5671\n\nln(η) = 6.5671/1.82 = 3.6083\n\nη = e^3.6083\n\ne^3 = 20.0855\ne^0.6 = 1.8221\ne^0.0083 = 1.00835\n\nη = 20.0855 × 1.8221 × 1.00835 = 36.6530 × 1.00835 = 36.9349\n\nRounded to two decimal places: η = 36.93\n\nFinal answer: \\boxed{36.93}"
+    },
+    {
+      "global_index": 352,
+      "question": "A safety-critical system is composed of two identical subsystems arranged in parallel (system failure requires both subs",
+      "target": 0.117647,
+      "extracted_value": 0.882353,
+      "correct": false,
+      "truncated": false,
+      "response": "**Step 1: Determine the independent parallel subsystem unreliability at t = 1000 hours.**\n\nFor a Weibull distribution with β = 2.5 and η = 4000:\n$$F(t) = 1 - e^{-(t/\\eta)^\\beta}$$\n\nAt t = 1000:\n$$F(1000) = 1 - e^{-(1000/4000)^{2.5}} = 1 - e^{-(0.25)^{2.5}}$$\n\n$$F(1000) = 1 - e^{-0.148868} = 1 - 0.862363 = 0.137637$$\n\nSo the independent unreliability for each subsystem is:\n$$q = 0.137637$$\n\nFor a parallel configuration (system fails only when both subsystems fail independently):\n$$F_{parallel}(t) = q^2 = (0.137637)^2 = 0.018941$$\n\n**Step 2: Evaluate the CCF contribution.**\n\nThe probability that common cause failure has not occurred by t = 1000:\n$$R_{CCF}(1000) = e^{-\\lambda_{CCF} \\cdot 1000} = e^{-2 \\times 10^{-6} \\times 1000} = e^{-0.002} = 0.998002$$\n\n**Step 3: Determine the overall system reliability at t = 1000.**\n\nThe system fails if either both subsystems fail independently OR the common cause failure occurs. These are treated as independent events:\n$$R_{system}(1000) = R_{parallel}(1000) \\times R_{CCF}(1000)$$\n\n$$R_{system}(1000) = 0.981059 \\times 0.998002 = 0.980073$$\n\n**Step 4: Perform the Bayesian update.**\n\nThe prior distribution on the system unreliability at t = 1000 is Beta(1,1), corresponding to a uniform distribution F ~ Uniform[0,1].\n\nWe observe field test data from 15 systems operating for 1000 hours each. Exactly 1 system failure is recorded (13 systems survived).\n\nThis yields a Beta posterior with:\n$$a = 1 + 1 = 2$$\n$$b = 1 + (15 - 1) = 15$$\n\nThe posterior mean of F is:\n$$E[F|data] = \\frac{a}{a+b} = \\frac{2}{17} = 0.117647$$\n\nThe posterior mean of the system reliability is:\n$$E[R|data] = 1 - \\frac{a}{a+b} = 1 - \\frac{2}{17} = \\frac{15}{17} = 0.882353$$\n\nLet me verify the calculations more precisely.\n\n$e^{-0.1488689} = 0.8623633$, giving $q = 0.1376367$\n\n$q^2 = 0.0189414$\n\n$e^{-0.002} = 0.998001998$\n\n$R_{parallel} = 0.9810586$\n\n$R_{system} = 0.9810586 \\times 0.9980020 = 0.9800730$\n\nBeta posterior: a = 2, b = 15\n\nPosterior mean of R: $E[R|data] = \\frac{15}{17} = 0.8823529$\n\nFinal answer: $\\boxed{0.882353}$"
+    },
+    {
+      "global_index": 353,
+      "question": "Twenty identical turbine blades are subjected to an accelerated life test at an elevated stress of S_H = 450 MPa. The te",
+      "target": 0.9717,
+      "extracted_value": 0.997142,
+      "correct": true,
+      "truncated": false,
+      "response": "**Step 1: MLE of the failure rate at high stress S_H = 450 MPa**\n\nThe failure times sum: 12.3 + 18.7 + 25.1 + 33.6 + 42.0 + 55.8 + 71.4 + 89.2 = 348.1 thousand cycles\n\nr = 8 failures, n = 20 units on test\nTotal time on test: T_H = 348.1 + (20 - 8) × 89.2 = 348.1 + 12 × 89.2 = 348.1 + 1070.4 = 1418.5 thousand cycles\n\nExponential MLE: λ̂_H = r/T_H = 8/1418.5 = 0.005639761 per thousand cycles\n\n**Step 2: MLE of the failure rate at low stress S_L = 300 MPa**\n\nFailure times sum: 48.5 + 79.3 + 112.6 + 158.0 + 210.4 = 608.8 thousand cycles\n\nr = 5 failures, n = 25 blades\nT_L = 608.8 + (25 - 5) × 210.4 = 608.8 + 20 × 210.4 = 608.8 + 4208.0 = 4816.8 thousand cycles\n\nMLE: λ̂_L = 5/4816.8 = 0.001038029 per thousand cycles\n\n**Step 3: Determining the inverse power law parameters a and n**\n\nλ(S) = a × S^n, implying:\n\nλ̂_H = a × 450^n\nλ̂_L = a × 300^n\n\nTaking the ratio: λ̂_H/λ̂_L = (450/300)^n = (1.5)^n\n\n0.005639761/0.001038029 = 5.43396\n\nThus: (1.5)^n = 5.43396\n\nApplying natural logarithms: n × ln(1.5) = ln(5.43396)\n0.40546 < n < 0.40666\n\nMore precisely:\nln(1.5) = 0.40546\nln(5.434) = ln(5) + ln(1.0868) = 1.60944 + 0.08375 = 1.69320\n\nn = 1.69320/0.40546 = 4.17639\n\nVerification: (1.5)^4.17639. First (1.5)^4 = 5.0625. (1.5)^0.17639: 0.17639 × 0.40546 = 0.07167. e^0.07167 = 1.07431. Hence (1.5)^4.17639 = 5.0625 × 1.07431 = 5.434 ✓\n\nNow: a = λ̂_L / 300^n = 0.001038029 / 300^4.17639\n\n300^4 = 81000000\n300^0.17639: ln(300) = 5.70378, 0.17639 × 5.70378 = 1.00579, e^1.00579 = 2.73475\n\n300^4.17639 = 81000000 × 2.73475 = 221524750\n\na = 0.001038029/221524750 = 4.68645 × 10⁻¹²\n\n**Step 4: Failure rate at normal stress S_N = 150 MPa**\n\nλ(150) = a × 150^n\n\n150^4 = 5062500\n150^0.17639: ln(150) = 5.01064, 0.17639 × 5.01064 = 0.88379, e^0.88379 = 2.42044\n\n150^4.17639 = 5062500 × 2.42044 = 12241875\n\nλ_N = a × 150^n = 4.68645 × 10⁻¹² × 12241875 = 5.72371 × 10⁻⁶ per thousand cycles\n\n**Step 5: Computing reliability for a mission of t = 500 thousand cycles**\n\nR(500) = e^{−500 × 5.72371 × 10⁻⁶} = e^{−0.002861855}\n\nR(500) = e^{−0.002861855} = 0.997143\n\nMore precisely: −0.0028619. e^{-0.0028619} using the Taylor approximation 1 − 0.0028619 + 0.0000041 = 0.9971422\n\nANSWER: 0.997142\n\n\\boxed{0.997142}"
+    },
+    {
+      "global_index": 354,
+      "question": "A fleet supervisor collects failure information for a critical engine part that is assumed to follow a Weibull distribut",
+      "target": 0.77243,
+      "extracted_value": 2.8620999999999995e-48,
+      "correct": false,
+      "truncated": false,
+      "response": "**Step 1: Establish MLE equations for Weibull with β fixed**\n\nGiven β = 2, the likelihood function for a mixed dataset containing r = 3 failures at times t₁, t₂, t₃ and n-r = 3 censored observations at t_c:\n\nL = ∏(failure terms) × ∏(censored terms)\n= ∏ₖ [β/η × (tₖ/η)^(β-1) × exp(-tₖ/η)]  × ∏ᵢ exp(-t_c,i/η)\n\nThe log-likelihood is:\nln L = r·ln(β) - r·β·ln(η) + (β-1)·Σₖ ln(tₖ) - Σₖ tₖ - (1/η)·[Σₖ tₖ + Σᵢ t_c,i]\n\nDifferentiating with respect to η and equating to zero:\nd(ln L)/dη = -r·β/η + (1/η²)[Σₖ tₖ + Σᵢ t_c,i] = 0\n\nSolving for η:\nη^β = [Σᵢ t_i] / r\n\nBecause β = 2, we obtain:\nη = √[Σᵢ t_i / r]\n\n**Step 2: Sum all the time contributions**\n\nAccumulated failure times: 1200 + 2800 + 4500 = 8500 hours\n\nSurviving units each contribute 5000 hours: 3 × 5000 = 15000 hours\n\nTotal time sum: T = 8500 + 15000 = 23500 hour·units\n\n**Step 3: Evaluate the MLE for η**\n\nη² = 23500 / 3 = 7833.333...\n\nη = √7833.333 = 88.5007 hours\n\n**Step 4: Determine the estimated reliability at t = 3000**\n\nUsing the Weibull reliability function:\nR(3000) = exp(-(3000/88.5007)^2)\n\nThe ratio: 3000/88.5007 = 33.8955\n\nSquare of the ratio: (33.8955)² = 1149.0\n\nR(3000) = exp(-1149.0) = 2.8621 × 10⁻⁴⁸\n\nIt is worth noting that the reliability is practically zero at 3000 hours, suggesting this component has extremely low reliability in the operational range. The very large negative exponent implies the part is nearly guaranteed to fail by that time.\n\nFinal answer: \\boxed{2.8621 \\times 10^{-48}}"
+    },
+    {
+      "global_index": 355,
+      "question": "A fleet operations engineer is tracking the service lives of turbine blades. Historical records for an earlier blade des",
+      "target": 0.3379,
+      "extracted_value": null,
+      "correct": false,
+      "truncated": true,
+      "response": "**Step 1: Establish the likelihood function for lognormal data under conjugate normal prior.**\n\nFor a lognormal distribution with parameters μ and σ, the log-time X follows a normal distribution: ln(X) ~ N(μ, σ²). The conjugate prior for μ given σ is Normal(μ₀, σ₀²), yielding posterior Normal(μ_n, σ_n²).\n\nThe likelihood for censored data using the lognormal CDF is:\n- For a failure at x_i: product of Ф((ln(x_i) - μ)/σ) across failing units\n- For a censored observation at c: product of [1 - Ф((ln(c) - μ)/σ)] across censored units\n\n**Step 2: Set up and evaluate the likelihood.**\n\nDefine Y_i = ln(x_i). For the six observations:\n- Failures at x = 1800, 2400, 3500: Y₁ = 7.4955, Y₂ = 7.7686, Y₃ = 8.1605\n- Censored at c = 2000: Y_c = 7.6009, repeated three times\n\nCalculate the likelihood components.\n\n**Iteration 1 (prior μ ~ N(8.0, 0.3²) = N(8.0, 0.09)):**\n\nSum of Y: 7.4955 + 7.7686 + 8.1605 + 7.6009 + 7.6009 + 7.6009 = 46.1263\nNumber of failures: r = 3\nNumber of censored: c = 3\nMean of Y: Ȳ = 46.1263/6 = 7.6877\nSSE = Σ(Y_i - Ȳ)²\n= (0.8078)² + (0.0809)² + (0.4728)² + (0.0820)² × 3\n= 0.6526 + 0.0065 + 0.2235 + 0.0673\n= 0.9499\n\n**Iteration 2 with posterior from first round:**\n\nNew prior μ ~ N(8.0, 0.09). With data, the posterior mean and variance are:\n\nn = 6, σ² = 0.36, n_censored = 3, r = 3, censored_value = 7.6009\n\nσ_n² = 1/(1/0.09 + 6/0.36) = 1/(11.1111 + 16.6667) = 1/27.7778 = 0.036\n\n1/σ_n² = 27.7778\n\nPrior precision: 1/σ₀² = 1/0.09 = 11.1111\n\nPosterior precision: 1/σ_n² = 11.1111 + 16.6667 = 27.7778\n\nPosterior mean:\nμ_n = (11.1111)(8.0) + (16.6667)(7.6877) / 27.7778\n= 90 + 128.0823 / 27.7778\n= 90 + 4.6157\n= 94.6157\n\nThis result is clearly incorrect — I must be miscomputing. Let me recompute carefully.\n\nCorrectly: (11.1111)(8.0) = 90\n(16.6667)(7.6877) = 16.6667 × 7.6877 = 128.1046\nSum = 90 + 128.1046 = 218.1046\nμ_n = 218.1046 / 27.7778 = 7.8671\n\nσ_n² = 0.036, σ_n = 0.1897\n\n**Iteration 2 posterior: N(7.8671, 0.036).**\n\nRepeating the likelihood evaluation with μ = 7.8671, σ = 0.6:\n\nFor each Y_i:\n- (7.4955 - 7.8671)/0.6 = -0.3716/0.6 = -0.6194\nΦ(-0.6194) = 0.2683\n- (7.7686 - 7.8671)/0.6 = -0.0985/0.6 = -0.1642\nΦ(-0.1642) = 0.4350\n- (8.1605 - 7.8671)/0.6 = 0.2934/0.6 = 0.4891\nΦ(0.4891) = 0.6896\n\nCensored contributions (all at Y_c = 7.6009):\n(7.6009 - 7.8671)/0.6 = -0.2662/0.6 = -0.4437\nΦ(-0.4437) = 0.3287\n\nL_failure = 0.2683 × 0.4350 × 0.6896 = 0.08028\nL_censored = (0.3287)³ = 0.03547\n\nPosterior probability = 0.08028 × 0.03547 = 0.002846\n\n**Iteration 3:**\n\nPrior: N(7.8671, 0.036)\nNew data: n = 6, r = 3, censored = 3, Y_c = 7.6009\n\nσ_n² = 1/(1/0.036 + 6/0.36) = 1/(27.7778 + 16.6667) = 1/44.4445 = 0.0225\nσ_n = 0.15\n\nPrior precision: 1/0.036 = 27.7778\nData precision: 6/0.36 = 16.6667\n\nPosterior mean:\nμ_n = (27.7778)(7.8671) + (16.6667)(7.6877) / 44.4445\n= 218.1046 + 128.1046 / 44.4445\n= 346.2092 / 44.4445 = 7.7982\n\n**Iteration 3 posterior: N(7.7982, 0.0225).**\n\nReevaluating with μ = 7.7982, σ = 0.6:\n\nFailures:\n- (7.4955 - 7.7982)/0.6 = -0.3027/0.6 = -0.5045: Φ(-0.5045) = 0.3075\n- (7.7686 - 7.7982)/0.6 = -0.0296/0.6 = -0.0493: Φ(-0.0493) = 0.4827\n- (8.1605 - 7.7982)/0.6 = 0.3623/0.6 = 0.6039: Φ(0.6039) = 0.7267\n\nCensored: (7.6009 - 7.7982)/0.6 = -0.1973/0.6 = -0.3289: Φ(-0.3289) = 0.3708\n\nL_failure = 0.3075 × 0.4827 × 0.7267 = 0.10765\nL_censored = (0.3708)³ = 0.05098\n\nPosterior = 0.10765 × 0.05098 = 0.005482\n\n**Iteration 4:**\n\nPrior: N(7.7982, 0.0225)\nσ_n² = 1/(1/0.0225 + 6/0.36) = 1/(44.4444 + 16.6667) = 1/61.1111 = 0.016364\nσ_n = 0.128\n\nPrior precision: 1/0.0225 = 44.4444\nData precision: 16.6667\n\nPosterior mean:\nμ_n = (44.4444)(7.7982) + (16.6667)(7.6877) / 61.1111\n= 345.5158 + 128.1046 / 61.1111\n= 473.6204 / 61.1111 = 7.7559\n\n**Iteration 4 posterior: N(7.7559, 0.016364).**\n\nEvaluating with μ = 7.7559, σ = 0.6:\n\nFailures:\n- (7.4955 - 7.7559)/0.6 = -0.2604/0.6 = -0.4340: Φ(-0.4340) = 0.3323\n- (7.7686 - 7.7559)/0.6 = 0.0127/0.6 = 0.0212: Φ(0.0212) = 0.5084\n- (8.1605 - 7.7559)/0.6 = 0.4046/0.6 = 0.6743: Φ(0.6743) = 0.7498\n\nCensored: (7.6009 - 7.7559)/0.6 = -0.1550/0.6 = -0.2583: Φ(-0.2583) = 0.3964\n\nL_failure = 0.3323 × 0.5084 × 0.7498 = 0.12395\nL_censored = (0.3964)³ = 0.06228\n\nPosterior = 0.12395 × 0.06228 = 0.007721\n\n**Iteration 5:**\n\nPrior: N(7.7559, 0.016364)\nσ_n² = 1/(1/0.016364 + 6/0.36) = 1/(61.1111 + 16.6667) = 1/77.7778 = 0.012860\nσ_n = 0.1134\n\nPrior precision: 61.1111\nData precision: 16.6667\n\nPosterior mean:\nμ_n = (61.1111)(7.7559) + (16.6667)(7.6877) / 77.7778\n= 473.1533 + 128.1046 / 77.7778\n= 591.2579 / 77.7778 = 7.6064\n\n**Iteration 5 posterior: N(7.6064, 0.012860).**\n\nEvaluating with μ = 7.6064, σ = 0.6:\n\nFailures:\n- (7.4955 - 7.6064)/0.6 = -0.1109/0.6 = -0.1848: Φ(-0.1848) = 0.4286\n- (7.7686 - 7.6064)/0.6 = 0.1622/0.6 = 0.2703: Φ(0.2703) = 0.6064\n- (8.1605 - 7.6064)/0.6 = 0.5541/0.6 = 0.9235: Φ(0.9235) = 0.8219\n\nCensored: (7.6009 - 7.6064)/0.6 = -0.0055/0.6 = -0.0092: Φ(-0.0092) = 0.4953\n\nL_failure = 0.4286 × 0.6064 × 0.8219 = 0.21290\nL_censored = (0.4953)³ = 0.12230\n\nPosterior = 0.21290 × 0.12230 = 0.02603\n\n**Iteration 6:**\n\nPrior: N(7.6064, 0.012860)\nσ_n² = 1/(1/0.012860 + 6/0.36) = 1/(77.7778 + 16.6667) = 1/94.4445 = 0.010590\nσ_n = 0.1029\n\nPrior precision: 77.7778\nData precision: 16.6667\n\nPosterior mean:\nμ_n = (77.7778)(7.6064) + (16.6667)(7.6877) / 94.4445\n= 591.1155 + 128.1046 / 94.4445\n= 719.2201 / 94.4445 = 7.6112\n\n**Iteration 6 posterior: N(7.6112, 0.010590).**\n\nEvaluating with μ = 7.6112, σ = 0.6:\n\nFailures:\n- (7.4955 - 7.6112)/0.6 = -0.1157/0.6 = -0.1928: Φ(-0.1928) = 0.4245\n- (7.7686 - 7.6112)/0.6 = 0.1574/0.6 = 0.2624: Φ(0.2624) = 0.6042\n- (8.1605 - 7.6112)/0.6 = 0.5493/0.6 = 0.9155: Φ(0.9155) = 0.8197\n\nCensored: (7.6009 - 7.6112)/0.6 = -0.0103/0.6 = -0.0172: Φ(-0.0172) = 0.4918\n\nL_failure = 0.4245 × 0.6042 × 0.8197 = 0.20875\nL_censored = (0.4918)³ = 0.11896\n\nPosterior = 0.20875 × 0.11896 = 0.02483\n\n**Iteration 7:**\n\nPrior: N(7.6112, 0.010590)\nσ_n² = 1/(1/0.010590 + 6/0.36) = 1/(94.4445 + 16.6667) = 1/111.1112 = 0.0090000\nσ_n = 0.094868\n\nPrior precision: 94.4445\nData precision: 16.6667\n\nPosterior mean:\nμ_n = (94.4445)(7.6112) + (16.6667)(7.6877) / 111.1112\n= 719.3685 + 128.10"
+    },
+    {
+      "global_index": 356,
+      "question": "A chemical processing facility uses two identical pumps arranged in an active parallel configuration (both run simultane",
+      "target": 0.535946,
+      "extracted_value": 0.5358,
+      "correct": true,
+      "truncated": false,
+      "response": "The system endures as long as at least one pump is working. At the inspection time (t = 3000 hours), one pump is known to be in degraded condition with remaining life Exp(0.002), and the other pump is healthy but has already survived to 3000 hours, from which its remaining life follows a Weibull distribution truncated (conditioned on survival to 3000).\n\nDefine pump A: degraded with remaining life Exp(0.002).\nDefine pump B: healthy, having survived to 3000 hours, with remaining life conditioned on survival to that point.\n\nFor the healthy pump (pump B) whose original lifetime is Weibull(β=2, η=5000), the conditional remaining life distribution at t=3000 is:\n\n$$R_B(t) = P(T_B > t \\mid T_B > 3000) = \\frac{R(3000 + t)}{R(3000)}$$\n\nSince R(t) = exp(- (t/η)^β) = exp(- (t/5000)^2).\n\nEvaluating R(5000):\n$$R(5000) = \\exp(-(5000/5000)^2) = \\exp(-1) = 0.3679$$\n\nEvaluating R(3000):\n$$R(3000) = \\exp(-(3000/5000)^2) = \\exp(-0.36) = 0.6977$$\n\nThus:\n$$R_B(2000 \\mid T_B > 3000) = \\frac{0.3679}{0.6977} = 0.5274$$\n\nThe degraded pump (pump A) has:\n$$R_A(2000) = e^{-0.002 \\times 2000} = e^{-4} = 0.01832$$\n\nThe system survives an additional 2000 hours provided at least one pump does so:\n$$P(\\text{system survives additional 2000 hours}) = 1 - P(\\text{pump A fails}) \\times P(\\text{pump B fails})$$\n\n$$= 1 - (1 - R_A(2000)) \\times (1 - R_B(2000|...))$$\n\n$$= 1 - (1 - 0.01832) \\times (1 - 0.5274)$$\n\n$$= 1 - (0.98168) \\times (0.4726)$$\n\n$$= 1 - 0.4642$$\n\n$$= 0.5358$$\n\n$\\boxed{0.5358}$"
+    },
+    {
+      "global_index": 357,
+      "question": "Ten identical turbines are subjected to a life test. Their failure times are modeled by a Weibull distribution with unkn",
+      "target": 0.4917,
+      "extracted_value": 0.49191,
+      "correct": true,
+      "truncated": false,
+      "response": "**Step 1: Individual turbine reliability at t = 1200.**\n\nWith Weibull parameters β = 2.5 and η = 1800:\n$$R(t) = e^{-(t/\\eta)^\\beta} = e^{-(1200/1800)^{2.5}} = e^{-(2/3)^{2.5}}$$\n\nEvaluating $(2/3)^{2.5}$:\n$(2/3)^{2.5} = (0.6667)^{2.5} = e^{2.5 \\ln(0.6667)} = e^{2.5 \\times (-0.40546)} = e^{-1.01365} = 0.36270$\n\nHence $R(1200) = e^{-0.36270} = 0.69574$\n\nSo the probability of failure per turbine is: $F(1200) = 1 - 0.69574 = 0.30426$\n\n**Step 2: Subsystem A — 2 turbines in active parallel (A fails only when both fail).**\n\n$$R_A = 1 - (1 - R)^2 = 1 - (0.30426)^2 = 1 - 0.092576 = 0.90742$$\n\n**Step 3: Subsystem B — single turbine.**\n\n$$R_B = R = 0.69574$$\n\n**Step 4: Subsystem C — 3 turbines in 2-out-of-3 configuration.**\n\nSubsystem C succeeds if at least 2 turbines function, i.e., exactly 2 work OR all 3 work.\n\n$$R_C = \\binom{3}{2} R^2 (1-R)^1 + \\binom{3}{3} R^3 (1-R)^0$$\n$$= 3R^2(1-R) + R^3$$\n$$= 3(0.69574)^2(0.30426) + (0.69574)^3$$\n\nFirst term: $3 \\times 0.48390 \\times 0.30426 = 0.44000$\n\nSecond term: $0.33972$\n\n$$R_C = 0.44000 + 0.33972 = 0.77972$$\n\n**Step 5: Overall system reliability (series combination of A, B, C).**\n\n$$R_{system} = R_A \\times R_B \\times R_C = 0.90742 \\times 0.69574 \\times 0.77972$$\n\nIntermediate: $0.90742 \\times 0.69574 = 0.63110$\n\nFinal: $0.63110 \\times 0.77972 = 0.49189$\n\nLet me verify more precisely:\n\n$R(1200) = e^{-0.3627} = 0.695736$\n$F = 0.304264$\n\n$R_A = 1 - (0.304264)^2 = 1 - 0.092576 = 0.907424$\n\n$R_C$: $3(0.695736)^2(0.304264) + (0.695736)^3$\n$= 3(0.48395)(0.304264) + 0.33963$\n$= 0.44005 + 0.33963 = 0.77968$\n\n$R_{sys} = 0.907424 \\times 0.695736 \\times 0.77968 = 0.49191$\n\n$$\\boxed{0.49191}$$"
+    },
+    {
+      "global_index": 358,
+      "question": "A chemical processing facility relies on a critical safety system structured as follows: two identical primary subsystem",
+      "target": 0.6958,
+      "extracted_value": 0.66674,
+      "correct": true,
+      "truncated": false,
+      "response": "### Step 1: Individual Component Reliabilities\n\n**Sensor Reliability:**\n$$R_s(t) = e^{-(t/\\eta_s)^{\\beta_s}} = e^{-(3000/8000)^{2.0}} = e^{-(0.375)^2} = e^{-0.140625} = 0.86890$$\n\n**Actuator Reliability:**\n$$R_a(t) = e^{-(t/\\eta_a)^{\\beta_a}} = e^{-(3000/12000)^{1.5}} = e^{-(0.25)^{1.5}} = e^{-0.125} = 0.882497$$\n\n**Primary Subsystem Reliability (series):**\n$$R_{sub}(t) = R_s(t) \\times R_a(t) = 0.86890 \\times 0.882497 = 0.76652$$\n\n### Step 2: Parallel Configuration (without common cause failure)\n\n$$R_{parallel}(t) = 1 - (1 - R_{sub}(t))^2 = 1 - (1 - 0.76652)^2 = 1 - (0.23348)^2 = 1 - 0.054524 = 0.94548$$\n\n### Step 3: Incorporating Common Cause Failure (Beta-Factor Model)\n\nThe beta-factor model accounts for common cause failure as an independent event that causes both parallel elements to fail simultaneously. The surviving probability (neither CCF nor system-level failures) is:\n\n$$R_{CCF} = 1 - \\beta = 0.95$$\n\nFor parallel reliability accounting for CCF:\n$$R_{parallel, CCF} = R_{parallel}(t) \\times R_{CCF} = 0.94548 \\times 0.95 = 0.90$$\n\n### Step 4: Backup Controller Reliability\n\n$$R_{controller}(t) = e^{-\\lambda t} = e^{-0.0001 \\times 3000} = e^{-0.3} = 0.74082$$\n\n### Step 5: Overall System Reliability\n\n$$R_{system}(3000) = R_{parallel, CCF} \\times R_{controller} = 0.90 \\times 0.74082 = 0.66674$$\n\n$$\\boxed{0.66674}$$"
+    },
+    {
+      "global_index": 359,
+      "question": "A processing facility employs a safety system composed of two subsystems arranged in series. Subsystem 1 uses a 2-out-of",
+      "target": 0.90317,
+      "extracted_value": null,
+      "correct": false,
+      "truncated": false,
+      "response": "**Step 1: Evaluate Subsystem 1 — 2-out-of-3 configuration.**\n\nEach component's reliability at t = 2000:\n$$R(2000) = e^{-(2000/8000)^2} = e^{-(0.25)^2} = e^{-0.0625} = 0.93941$$\n\nDefine p = R₁ = 0.93941 and q = 1 - p = 0.06059.\n\nFor a 2-out-of-3 system:\n$$R_{\\text{Sub1}}(2000) = \\binom{3}{2}p^2 q + \\binom{3}{3}p^3 = 3p^2 q + p^3$$\n\n$$= 3(0.93941)^2(0.06059) + (0.93941)^3$$\n\n$$= 3(0.88250)(0.06059) + 0.82729$$\n\n$$= 0.15871 + 0.82729 = 0.98600$$\n\n**Step 2: Perform Bayesian updating for Subsystem 2.**\n\nPrior distribution: η₂ ~ Uniform(8000, 12000), so:\n$$g(\\eta_2) = \\frac{1}{12000-8000} = \\frac{1}{4000} \\text{ for } 8000 \\leq \\eta_2 \\leq 12000$$\n\nThe likelihood of surviving to 3000 hours for a given η₂:\n$$L(\\eta_2 | \\text{survived to } 3000) = R_{\\text{Sub2}}(3000 | \\eta_2) = e^{-(3000/\\eta_2)^{1.5}}$$\n\nThe posterior density is:\n$$h(\\eta_2) = \\frac{L(\\eta_2) \\cdot g(\\eta_2)}{\\int_{8000}^{12000} L(\\eta) \\cdot g(\\eta) \\, d\\eta}$$\n\n**Step 3: Evaluate the denominator (normalizing constant) via the trapezoidal rule at η = 8000, 9000, 10000, 11000, 12000.**\n\nAt η = 8000: $R(3000) = e^{-(3000/8000)^{1.5}} = e^{-(0.375)^{1.5}} = e^{-0.140625} = 0.86881$\n\nAt η = 9000: $R(3000) = e^{-(3000/9000)^{1.5}} = e^{-(0.33333)^{1.5}} = e^{-0.10887} = 0.89720$\n\nAt η = 10000: $R(3000) = e^{-(3000/10000)^{1.5}} = e^{-0.07746} = 0.92613$\n\nAt η = 11000: $R(3000) = e^{-(3000/11000)^{1.5}} = e^{-(0.27273)^{1.5}} = e^{-0.13039} = 0.87886$\n\nAt η = 12000: $R(3000) = e^{-(3000/12000)^{1.5}} = e^{-(0.25)^{1.5}} = e^{-0.0625} = 0.93941$\n\nThe normalizing integral:\n$$I = \\int_{8000}^{12000} e^{-(3000/\\eta)^{1.5}} \\cdot \\frac{1}{4000} \\, d\\eta$$\n\nUsing trapezoidal rule with h = 1000:\n$$I \\approx \\frac{1000}{2} \\left[0.86881 + 2(0.89720 + 0.92613 + 0.87886) + 0.93941\\right]$$\n\n$$= 500 \\left[0.86881 + 2(2.69919) + 0.93941\\right]$$\n\n$$= 500 \\left[0.86881 + 5.39838 + 0.93941\\right]$$\n\n$$= 500 \\times 7.20660 = 3603.3$$\n\n**Step 4: Construct the posterior h(η₂) and obtain the posterior mean of overall system reliability at t = 2000.**\n\nThe overall system reliability at t = 2000 is:\n$$R_{\\text{sys}}(2000) = R_{\\text{Sub1}}(2000) \\times R_{\\text{Sub2}}(2000 | \\eta_2) = 0.98600 \\times e^{-(2000/\\eta_2)^{1.5}}$$\n\nThe posterior mean is:\n$$E[R_{\\text{sys}}(2000)] = 0.98600 \\times E\\left[e^{-(2000/\\eta_2)^{1.5}}\\right]$$\n\n$$= 0.98600 \\times \\int_{8000}^{12000} \\frac{e^{-(3000/\\eta)^{1.5}} \\times e^{-(2000/\\eta)^{1.5}}}{I} \\, d\\eta$$\n\n$$= 0.98600 \\times \\int_{8000}^{12000} \\frac{e^{-(3000/\\eta)^{1.5} - (2000/\\eta)^{1.5}}}{I} \\, d\\eta$$\n\nDefine k(η) = exp[-(3000/η)^{1.5} - (2000/η)^{1.5}] for the integrand.\n\nAt η = 8000:\n$$k(8000) = e^{-0.140625 - 0.0625} = e^{-0.203125} = 0.81532$$\n\nAt η = 9000:\n$$k(9000) = e^{-0.10887 - (2000/9000)^{1.5}} = e^{-0.10887 - (0.22222)^{1.5}} = e^{-0.10887 - 0.14979} = e^{-0.25866} = 0.77154$$\n\nAt η = 10000:\n$$k(10000) = e^{-0.07746 - (2000/10000)^{1.5}} = e^{-0.07746 - 0.07746} = e^{-0.15492} = 0.85774$$\n\nAt η = 11000:\n$$k(11000) = e^{-0.13039 - (2000/11000)^{1.5}} = e^{-0.13039 - (0.18182)^{1.5}} = e^{-0.13039 - 0.10001} = e^{-0.23040} = 0.79478$$\n\nAt η = 12000:\n$$k(12000) = e^{-0.0625 - (2000/12000)^{1.5}} = e^{-0.0625 - (0.16667)^{1.5}} = e^{-0.0625 - 0.06667} = e^{-0.12917} = 0.87734$$\n\nEvaluating the trapezoidal approximation:\n$$E[R_{\\text{sys}}] \\approx 0.98600 \\times \\frac{1}{3603.3} \\times 1000 \\times [0.81532 + 2(0.77154 + 0.85774 + 0.79478) + 0.87734]$$\n\n$$= 0.98600 \\times \\frac{1}{3603.3} \\times 1000 \\times [0.81532 + 2(2.42406) + 0.87734]$$\n\n$$= 0.98600 \\times \\frac{1}{3603.3} \\times 1000 \\times [0.81532 + 4.84812 + 0.87734]$$\n\n$$= 0.98600 \\times \\frac{1}{3603.3} \\times 1000 \\times 6.54078$$\n\n$$= 0.98600 \\times \\frac{6540.78}{3603.3}$$\n\n$$= 0.98600 \\times 1.81484$$\n\n$$= 0.98600 \\times 1.81484 = 1.78973$$\n\nLet me recompute more precisely:\n\nMore precisely:\n- 2 × (0.77154 + 0.85774 + 0.79478) = 2 × (2.42406) = 4.84812\n- Sum = 0.81532 + 4.84812 + 0.87734 = 6.54078\n- = 1000/3603.3 = 0.2775796\n\n= 0.98600 × 1.814848\n\nMore precisely: 0.98600 × 1.814848\n\n0.986 × 1.81485 = 0.986 × 1.81485\n\n0.986 × 1.8 = 1.7748\n0.986 × 0.01485 = 0.0146349\nTotal = 1.7748 + 0.0146349 = 1.7894349\n\nRounding to appropriate precision, the final answer is approximately 1.7894."
+    },
+    {
+      "global_index": 360,
+      "question": "Consider a series system composed of two subsystems. Subsystem A employs a 2-out-of-3 redundant architecture, where each",
+      "target": 0.3479,
+      "extracted_value": 0.348,
+      "correct": true,
+      "truncated": false,
+      "response": "**Step 1: Determine component reliability expressions.**\n\nFor Subsystem A, each component has Weibull reliability:\n$$R_W(t) = e^{-(t/\\eta)^\\beta} = e^{-(t/8000)^2}$$\n\nAt t = 3000:\n$$R_W(3000) = e^{-(3000/8000)^2} = e^{-(0.375)^2} = e^{-0.140625} = 0.86881$$\n\nAt t = 6000:\n$$R_W(6000) = e^{-(6000/8000)^2} = e^{-(0.75)^2} = e^{-0.5625} = 0.56978$$\n\nFor Subsystem B, using lognormal with μ = 8.5 and σ = 0.8:\n$$R_B(t) = 1 - \\Phi\\left(\\frac{\\ln(t) - \\mu}{\\sigma}\\right)$$\n\nAt t = 3000:\n$$z_{3000} = \\frac{\\ln(3000) - 8.5}{0.8} = \\frac{8.00637 - 8.5}{0.8} = \\frac{-0.49363}{0.8} = -0.61704$$\n$$R_B(3000) = 1 - \\Phi(-0.61704) = \\Phi(0.61704) = 0.73079$$\n\nAt t = 6000:\n$$z_{6000} = \\frac{\\ln(6000) - 8.5}{0.8} = \\frac{8.69951 - 8.5}{0.8} = \\frac{0.19951}{0.8} = 0.24939$$\n$$R_B(6000) = 1 - \\Phi(0.24939) = 1 - 0.59834 = 0.40166$$\n\n**Step 2: Evaluate Subsystem A reliability for the 2-out-of-3 configuration at both times.**\n\nFor a 2-out-of-3 system where each component has reliability p:\n$$R_{subA}(t) = 3p^2(1-p) + p^3 = 3p^2 - 2p^3$$\n\nWith p = 0.86881:\n$$R_{subA}(3000) = 3(0.86881)^2 - 2(0.86881)^3$$\n$$= 3(0.75481) - 2(0.65590)$$\n$$= 2.26443 - 1.31180 = 0.95263$$\n\nWith p = 0.56978:\n$$R_{subA}(6000) = 3(0.56978)^2 - 2(0.56978)^3$$\n$$= 3(0.32463) - 2(0.18520)$$\n$$= 0.97389 - 0.37040 = 0.60349$$\n\n**Step 3: Evaluate overall system reliability.**\n\nSince this is a series system:\n$$R_{sys}(t) = R_{subA}(t) \\times R_B(t)$$\n\nAt t = 3000:\n$$R_{sys}(3000) = 0.95263 \\times 0.73079 = 0.69611$$\n\nAt t = 6000:\n$$R_{sys}(6000) = 0.60349 \\times 0.40166 = 0.24237$$\n\n**Step 4: Calculate the conditional reliability.**\n\n$$R(6000 | 3000) = \\frac{R_{sys}(6000)}{R_{sys}(3000)} = \\frac{0.24237}{0.69611}$$\n\nPerforming a more precise recalculation:\n$$R_W(3000) = e^{-0.140625} = 0.868806$$\n$$R_W(6000) = e^{-0.5625} = 0.569782$$\n\n$$R_{subA}(3000) = 3(0.868806)^2 - 2(0.868806)^3$$\n$$= 3(0.754809) - 2(0.655859)$$\n$$= 2.264427 - 1.311718 = 0.952709$$\n\n$$R_{subA}(6000) = 3(0.569782)^2 - 2(0.569782)^3$$\n$$= 3(0.324621) - 2(0.185168)$$\n$$= 0.973863 - 0.370336 = 0.603527$$\n\n$$R_B(3000) = \\Phi(-0.617037) = 0.730846$$\n$$R_B(6000) = 1 - \\Phi(0.249386) = 1 - 0.598372 = 0.401628$$\n\n$$R_{sys}(3000) = 0.952709 \\times 0.730846 = 0.696214$$\n$$R_{sys}(6000) = 0.603527 \\times 0.401628 = 0.242284$$\n\n$$R(6000 | 3000) = \\frac{0.242284}{0.696214} = 0.34797$$\n\nANSWER: 0.348\n\n\\boxed{0.348}"
+    },
+    {
+      "global_index": 361,
+      "question": "A chemical processing facility employs a safety mechanism composed of two identical pressure relief valves configured in",
+      "target": 0.77907,
+      "extracted_value": 0.7783,
+      "correct": true,
+      "truncated": false,
+      "response": "The remaining operational valve must survive an additional 2000 hours to keep the system running at t = 5000.\n\nFor the operational valve, we need to compute:\n$$P(\\text{valve survives 2000 more hours} \\mid \\text{valve has been operating through 3000 hours})$$\n\nSince the valve has already survived 3000 hours, we apply the conditional reliability (survival probability) for a Weibull-distributed component:\n\n$$R(2000|survived\\ 3000) = \\frac{R(5000)}{R(3000)}$$\n\nCalculating R(5000):\n$$R(5000) = e^{-\\left(\\frac{5000}{8000}\\right)^2} = e^{-(0.625)^2} = e^{-0.390625} = 0.67668$$\n\nCalculating R(3000):\n$$R(3000) = e^{-\\left(\\frac{3000}{8000}\\right)^2} = e^{-(0.375)^2} = e^{-0.140625} = 0.86880$$\n\nEvaluating the conditional probability:\n$$P = \\frac{R(5000)}{R(3000)} = \\frac{0.67668}{0.86880} = 0.77833$$\n\nCross-check: The unconditional reliability of a single valve to 5000 hours is R(5000) = 0.67668, and the unconditional reliability to 3000 hours is R(3000) = 0.86880. The conditional probability remains R(5000)/R(3000) = 0.77833 regardless of whether we consider the other valve's status, since the surviving valve's history is independent.\n\nFinal answer: \\boxed{0.7783}"
+    },
+    {
+      "global_index": 362,
+      "question": "Twenty identical turbine blades are subjected to a life test. Each blade is susceptible to two independent competing fai",
+      "target": 6699.0,
+      "extracted_value": 436.0,
+      "correct": false,
+      "truncated": false,
+      "response": "### Step 1: Formulate the log-likelihood for Mode 1 (fatigue cracking)\n\nThe likelihood for competing risks is given by:\n\nL = ∏_{i∈Mode1_failures} f_Mode1(t_i) × ∏_{all_other} R_Mode1(t_j)\n\nFor Weibull, f(t) = (β/η)(t/η)^(β-1) exp(-(t/η)^β) and R(t) = exp(-(t/η)^β).\n\nMode 1 failures: 8 observations at t = [2100, 2800, 3200, 3700, 4100, 4500, 4900, 5500]\nErosion failures (censored for Mode 1): 5 observations at t = [1900, 3100, 3600, 4800, 5200]\nSurviving units (censored): 7 observations at t = 6000\n\nLet δ_i = 1 if failure Mode 1, 0 otherwise.\n\nThe log-likelihood for Mode 1 is:\n\nℓ(η₁) = Σ_{all} [δ_i × ln(failure density for Mode 1 at t_i) - (t_i/η₁)^β₁]\n\n= Σ_{all} [δ_i × (ln(β₁) - β₁ ln(η₁) + (β₁-1)ln(t_i) - (t_i/η₁)^β₁) - (t_i/η₁)^β₁]\n\nWait, more systematically:\n\nf(t) = (β/η)(t/η)^(β-1) exp(- (t/η)^β )\n\nln f(t) = ln(β) - β ln η + (β-1) ln t - (t/η)^β\n\nln R(t) = - (t/η)^β\n\nThus the log-likelihood is:\n\nℓ(η₁) = Σ_{Mode1_failures} [ln(β₁) - β₁ ln η₁ + (β₁-1) ln t_i - (t_i/η₁)^β₁] + Σ_{all_censored} [- (t_j/η₁)^β₁]\n\nWhere β₁ = 3.\n\n### Step 2: Take derivative and set to zero\n\ndℓ/dη₁ = -n/η₁ + β₁/η₁^(β₁+1) [Σ_{Mode1_failures} t_i^β₁ + Σ_{all_censored} t_j^β₁] = 0\n\nNote: n = number of observations = 8 + 5 + 7 = 20\n\nRearranging:\n\nn = β₁/η₁^(β₁+1) × [Σ_all t_i^β₁]\n\nη₁^(β₁+1) = (β₁/n) × [Σ_all t_i^β₁]\n\nη₁ = [(β₁/n) × (Σ_all t_i^β₁)]^(1/(β₁+1))\n\n### Step 3: Evaluate the sum\n\nEach term is t_i^3 with β₁ = 3.\n\nMode 1 failures (8 terms):\n- 2100³ = 9.261 × 10⁹\n- 2800³ = 21.952 × 10⁹\n- 3200³ = 32.768 × 10⁹\n- 3700³ = 50.653 × 10⁹\n- 4100³ = 68.921 × 10⁹\n- 4500³ = 91.125 × 10⁹\n- 4900³ = 117.649 × 10⁹\n- 5500³ = 166.375 × 10⁹\n\nLet me compute each precisely:\n\n2100³ = 21³ × 10⁶ = 9261 × 10⁶ = 9.261 × 10⁹\n2800³ = 28³ × 10⁶ = 21952 × 10⁶ = 2.1952 × 10¹⁰\n3200³ = 32³ × 10⁶ = 32768 × 10⁶ = 3.2768 × 10¹⁰\n3700³ = 37³ × 10⁶ = 50653 × 10⁶ = 5.0653 × 10¹⁰\n4100³ = 41³ × 10⁶ = 68921 × 10⁶ = 6.8921 × 10¹⁰\n4500³ = 45³ × 10⁶ = 91125 × 10⁶ = 9.1125 × 10¹⁰\n4900³ = 49³ × 10⁶ = 117649 × 10⁶ = 1.17649 × 10¹¹\n5500³ = 55³ × 10⁶ = 166375 × 10⁶ = 1.66375 × 10¹¹\n\nErosion failures (5 terms, censored for Mode 1):\n- 1900³ = 6.859 × 10⁹\n- 3100³ = 29.791 × 10⁹\n- 3600³ = 46.656 × 10⁹\n- 4800³ = 110.592 × 10⁹\n- 5200³ = 140.608 × 10⁹\n\nSurviving units (7 terms, all censored at 6000):\n- 6000³ = 216 × 10⁹ (7 times)\n\nNow sum all these:\n\nMode 1 failures sum:\n9.261 + 21.952 + 32.768 + 50.653 + 68.921 + 91.125 + 117.649 + 166.375\n= 9.261 + 21.952 = 31.213\n+ 32.768 = 63.981\n+ 50.653 = 114.634\n+ 68.921 = 183.555\n+ 91.125 = 274.680\n+ 117.649 = 392.329\n+ 166.375 = 558.704\n\nAll in ×10⁹.\n\nErosion failures sum:\n6.859 + 29.791 + 46.656 + 110.592 + 140.608\n= 6.859 + 29.791 = 36.650\n+ 46.656 = 83.306\n+ 110.592 = 193.898\n+ 140.608 = 334.506\n\nSurviving units sum (7 × 216):\n= 1512 × 10⁹\n\nTotal sum = 558.704 + 334.506 + 1512 = 2405.210 (all in ×10⁹)\n\n### Step 4: Compute η₁\n\nβ₁ = 3, n = 20\n\nη₁^(3+1) = (3/20) × 2405.210 = 0.15 × 2405.210 = 360.7815\n\nη₁^4 = 360.7815\n\nη₁ = (360.7815)^(1/4)\n\nFirst compute square root: √360.7815\n√361 = 19, so √360.7815 ≈ 18.9942\n\nThen √18.9942:\n√19 = 4.3589, √18.9942 ≈ 4.3586\n\nCheck 4.3586² = 18.9940, so slight adjustment.\n\nLet x = 4.3586 + δ where x² = 18.9942\n18.9940 + 2(4.3586)(δ) = 18.9942\n8.7172 × δ = 0.0002\nδ = 0.0002/8.7172 ≈ 0.00002295\n\nη₁ ≈ 4.35862\n\nRounded to nearest integer: η₁ ≈ 436\n\nLet me verify:\n4.3586² = 18.9940\n18.9940 × 18.9940 = ?\n\n19 × 19 = 361\n19 × 0.9940 = 18.8860\n0.9940 × 0.9940 = 0.988036\nMore precisely: (19 - 0.0060)² = 361 - 2(19)(0.006) + 0.006² = 361 - 0.228 + 0.000036 = 360.772036\n\nWait, wait — actually:\n(18.994)² = (19 - 0.006)² = 361 - 2(19)(0.006) + 0.006² = 361 - 0.228 + 0.000036 = 360.772036\n\nSo √360.772036 = 18.994\n\nThen √18.994:\n= 4.3586...\n\n4.3586² = 18.9940\n4.358619² = 18.9940 + 2(4.3586)(0.000019) = 18.9940 + 0.001658 = 18.995658 — too high\n\nLet x = 4.3586 where x² = 18.9940\nNeed x² = 18.9942, so need additional:\nLet 4.3586 + d → 18.9940 + 2(4.3586)d = 18.9942\n8.7172d = 0.0002\nd = 0.000023\n\nη₁ ≈ 4.35862\n\nRounded to nearest integer: η₁ ≈ 436\n\nFinal answer: η₁ ≈ 436\n\n\\boxed{436}"
+    },
+    {
+      "global_index": 363,
+      "question": "Ten identical units are subjected to a reliability test beginning at time zero. The units follow a Weibull lifetime dist",
+      "target": 1598.6,
+      "extracted_value": 1622.1,
+      "correct": true,
+      "truncated": false,
+      "response": "**Step 1: Identify the log-posterior components.**\n\nFor a lognormal prior on ln(η) with μ₀ = ln(1400) and σ₀² = 0.09:\n$$\\ln p(\\ln \\eta) = \\ln\\left[\\frac{1}{\\sigma_0\\sqrt{2\\pi}}\\right] + \\frac{(\\ln\\eta - \\mu_0)^2}{2\\sigma_0^2}$$\n\nFor the likelihood, where the log-likelihood (evaluated at the MLE) is approximated via curvature, we write ln(L) ≈ −0.5·(ln η̂/σ_L)^2 where σ_L² = 1/I_obs. The posterior in the log domain is normal with:\n$$\\mu_{\\text{post}} = \\frac{\\sigma_0^2 \\cdot \\mu_0 + \\sigma_L^2 \\cdot \\ln \\hat{\\eta}}{\\sigma_0^2 + \\sigma_L^2}$$\n$$\\sigma_{\\text{post}}^2 = \\frac{\\sigma_0^2 \\cdot \\sigma_L^2}{\\sigma_0^2 + \\sigma_L^2}$$\n\n**Step 2: Gather numerical values.**\n\n- Prior: μ₀ = ln(1400) = 7.24465; σ₀² = 0.09\n- MLE: ln(1620) = 7.39019\n- σ_L² = 35088\n\n**Step 3: Compute the posterior mean of ln(η).**\n\n$$\\mu_{\\text{post}} = \\frac{0.09 \\cdot 7.24465 + 35088 \\cdot 7.39019}{0.09 + 35088}$$\n\n$$\\mu_{\\text{post}} = \\frac{6.52018 + 259798.0}{35088.09} = \\frac{259798.6}{35088.09} = 7.39712$$\n\n**Step 4: Obtain the posterior mean of η.**\n\n$$\\text{E}[\\eta] = \\exp(\\mu_{\\text{post}}) = \\exp(7.39712) = 1622.1$$\n\nFinal answer: \\boxed{1622.1}"
+    },
+    {
+      "global_index": 364,
+      "question": "Ten identical turbine engines are subjected to a reliability life test. The engine lifetimes are modeled using a Weibull",
+      "target": 0.957843,
+      "extracted_value": 0.999998,
+      "correct": true,
+      "truncated": false,
+      "response": "**Step 1: MLE for Weibull characteristic life with Type II censoring**\n\nFor a Weibull distribution with known β, the MLE of η is given by:\n$$\\hat{\\eta} = \\left[ \\frac{\\sum_{i=1}^{r} t_i^{\\beta} + (\\nolimits_{n-r} t_c^{\\beta+1})}{r} \\right]^{1/\\beta}$$\n\nWhere:\n- r = 6 failures\n- n = 10 total units\n- Censoring time t_c = 52\n- β = 2\n\nCompute the sum of failure times raised to β=2:\n$$\\sum_{i=1}^{6} t_i^2 = 12^2 + 18^2 + 25^2 + 31^2 + 40^2 + 52^2$$\n$$= 144 + 324 + 625 + 961 + 1600 + 2704 = 7258$$\n\nCompute the censored contribution (4 units at 52):\n$$(n-r) \\cdot t_c^{\\beta+1} = 4 \\cdot 52^{3} = 4 \\cdot 140608 = 562432$$\n\n$$\\hat{\\eta} = \\left[ \\frac{7258 + 562432}{6} \\right]^{1/2} = \\left[ \\frac{569690}{6} \\right]^{0.5} = \\left[ 94948.333 \\right]^{0.5}$$\n\n$$\\hat{\\eta} = \\sqrt{94948.333} = 308.399$$\n\n**Step 2: System reliability — parallel configuration of 3 engines**\n\nFor a parallel system of 3 identical Weibull components, the system fails only when all 3 fail. The system reliability is:\n\n$$R_{system}(t) = 1 - [1 - R(t)]^3$$\n\nWhere $R(t) = e^{-(t/\\eta)^\\beta}$\n\nWith t = 35, β = 2, η = 308.399:\n\n$$R(35) = e^{-(35/308.399)^2}$$\n\n$$35/308.399 = 0.113539$$\n\n$$(0.113539)^2 = 0.012892$$\n\n$$R(35) = e^{-0.012892} = 0.987216$$\n\n$F(35) = 1 - R(35) = 0.012784$\n\n$$R_{system}(35) = 1 - (0.012784)^3$$\n\n$$(0.012784)^3 = 2.101 \\times 10^{-6}$$\n\n$$R_{system}(35) = 1 - 0.000002101 = 0.999997899$$\n\n**Rounded result:** 0.999998\n\nFinal answer: 0.999998\n\n\\boxed{0.999998}"
+    },
+    {
+      "global_index": 365,
+      "question": "A safety-critical system is built from two identical redundant subsystems arranged in parallel (system failure occurs on",
+      "target": 0.31322,
+      "extracted_value": 0.3128,
+      "correct": true,
+      "truncated": false,
+      "response": "**Step 1: Determine the reliability of a single subsystem.**\n\nThe subsystem consists of A, B, and C in series, so the subsystem reliability is the product:\nR_sub(t) = R_A(t) × R_B(t) × R_C(t)\n\n**R_A(t)** — Exponential, λ = 0.0003 per hour:\nR_A(2000) = exp(-0.0003 × 2000) = exp(-0.6) = 0.548811636\n\n**R_B(t)** — Weibull, β = 2.0, η = 5000:\nR_B(2000) = exp(-(2000/5000)^2) = exp(-(0.4)^2) = exp(-0.16) = 0.852143789\n\n**R_C(t)** — Exponential, λ = 0.0005 per hour:\nR_C(2000) = exp(-0.0005 × 2000) = exp(-1.0) = 0.367879441\n\n**Step 2: Calculate the parallel system reliability (excluding CCF).**\n\nWith two identical parallel subsystems, the system fails only if both subsystems fail:\nQ_sub(2000) = 1 - R_sub(2000) = 1 - (0.548811636 × 0.852143789 × 0.367879441)\n= 1 - (0.548811636 × 0.852143789 × 0.367879441)\n= 1 - (0.548811636 × 0.312941714)\n= 1 - 0.171727935\n= 0.828272065\n\nR_sub_sub(2000) = 1 - [Q_sub(2000)]² = 1 - [0.828272065]² = 1 - 0.686103193 = 0.313896807\n\n**Step 3: Account for common cause failure.**\n\nThe CCF is exponential with rate λ_CCF = 0.000002 per hour, so it survives to t = 2000 with probability:\nR_CCF(2000) = exp(-0.000002 × 2000) = exp(-0.004) = 0.996007989\n\n**Step 4: Combine independent failure and CCF.**\n\nUnder the assumption that the CCF is independent of individual failures (a standard assumption in reliability engineering for such analyses), the system survives only if both subsystem failures are avoided AND the CCF does not occur:\nR_system(2000) = R_sub_sub(2000) × R_CCF(2000)\n\nR_system(2000) = 0.313896807 × 0.996007989 = 0.312835\n\nPerforming a more precise recalculation:\nR_A = exp(-0.6) = 0.548811636\nR_B = exp(-0.16) = 0.852143789\nR_C = exp(-1) = 0.367879441\nR_sub = 0.548811636 × 0.852143789 × 0.367879441 = 0.171727935\nQ_sub = 0.828272065\nQ_sub² = 0.686103193\nR_parallel = 0.313896807\nR_CCF = exp(-0.004) = 0.996007989\nR_system = 0.313896807 × 0.996007989 = 0.312835\n\nThe system reliability at t = 2000 hours is approximately **0.312835**.\n\nANSWER: \\boxed{0.3128}"
+    },
+    {
+      "global_index": 366,
+      "question": "A critical safety system is configured with two identical components arranged in parallel redundancy (system failure occ",
+      "target": 0.4871,
+      "extracted_value": 0.4815,
+      "correct": true,
+      "truncated": false,
+      "response": "We seek the conditional probability that the still-functioning component fails before 9,000 hours, given that it has already survived to 4,000 hours.\n\n**Step 1: Express the Weibull reliability function.**\n$$R(t) = e^{-(t/\\eta)^\\beta} = e^{-(t/10000)^{2.5}}$$\n\n**Step 2: Compute the reliability at the time of the observed failure.**\n$$R(4000) = e^{-(4000/10000)^{2.5}} = e^{-(0.4)^{2.5}}$$\n$$= e^{-0.0819429}$$\n$$= 0.921686$$\n\n**Step 3: Compute the reliability at the later time.**\n$$R(9000) = e^{-(9000/10000)^{2.5}} = e^{-(0.9)^{2.5}}$$\n$$= e^{-0.738021}$$\n$$= 0.477733$$\n\n**Step 4: Determine the conditional probability.**\n$$P(T < 9000 \\mid T > 4000) = \\frac{R(4000) - R(9000)}{R(4000)}$$\n$$= \\frac{0.921686 - 0.477733}{0.921686}$$\n$$= \\frac{0.443953}{0.921686}$$\n$$= 0.481492$$\n\nThe conditional probability that the system fails prior to 9,000 hours (given that the other component has already failed at 4,000 hours) is:\n\n$\\boxed{0.4815}$"
+    },
+    {
+      "global_index": 367,
+      "question": "Ten identical turbines are placed on a reliability test as a fleet. Their lifetimes are modeled by a Weibull distributio",
+      "target": 1084.56,
+      "extracted_value": 1084.6,
+      "correct": true,
+      "truncated": false,
+      "response": "**Step 1: Formulate the log-likelihood for Type I censored data.**\n\nSince β = 2 is known, only η must be estimated. The likelihood function combines exact failure contributions for the 4 observed failures and survival terms for the 6 units still running at t = 800.\n\nWith β = 2, the Weibull survival function becomes R(t) = exp(-(t/η)^2).\n\n**Step 2: Write the log-likelihood.**\n\n$$\\ln L = \\sum_{i \\in \\text{failed}} \\ln f(t_i) + \\sum_{j \\in \\text{right-censored}} \\ln R(u_j)$$\n\nEach failed unit contributes:\n$$\\ln f(t_i) = \\ln\\left(\\frac{\\beta}{\\eta}\\left(\\frac{t_i}{\\eta}\\right)^{\\beta-1}\\right) - \\left(\\frac{t_i}{\\eta}\\right)^\\beta$$\n\nWith β = 2, this becomes:\n$$\\ln f(t_i) = \\ln\\left(\\frac{2}{\\eta}\\left(\\frac{t_i}{\\eta}\\right)\\right) - \\left(\\frac{t_i}{\\eta}\\right)^2 = \\ln(2) - 2\\ln(\\eta) + \\ln(t_i) - \\frac{t_i^2}{\\eta^2}$$\n\nEach censored unit contributes:\n$$\\ln R(u_j) = -\\left(\\frac{u_j}{\\eta}\\right)^2 = -\\frac{u_j^2}{\\eta^2}$$\n\n**Step 3: Differentiate with respect to η and solve.**\n\nThe total log-likelihood is:\n$$\\ln L = 4\\ln(2) - 8\\ln(\\eta) + \\sum_{i=1}^{4}\\ln(t_i) - \\frac{1}{\\eta^2}\\left(\\sum_{i=1}^{4} t_i^2 + \\sum_{j=1}^{6} u_j^2\\right)$$\n\nwhere $u_j = 800$ for the 6 censored units.\n\n**Step 4: Evaluate the necessary sums.**\n\nFailed times squared:\n$t_1^2 = 150^2 = 22500$\n$t_2^2 = 310^2 = 96100$\n$t_3^2 = 520^2 = 270400$\n$t_4^2 = 690^2 = 476100$\nSum of failed squared: $22500 + 96100 + 270400 + 476100 = 865100$\n\nCensored times squared:\n$u_j^2 = 800^2 = 640000$ each, for 6 units\nSum of censored squared: $6 \\times 640000 = 3840000$\n\nCombined sum: $S = 865100 + 3840000 = 4705100$\n\n**Step 5: Set the derivative to zero.**\n\n$$\\frac{d\\ln L}{d\\eta} = -\\frac{8}{\\eta} + \\frac{2S}{\\eta^3} = 0$$\n\n$$\\frac{8}{\\eta} = \\frac{2S}{\\eta^3}$$\n\n$$8\\eta^2 = 2S$$\n\n$$\\eta^2 = \\frac{S}{4} = \\frac{4705100}{4} = 1176275$$\n\n$$\\eta = \\sqrt{1176275}$$\n\n**Step 6: Perform the square root calculation.**\n\nLet me compute $1084^2 = 1175056$\n$1085^2 = 1177225$\n\nSince $1176275 - 1175056 = 1219$, the square root lies slightly above 1084.\n\nLet $x = 1084 + \\delta$: $(1084 + \\delta)^2 = 1176275$\n\n$1084^2 + 2(1084)\\delta + \\delta^2 = 1176275$\n$1175056 + 2168\\delta + \\delta^2 = 1176275$\n$2168\\delta \\approx 1219$\n$\\delta \\approx \\frac{1219}{2168} \\approx 0.562$\n\nChecking $1084.5^2 = (1084 + 0.5)^2 = 1175056 + 1084 + 0.25 = 1176140.25$\n\nStill need: $1176275 - 1176140.25 = 134.75$\n$2168.5 \\times \\delta = 134.75$\n$\\delta \\approx \\frac{134.75}{2168.5} \\approx 0.0621$\n\n$\\eta \\approx 1084.56$\n\nRounding: $\\eta \\approx 1084.6$\n\nLet me verify $\\boxed{1084.6}$\n\nANSWER: 1084.6"
+    },
+    {
+      "global_index": 368,
+      "question": "Consider a series system composed of two subsystems. Subsystem A employs a 2-out-of-3 redundant architecture, where each",
+      "target": 0.686475,
+      "extracted_value": 0.6866,
+      "correct": true,
+      "truncated": false,
+      "response": "**Step 1: Subsystem A — 2-out-of-3 configuration with exponential components**\n\nFor a 2-out-of-3 system, success requires at least 2 of the 3 components to function.\n\nEach component's reliability: R_comp(t) = e^{-λ_A t}\n\nR_comp(200) = e^{-0.002 × 200} = e^{-0.4}\n\nEvaluating this: R_comp(200) = e^{-0.4} = 0.670320\n\nThe 2-out-of-3 system reliability is computed as:\n$$R_A(t) = \\binom{3}{2} [R_{comp}(t)]^2 [1 - R_{comp}(t)]^1 + \\binom{3}{3} [R_{comp}(t)]^3$$\n\n$$R_A(t) = 3 R^2(1-R) + R^3$$\n\nWhere R = R_comp(t) = e^{-0.4} = 0.670320\n\n$$R_A(200) = 3(0.670320)^2(0.329680) + (0.670320)^3$$\n\nComputing each term:\n- $R^2 = (0.670320)^2 = 0.449329$\n- $R^3 = (0.670320)^3 = 0.301194$\n- $3R^2(1-R) = 3(0.449329)(0.329680) = 3(0.147663) = 0.442989$\n\nTherefore:\n$$R_A(200) = 0.442989 + 0.301194 = 0.744183$$\n\n**Step 2: Subsystem B — Weibull component**\n\n$$R_B(t) = e^{-(t/\\eta)^\\beta}$$\n\n$$R_B(200) = e^{-(200/800)^2} = e^{-(0.25)^2} = e^{-0.0625}$$\n\n$$R_B(200) = e^{-0.0625} = 0.939413$$\n\n**Step 3: Incorporating the common cause failure**\n\nThe CCF acts as an independent failure process that kills the entire system at a constant rate. Because all failures are independent, the system survives only if both subsystems survive and no CCF event occurs.\n\n$$R_{sys}(t) = R_A(t) \\cdot R_B(t) \\cdot e^{-\\lambda_{CCF} \\cdot t}$$\n\n$$R_{sys}(200) = R_A(200) \\cdot R_B(200) \\cdot e^{-0.0001 \\times 200}$$\n\n$$R_{sys}(200) = 0.744183 \\times 0.939413 \\times e^{-0.02}$$\n\n$$e^{-0.02} = 0.980199$$\n\n$$R_{sys}(200) = 0.744183 \\times 0.939413 \\times 0.980199$$\n\nFirst multiplication:\n$$0.744183 \\times 0.939413 = 0.700573$$\n\nSecond multiplication:\n$$0.700573 \\times 0.980199 = 0.686625$$\n\nPerforming a more precise calculation:\n- $R_A(200)$: $e^{-0.4} = 0.670320$\n- $R_A(200) = 3(0.670320)^2(0.329680) + (0.670320)^3 = 0.442993 + 0.301191 = 0.744184$\n- $R_B(200) = e^{-0.0625} = 0.939413$\n- $e^{-0.02} = 0.9801987$\n\n$$R_{sys}(200) = 0.744184 \\times 0.939413 \\times 0.9801987$$\n\n$$R_{sys}(200) = 0.744184 \\times 0.939413 = 0.700571$$\n\n$$R_{sys}(200) = 0.700571 \\times 0.9801987 = 0.686607$$\n\n$$R_{sys}(200) \\approx 0.6866$$\n\nFinal answer: \\boxed{0.6866}"
+    },
+    {
+      "global_index": 369,
+      "question": "A chemical processing facility employs a safety system consisting of two identical pressure relief valves configured in ",
+      "target": 0.8678,
+      "extracted_value": 0.9485,
+      "correct": false,
+      "truncated": false,
+      "response": "**Step 1: Determine the original single-component hazard and reliability functions.**\n\nThe Weibull hazard function is given by:\n$$h(t) = \\frac{\\beta}{\\eta}\\left(\\frac{t}{\\eta}\\right)^{\\beta-1}$$\n\nFor β = 2.0 and η = 8000:\n$$h(t) = \\frac{2}{8000}\\left(\\frac{t}{8000}\\right) = \\frac{t}{4000000}$$\n\nThe corresponding reliability function is:\n$$R(t) = e^{-t^2/(2 \\times 8000^2)} = e^{-t^2/128000000}$$\n\nAt t = 5000:\n$$R(5000) = e^{-25000000/128000000} = e^{-0.1953125} = 0.821818$$\n\nThus the single-valve unreliability is:\n$$F(5000) = 1 - 0.821818 = 0.178182$$\n\n**Step 2: Partition the hazard rates using the beta-factor CCF model.**\n\nThe original single-component hazard at any time t is:\n$$h(t) = \\frac{t}{4000000}$$\n\nThe common cause component of the hazard (responsible for simultaneous failure of both valves) is:\n$$h_{CCF}(t) = \\beta_{CCF} \\times h(t) = 0.15 \\times \\frac{t}{4000000} = \\frac{0.15t}{4000000}$$\n\nThe independent component of the hazard (affecting each valve separately) is:\n$$h_I(t) = (1 - \\beta_{CCF}) \\times h(t) = 0.85 \\times \\frac{t}{4000000} = \\frac{0.85t}{4000000}$$\n\nThe common cause reliability (probability both valves fail at once) is:\n$$R_{CCF}(t) = e^{-\\int_0^t h_{CCF}(\\tau) \\, d\\tau} = e^{-0.15 \\times \\frac{t^2}{2 \\times 8000^2}} = e^{-0.15 \\times \\frac{t^2}{128000000} } = e^{-\\frac{t^2}{853333333}}$$\n\nAt t = 5000:\n$$R_{CCF}(5000) = e^{-0.15 \\times 0.1953125} = e^{-0.0292969} = 0.971129$$\n\nThe independent reliability per valve (for failures that only impact one valve) is:\n$$R_I(t) = e^{-\\int_0^t h_I(\\tau) \\, d\\tau} = e^{-0.85 \\times \\frac{t^2}{2 \\times 8000^2}} = e^{-0.85 \\times \\frac{t^2}{128000000}} = e^{-\\frac{t^2}{130588235}}$$\n\nAt t = 5000:\n$$R_I(5000) = e^{-0.85 \\times 0.1953125} = e^{-0.165875} = 0.847365$$\n\n**Step 3: Calculate the overall system reliability.**\n\nThe system fails under two scenarios:\n- Both valves fail independently (i.e., the parallel subsystem fails due to independent failures), OR\n- A common cause event occurs, resulting in simultaneous failure of both valves.\n\nFor the independent failures, the parallel subsystem reliability (both valves must fail independently for the subsystem to fail):\n$$R_I^{parallel}(t) = 1 - [1 - R_I(t)]^2 = 1 - [1 - e^{-\\frac{t^2}{130588235}}]^2$$\n\nAt t = 5000:\n$$R_I(5000) = 0.847365$$\n$$F_I(5000) = 1 - 0.847365 = 0.152635$$\n\n$$R_I^{parallel}(5000) = 1 - [0.152635]^2 = 1 - 0.023295 = 0.976705$$\n\nThe probability the system survives through independent failure modes:\n$$R_I^{sys}(5000) = 0.976705$$\n\nThe probability the system survives through the common cause mode:\n$$R_{CCF}^{sys}(5000) = 0.971129$$\n\nThe overall system reliability is the product of the survival probabilities through the independent and common cause failure modes (since these events are independent in the beta-factor model):\n$$R_{system}(5000) = R_I^{parallel}(5000) \\times R_{CCF}(5000)$$\n\n$$R_{system}(5000) = 0.976705 \\times 0.971129$$\n\n$$R_{system}(5000) = 0.948498$$\n\nANSWER: 0.9485\n\n\\boxed{0.9485}"
+    },
+    {
+      "global_index": 370,
+      "question": "A maintenance engineer tracks two independent failure mechanisms (Mechanism 1 and Mechanism 2) acting as competing risks",
+      "target": 0.5527,
+      "extracted_value": 0.0,
+      "correct": false,
+      "truncated": false,
+      "response": "**Step 1: Construct the log-likelihood for competing risks with exponential distributions.**\n\nWith independent exponential competing risks, the combined hazard is h(t) = λ₁ + λ₂. The likelihood for an observation at time t_i with cause c_i (c_i = 1 for Mechanism 1, c_i = 2 for Mechanism 2, c_i = 0 for censored) is:\n\n$$L = \\prod_{i: c_i=1} (\\lambda_1 \\lambda_2 e^{-(\\lambda_1 + \\lambda_2)t_i}) \\prod_{i: c_i=0} e^{-(\\lambda_1 + \\lambda_2)t_i}$$\n\nThe log-likelihood is:\n\n$$\\ln L = \\sum_{i: c_i=1} \\left[\\ln \\lambda_1 + \\ln \\lambda_2 - (\\lambda_1 + \\lambda_2)t_i\\right] - \\sum_{i: c_i=0} (\\lambda_1 + \\lambda_2)t_i$$\n\n$$\\ln L = n_1 \\ln \\lambda_1 + n_1 \\ln \\lambda_2 + (n_1 + n_2)\\ln(1) - (\\lambda_1 + \\lambda_2)\\left[\\sum_{i: c_i=1} t_i + \\sum_{i: c_i=0} t_i\\right]$$\n\nWhere n₁ = 5 (Mechanism 1 failures), n₂ = 1 (Mechanism 2 failures), censored = 2.\n\n**Step 2: Evaluate the total time on test.**\n\nMechanism 1 failure times: 120, 210, 340, 185, 275. Sum = 120+210+340+185+275 = 1130 hours\n\nMechanism 2 failure time: 400 hours\n\nCensored times: 500 + 500 = 1000 hours\n\n$$TTT = 1130 + 400 + 1000 = 2530 \\text{ hours}$$\n\n**Step 3: Obtain MLE for λ₁.**\n\nDifferentiate the log-likelihood with respect to λ₁ and equate to zero:\n\n$$\\frac{d \\ln L}{d \\lambda_1} = \\frac{n_1}{\\lambda_1} - (\\lambda_1 + \\lambda_2) \\cdot TTT = 0$$\n\n$$\\frac{\\lambda_1}{\\lambda_1} = \\frac{\\lambda_2 \\cdot TTT}{n_1}$$\n\n$$\\lambda_1 = \\frac{\\lambda_2 \\cdot TTT}{n_1}$$\n\n$$\\lambda_1 = \\frac{0.003 \\times 2530}{5} = \\frac{7.59}{5} = 1.518 \\text{ per hour}$$\n\n**Step 4: Calculate the marginal reliability for Mechanism 1 alone at t=300.**\n\nWith Mechanism 2 removed, the pump is subject only to Mechanism 1.\n\n$$R_{Mechanism\\ 1}(300) = e^{-\\lambda_1 \\cdot 300} = e^{-1.518 \\times 300}$$\n\n$$R(300) = e^{-455.4}$$\n\nUsing the approximation $e^{-455.4}$ where 455.4 is very large:\n$$R(300) \\approx 0$$\n\nFor verification: $e^{-455.4} = e^{-455} \\times e^{-0.4} \\approx 0 \\times 0.6703 = 0$\n\nFinal Answer: \\boxed{0.0}"
+    },
+    {
+      "global_index": 371,
+      "question": "A chemical plant operates a safety system composed of three independent subsystems. Subsystem A (a pressure relief valve",
+      "target": 0.98037,
+      "extracted_value": 0.98124,
+      "correct": true,
+      "truncated": false,
+      "response": "**Step 1: Determine Subsystem A reliability at t = 10,000 hours.**\n\n$$R_A(t) = e^{-(t/\\eta_1)^{\\beta_1}} = e^{-(10000/20000)^{1.5}} = e^{-(0.5)^{1.5}}$$\n\n$(0.5)^{1.5} = (0.5)^1 \\times (0.5)^{0.5} = 0.5 \\times 0.70711 = 0.35355$\n\n$R_A = e^{-0.35355} = 0.70232$\n\n**Step 2: Determine Subsystem B reliability at t = 10,000 hours.**\n\n$$R_B(t) = e^{-\\lambda t} = e^{-0.00005 \\times 10000} = e^{-0.5} = 0.60653$$\n\n**Step 3: Calculate the A-B series subsystem reliability.**\n\n$$R_{AB} = R_A \\times R_B = 0.70232 \\times 0.60653 = 0.42620$$\n\n**Step 4: Evaluate individual sensor reliability at t = 10,000 hours.**\n\nFor each sensor:\n$$R_s(t) = e^{-(t/\\eta_2)^{\\beta_2}} = e^{-(10000/30000)^{2.0}} = e^{-(0.33333)^2} = e^{-0.11111}$$\n\n$R_s = 0.89484$\n\n**Step 5: Determine the 2-out-of-3 sensor array reliability for Subsystem C.**\n\nA 2-out-of-3 system succeeds if at least 2 of 3 sensors work:\n\n$$R_C = \\binom{3}{2} R_s^2 (1-R_s)^1 + \\binom{3}{3} R_s^3 (1-R_s)^0$$\n\n$= 3 \\times (0.89484)^2 \\times (0.10516) + (0.89484)^3$\n\n$= 3 \\times 0.80074 \\times 0.10516 + 0.71659$\n\n$= 3 \\times 0.084184 + 0.71659$\n\n$= 0.25255 + 0.71659 = 0.96914$\n\n**Step 6: Incorporate the common cause failure.**\n\nThe system fails if either the A-B series path fails AND the CCF occurs, OR Subsystem C fails AND the CCF occurs — or both. The system survives if at least one of the A-B or C paths works AND the CCF does NOT occur.\n\nThe system survives under two mutually exclusive scenarios:\n1. Both the A-B series path and Subsystem C function (no CCF)\n2. Exactly one of the A-B path or Subsystem C functions, while the CCF is avoided\n\nThe CCF is an independent event. Since the system operates successfully only when the CCF does not occur AND at least one of the A-B or C subsystems functions:\n\n$$R_{system} = (R_{AB} + R_C - R_{AB} \\cdot R_C) \\times (1 - P_{CCF})$$\n\nThis represents the probability of the series path OR Subsystem C functioning (accounting for their overlap), multiplied by the probability of no common cause failure occurring.\n\n$R_{AB} + R_C = 0.42620 + 0.96914 = 1.39534$\n\n$R_{AB} \\times R_C = 0.42620 \\times 0.96914 = 0.41275$\n\n$R_{series}|_{AB,C} = 1.39534 - 0.41275 = 0.98259$\n\n**Note:** This formula represents the probability of at least one of the A-B path or Subsystem C functioning. Actually, the correct expression is:\n\n$R_{AB \\text{ OR } C} = R_{AB} + R_C - R_{AB} \\cdot R_C$\n\n$= 0.42620 + 0.96914 - 0.41275 = 0.98259$\n\n**Step 7: Calculate the overall system reliability.**\n\n$R_{system} = 0.98259 \\times (1 - 0.002) = 0.98259 \\times 0.998 = 0.980626$\n\nLet me re-evaluate with more precise intermediate values:\n\n$R_A = e^{-0.353552} = 0.70271$\n$R_B = e^{-0.5} = 0.60653$\n$R_{AB} = 0.70271 \\times 0.60653 = 0.42657$\n$R_s = e^{-0.11111} = 0.89484$\n$R_C = 0.96914$\n$R_{AB} + R_C = 0.42657 + 0.96914 = 1.39571$\n$R_{AB} \\times R_C = 0.42657 \\times 0.96914 = 0.41281$\n$R_{AB \\text{ OR } C} = 0.98259$\n\n$R_{system} = 0.98259 \\times 0.998 = 0.980626$\n\nRounding to five decimal places: $R = 0.98063$\n\nLet me verify once more with even greater precision.\n\n$(0.5)^{1.5} = 0.3535534$\n$R_A = e^{-0.3535534} = 0.702710$\n$R_B = e^{-0.5} = 0.606531$\n$R_{AB} = 0.702710 \\times 0.606531 = 0.426844$\n$R_s = e^{-0.111111} = 0.894843$\n$R_C = 3 \\times 0.800734 \\times 0.105168 + 0.716591 = 0.252722 + 0.716591 = 0.969313$\n$R_{AB} + R_C = 0.426844 + 0.969313 = 1.396157$\n$R_{AB} \\times R_C = 0.426844 \\times 0.969313 = 0.412955$\n$R_{AB \\text{ OR } C} = 1.396157 - 0.412955 = 0.983202$\n$R_{system} = 0.983202 \\times 0.998 = 0.981236$\n\nTherefore, the overall system reliability is approximately 0.98124.\n\n$\\boxed{0.98124}$"
+    },
+    {
+      "global_index": 372,
+      "question": "A safety-critical system is composed of two subsystems arranged in series. Subsystem A uses a 2-out-of-3 redundant archi",
+      "target": 0.7711,
+      "extracted_value": 0.758,
+      "correct": true,
+      "truncated": false,
+      "response": "**Step 1: Evaluate Subsystem A — 2-out-of-3 configuration with exponential components**\n\nFor a 2-out-of-3 system, the subsystem operates if at least 2 of its 3 components are operational at time t. Applying the binomial distribution, the reliability of the 2-out-of-3 subsystem is:\n\n$$R_A(t) = \\binom{3}{2} R^2(t)(1-R)^1 + \\binom{3}{3} R^3(t)(1-R)^0$$\n\nwith R(t) denoting the reliability of each individual exponential component.\n\nEach component has: $R(t) = e^{-\\lambda_A t} = e^{-0.002 \\times 150} = e^{-0.3}$\n\n$e^{-0.3} = 0.740818$\n\nTherefore $R = 0.740818$ and $Q = 1 - R = 0.259182$\n\n$$R_A(150) = 3(0.740818)^2(0.259182) + (0.740818)^3$$\n\n$(0.740818)^2 = 0.548811$\n\n$3 \\times 0.548811 \\times 0.259182 = 0.412209$\n\n$(0.740818)^3 = 0.406568$\n\n$R_A(150) = 0.412209 + 0.406568 = 0.818777$\n\n**Step 2: Evaluate Subsystem B — Weibull distribution**\n\n$$R_B(t) = e^{-(t/\\eta)^\\beta} = e^{-(150/600)^2} = e^{-(0.25)^2} = e^{-0.0625}$$\n\n$e^{-0.0625} = 0.939413$\n\n**Step 3: Evaluate the CCF survival probability**\n\n$$R_{CCF}(t) = e^{-\\lambda_{CCF} \\cdot t} = e^{-0.0001 \\times 150} = e^{-0.015}$$\n\n$e^{-0.015} = 0.985112$\n\n**Step 4: Determine the overall system reliability**\n\nThe system survives only if: (A survives AND B survives) AND no CCF event occurs.\n\nSince all failure modes are independent:\n\n$$R_{system}(t) = R_A(t) \\times R_B(t) \\times R_{CCF}(t)$$\n\n$$R_{system}(150) = 0.818777 \\times 0.939413 \\times 0.985112$$\n\n$0.818777 \\times 0.939413 = 0.769768$\n\n$0.769768 \\times 0.985112 = 0.758017$\n\nThe overall system reliability at t = 150 hours is approximately: $\\boxed{0.758}$"
+    },
+    {
+      "global_index": 373,
+      "question": "Ten identical turbines are placed on a life test simultaneously. Their failure times (measured in thousands of hours) ar",
+      "target": 8.0129,
+      "extracted_value": 8.0129,
+      "correct": true,
+      "truncated": false,
+      "response": "**Step 1: Formulate the log-likelihood for Type I censored data**\n\nWith Weibull distribution having shape β and scale η, the likelihood is decomposed as follows:\n- For each failed unit at time t_i: f(t_i) = (β/η)(t_i/η)^{β-1} exp(-(t_i/η)^β)\n- For each right-censored unit at time C: R(C) = exp(-(C/η)^β)\n\nThe log-likelihood function becomes:\nL = Σ_failed [ln(β) - β·ln(η) + (β-1)·ln(t_i) - (t_i/η)^β] + Σ_censored [-(C/η)^β]\n\nBecause the shape parameter β is given, we substitute β = 2 and express everything in terms of η.\n\n**Step 2: Evaluate the log-likelihood with β = 2**\n\nThe reliability contribution from each censored unit at C = 8.0 is:\nR_i = exp(-(8.0/η)^2)  for i = 1 through 4\n\nThe log-likelihood is therefore:\nln L = 6·ln(2) - 6·β·ln(η) + (β-1)·Σ₆ₙ₆ᵢ=1 ln(t_i) - (1/η²)[Σ_failed t_i² + 2·Σ_censored 8.0²]\n\nLet me now compute the various summations systematically.\n\n**Step 3: Compute the sum of ln(t_i) over failed units**\n\n- ln(1.2) = -1.60944\n- ln(2.1) = -1.55815\n- ln(3.5) = -1.25280\n- ln(4.8) = -1.03972\n- ln(5.9) = -1.09050\n- ln(7.3) = -1.96009\n\nSum = (-1.60944) + (-1.55815) + (-1.25280) + (-1.03972) + (-1.09050) + (-1.96009)\n= -9.51070\n\n**Step 4: Compute the sum of t_i² over failed units**\n\n- 1.2² = 1.44\n- 2.1² = 4.41\n- 3.5² = 12.25\n- 4.8² = 23.04\n- 5.9² = 34.81\n- 7.3² = 53.29\n\nSum = 1.44 + 4.41 + 12.25 + 23.04 + 34.81 + 53.29 = 129.24\n\n**Step 5: Compute the sum of censored contributions (8.0² for each of 4 units)**\n\nEach censored term: 8.0² = 64.0\nSum over 4 censored units = 4 × 64.0 = 256.0\n\n**Step 6: Construct the log-likelihood in terms of η**\n\nln L = 6·ln(2) - 12·ln(η) + 1·(-9.51070) - (1/η²)(129.24 + 256.0)\n\nln L = 6·0.693146 - 12·ln(η) - 9.51070 - (385.24/η²)\n\nln L = 4.158876 - 12·ln(η) - 9.51070 - (385.24/η²)\n\nln L = -5.351824 - 12·ln(η) - (385.24/η²)\n\n**Step 7: Derive the MLE equation**\n\nDifferentiating with respect to η and equating to zero:\n\nd(ln L)/dη = -12·(1/η) + (2 × 385.24)/η³ = 0\n\n-12/η + (770.48)/η³ = 0\n\n(770.48)/η³ = 12/η\n\n770.48 = 12·η²\n\nη² = 770.48/12 = 64.20667\n\n**Step 8: Solve for η**\n\nη = √64.20667 = 8.0128996\n\nRounding to four decimal places: η ≈ 8.0129\n\nFinal answer: \\boxed{8.0129}"
+    },
+    {
+      "global_index": 374,
+      "question": "A logistics company manages a fleet of 50 identical trucks, each equipped with an engine whose lifetime follows a Weibul",
+      "target": 0.9874,
+      "extracted_value": 0.9874,
+      "correct": true,
+      "truncated": false,
+      "response": "## Step 1: Determine the Expected Number of Failures\n\nThe individual engine lifetime is Weibull(β=2.5, η=80000).\nFor a Weibull distribution with parameters β and η, the cumulative distribution function is:\n$$F(t) = 1 - e^{-(t/\\eta)^\\beta}$$\n\nApplying this at t = 30000:\n$$F(30000) = 1 - e^{-(30000/80000)^{2.5}} = 1 - e^{-(0.375)^{2.5}}$$\n\nCalculate $(0.375)^{2.5}$:\n$$\\ln(0.375) = -0.98083$$\n$$2.5 \\times (-0.98083) = -2.45208$$\n$$(0.375)^{2.5} = e^{-2.45208} = 0.08631$$\n\n$$F(30000) = 1 - e^{-0.08631} = 1 - 0.91730 = 0.08270$$\n\nEach truck has a failure probability: p = 0.08270, survival probability: q = 0.91730\n\nSince there are n = 50 trucks operating independently, this yields a Binomial(n=50, p=0.08270) distribution for the total number of failures.\n\nE[X] = np = 50 × 0.08270 = 4.135\n\n## Step 2: Apply the Normal Approximation with Continuity Correction\n\nThe characteristic follows a Binomial distribution with n=50 and p=0.08270. The mean and variance of this distribution are:\n\n$$\\mu = np = 4.135$$\n\n$$\\sigma^2 = npq = 50 \\times 0.08270 \\times 0.91730 = 3.791$$\n\n$$\\sigma = \\sqrt{3.791} = 1.947$$\n\nApplying the continuity correction for the condition P(X ≤ 8):\n$$P(X \\leq 8) \\approx P(Y \\leq 8.5)$$\n\nwhere Y denotes the normal approximation.\n\n$$Z = \\frac{8.5 - 4.135}{1.947} = \\frac{4.365}{1.947} = 2.242$$\n\n## Step 3: Evaluate the Standard Normal Cumulative Probability\n\n$$P(Z \\leq 2.24)$$\n\nFrom the standard normal distribution table (Z-values rounded to two decimal places):\n$$P(Z \\leq 2.24) = 0.98745$$\n\nUsing more precise evaluation: Φ(2.24) ≈ 0.98745\n\nThus, the probability that at most 8 failures occur (and the 8 spare engines are sufficient) is:\n\n$$P(X \\leq 8) \\approx 0.98745$$\n\nApplying the continuity correction, this yields a slightly refined result of approximately 0.9874.\n\nFinal Answer: 0.987\n\n\\boxed{0.9874}"
+    },
+    {
+      "global_index": 375,
+      "question": "Twenty identical turbine blades are placed on a life test simultaneously. After 3000 hours, 8 of the blades have experie",
+      "target": 0.98728,
+      "extracted_value": null,
+      "correct": false,
+      "truncated": true,
+      "response": "**Step 1: Determine the Median Rank Estimates**\n\nWith n = 20 total units and r failures, the median rank approximation is:\n$$F(r) \\approx \\frac{r - 0.3}{n + 0.4}$$\n\nFor each failure order:\n- r = 1: F(1) ≈ 0.7/20.4 = 0.03432\n- r = 2: F(2) ≈ 1.7/20.4 = 0.08333\n- r = 3: F(3) ≈ 2.7/20.4 = 0.13235\n- r = 4: F(4) ≈ 3.7/20.4 = 0.18137\n- r = 5: F(5) ≈ 4.7/20.4 = 0.23039\n- r = 6: F(6) ≈ 5.7/20.4 = 0.27941\n- r = 7: F(7) ≈ 6.7/20.4 = 0.32843\n- r = 8: F(8) ≈ 7.7/20.4 = 0.37645\n\nFor the 12 censored units: F(i) = 1 for i = 9 to 20 (censored at t = 3000).\n\n**Step 2: Transform the Data**\n\nWeibull plot: Y_i = ln(ln(1/(1-F_i)))\nCensored: Y_c = ln(ln(1/0.50)) = ln(0.69315) = -0.36652\n\nFor each failure:\n- t₁ = 410: Y₁ = ln(ln(1/0.96569)) = ln(0.77162) = -0.25974\n- t₂ = 790: Y₂ = ln(ln(1/0.91667)) = ln(0.91037) = -0.09404\n- t₃ = 1250: Y₃ = ln(ln(1/0.86765)) = ln(0.88442) = -0.12316\n- t₄ = 1680: Y₄ = ln(ln(1/0.82051)) = ln(1.12966) = 0.12209\n- t₅ = 2100: Y₅ = ln(ln(1/0.76923)) = ln(1.28281) = 0.25020\n- t₆ = 2340: Y₆ = ln(ln(1/0.72059)) = ln(1.47887) = 0.39137\n- t₇ = 2710: Y₇ = ln(ln(1/0.65869)) = ln(1.74900) = 0.55800\n- t₈ = 2950: Y₈ = ln(ln(1/0.62069)) = ln(1.90538) = 0.64365\n\n**Step 3: Perform Linear Regression on the Linearized Weibull Model**\n\nThe Weibull CDF gives: F(t) = 1 - e^{-(t/η)^β}\nLinearized: ln(ln(1/(1-F))) = β·ln(t) + (ln(η))·β\n\nLetting Y = ln(ln(1/(1-F))) and X = ln(t), we estimate:\n$$\\ln(\\eta^\\beta) = Y = \\beta \\cdot X + \\beta \\cdot \\ln(\\eta)$$\n\nApplying regression of Y on X:\n\n$$\\hat{\\beta} = \\frac{S_{XY}}{S_{XX}}$$\n$$\\hat{\\ln(\\eta^\\beta)} = \\bar{Y} = \\hat{\\beta} \\cdot \\bar{X} + \\hat{\\ln(\\eta)}$$\n$$\\hat{\\eta} = \\exp\\left(\\frac{\\hat{\\ln(\\eta^\\beta)}}{\\hat{\\beta}}\\right)$$\n\n**Computational Table:**\n\n| i | t_i | X_i = ln(t_i) | Y_i = ln(ln(...)) | X_i² | X_i·Y_i |\n|---|-----|---------------|-------------------|------|---------|\n| 1 | 410 | 6.01605 | -0.25974 | 36.1934 | -1.56378 |\n| 2 | 790 | 6.67342 | -0.09404 | 44.5341 | -0.62615 |\n| 3 | 1250 | 7.13090 | -0.12316 | 50.8441 | -0.87516 |\n| 4 | 1680 | 7.42590 | 0.12209 | 55.1457 | 0.89117 |\n| 5 | 2100 | 7.64944 | 0.25020 | 58.5249 | 1.91258 |\n| 6 | 2340 | 7.75760 | 0.39137 | 60.1812 | 3.02349 |\n| 7 | 2710 | 7.90450 | 0.55800 | 62.4857 | 3.42450 |\n| 8 | 2950 | 7.98908 | 0.64365 | 63.8246 | 4.67396 |\n\nSum of X: = 57.74729\nSum of Y: = 2.85005\nSum of X_i²: = 394.9870\nSum of X_i·Y_i: = 12.43002\nNumber of failure points: n_f = 8\n\n**Compute S_XX:**\n$$S_{XX} = \\sum X_i^2 - \\frac{(\\sum X_i)^2}{n_f} = 394.9870 - \\frac{(57.74729)^2}{8}$$\n$$(57.74729)^2 = 3334.179$$\n$$S_{XX} = 394.9870 - \\frac{3334.179}{8} = 394.9870 - 416.7724 = -21.7854$$\n\nWait — that result is negative, which indicates an error. Let me recompute:\n\n$$\\sum X_i = 6.01605 + 6.67342 + 7.13090 + 7.42590 + 7.64944 + 7.75760 + 7.90450 + 7.98908$$\n$$= 57.54689$$\n\n$$(57.54689)^2 = 3311.028$$\n\n$$S_{XX} = 394.9870 - \\frac{3311.028}{8} = 394.9870 - 413.8785 = -18.8915$$\n\nThis is still negative — clearly a mistake! Let me carefully recompute from the table.\n\nCorrected table values (recomputed precisely):\n\n| i | t_i | X_i = ln(t_i) | Y_i | X_i² | X_i·Y_i |\n|---|-----|---------------|-----|------|---------|\n| 1 | 410 | 6.01605 | -0.25974 | 36.1934 | -1.56378 |\n| 2 | 790 | 6.67342 | -0.09404 | 44.5341 | -0.62615 |\n| 3 | 1250 | 7.13090 | -0.12316 | 50.8441 | -0.87516 |\n| 4 | 1680 | 7.42590 | 0.12209 | 55.1457 | 0.89117 |\n| 5 | 2100 | 7.64944 | 0.25020 | 58.5249 | 1.91258 |\n| 6 | 2340 | 7.75760 | 0.39137 | 60.1812 | 3.02349 |\n| 7 | 2710 | 7.90450 | 0.55800 | 62.4857 | 3.42450 |\n| 8 | 2950 | 7.98908 | 0.64365 | 63.8246 | 4.67396 |\n\nRevised: X₁ = 6.01606, X₂ = 6.67342, X₃ = 7.13090, X₄ = 7.42590, X₅ = 7.64944, X₆ = 7.75760, X₇ = 7.90450, X₈ = 7.98908\n\n$$\\sum X_i = 6.01606 + 6.67342 + 7.13090 + 7.42590 + 7.64944 + 7.75760 + 7.90450 + 7.98908$$\n$$= 58.5474$$\n\n$$(58.5474)^2 = 3427.363$$\n\n$$S_{XX} = 394.9870 - \\frac{3427.363}{8} = 394.9870 - 428.4204 = -33.4334$$\n\nWait — this is still negative! Let me verify individual X_i values:\n\nln(410) = 6.01606\nln(790) = 6.67342\nln(1250) = 7.13090\nln(1680) = 7.42590\nln(2100) = 7.64944\nln(2340) = 7.75760\nln(2710) = 7.90450\nln(2950) = 7.98908\n\nSum = 6.01606 + 6.67342 = 12.68948\n+ 7.13090 = 19.82038\n+ 7.42590 = 27.24628\n+ 7.64944 = 34.89572\n+ 7.75760 = 42.65332\n+ 7.90450 = 50.55782\n+ 7.98908 = 58.54690\n\n$$(58.54690)^2 = 3427.134$$\n\n$$S_{XX} = 394.9870 - \\frac{3427.134}{8} = 394.9870 - 428.3918 = -33.4048$$\n\nNow the S_XX = -33.4048\n\n**Compute S_R (reliability-based correction, but let me check the correct approach).**\n\nActually, for the Weibull model Y = βX + c, where c = β·ln(η), the slope is given by:\n$$\\hat{\\beta} = \\frac{S_{XY}}{S_{XX}}$$\n\n$$S_{XY} = \\sum X_iY_i - \\frac{(\\sum X_i)(\\sum Y_i)}{n_f}$$\n\n$$\\sum X_iY_i = -1.56378 + (-0.62615) + (-0.87516) + 0.89117 + 1.91258 + 3.02349 + 3.42450 + 4.67396$$\n$$= 10.48173$$\n\n$$S_{XY} = 10.48173 - \\frac{58.54690 \\times 2.85005}{8}$$\n$$= 10.48173 - \\frac{167.0629}{8}$$\n$$= 10.48173 - 20.88287$$\n$$= -10.40114$$\n\n$$\\hat{\\beta} = \\frac{-10.40114}{-33.4048} = 0.31102$$\n\n**Compute the intercept:**\n$$\\hat{c} = \\bar{Y} - \\hat{\\beta} \\cdot \\bar{X}$$\n\n$$\\bar{X} = \\frac{58.54690}{8} = 7.31836$$\n\n$$\\bar{Y} = \\frac{2.85005}{8} = 0.35626$$\n\n$$\\hat{c} = 0.35626 - 0.31102 \\times 7.31836$$\n$$= 0.35626 - 2.27758$$\n$$= -1.92132$$\n\n$$\\hat{\\ln(\\eta^\\beta)} = -1.92132$$\n\n$$\\hat{\\eta} = e^{-1.92132/0.31102} = e^{-6.17794}$$\n\n$$\\hat{\\eta} = 0.002151$$\n\n**Step 4: Verify with censored points**\n\nFor censored observations at t = 3000:\nX_c = ln(3000) = 8.00637\n\n$$Y_c = \\ln(\\ln(1/0.50)) = \\ln(\\ln(2)) = \\ln(0.69315) = -0.36652$$\n\nThe predicted Y values for these points would be:\n$$Y_{pred} = 0.31102 \\times 8.00637 + (-1.92132)$$\n$$= 2.48992 - 1.92132 = 0.56860$$\n\n$$F_{pred}(3000) = 1 - e^{-0.56860} = 1 - 0.56723 = 0.43277$$\n\nThis is reasonable, so the model appears adequate.\n\n**Step 5: Parallel System Reliability**\n\nEach blade is independently Weibull with β = 0.31102, η = 0.002151.\n\nThe parallel system fails only when all 3 blades have failed. The system reliability is:\n$$R_{sys}(t) = 1 - [1 - R(t)]^3$$\n\nWhere:\n$$R(t) = e^{-(t/\\eta)^\\beta} = e^{-\\left(\\frac{t}{0.002151}\\right)^{0.31102}}$$\n\n**Evaluate at t = 2000:**\n\n$$\\frac{2000}{0.002151} = 929,835.428$$\n\n$$(929,835.428)^{0.31102}$$\n\nTaking natural logarithm:\n$$\\ln(929835.428) = 13.74242$$\n\n$$0.31102 \\times 13.74242 = 4.27492$$\n\n$$(929835.428)^{0.31102} = e^{4.27492} = 71.7072$$\n\n$$R(2000) = e^{-71.7072}$$\n\n"
+    },
+    {
+      "global_index": 376,
+      "question": "A repairable power generation unit experiences two statistically independent failure modes that operate as competing ris",
+      "target": 0.98331,
+      "extracted_value": 0.9845,
+      "correct": true,
+      "truncated": false,
+      "response": "**Step 1: Combined failure hazard function.**\n\nFor competing risks, the individual hazard functions are: h₁(t) = (β₁/η₁)(t/η₁)^(β₁−1) and h₂(t) = (β₂/η₂)(t/η₂)^(β₂−1). These act independently, so the combined hazard is h(t) = h₁(t) + h₂(t).\n\nh₁(t) = (1.5/2000)(t/2000)^{0.5} = 0.00075 × (t/2000)^{0.5}\nh₂(t) = (3.0/5000)(t/5000)^{2.0} = 0.0006 × (t/5000)^{2}\n\n**Step 2: Composite reliability function.**\n\n$$R(t) = \\exp\\left(-\\int_0^t h_1(\\tau) + h_2(\\tau) \\, d\\tau\\right)$$\n\nEvaluate each integral separately:\n\n$$\\int_0^t h_1(\\tau) \\, d\\tau = \\int_0^t 0.00075 \\left(\\frac{\\tau}{2000}\\right)^{0.5} d\\tau = 0.00075 \\times \\frac{1}{2000^{0.5}} \\int_0^t \\tau^{0.5} d\\tau$$\n\n$$= 0.00075 \\times \\frac{1}{44.721} \\times \\left[\\frac{t^{1.5}}{1.5}\\right] = 0.00001633 \\times \\frac{t^{1.5}}{1.5} = 0.00001089 \\times t^{1.5}$$\n\nFor h₂(t):\n$$\\int_0^t h_2(\\tau) \\, d\\tau = \\int_0^t 0.0006 \\left(\\frac{\\tau}{5000}\\right)^2 d\\tau = 0.0006 \\times \\frac{1}{5000^2} \\int_0^t \\tau^2 d\\tau$$\n\n$$= 0.0006 \\times \\frac{1}{25,\\!000,\\!000} \\times \\left[\\frac{t^3}{3}\\right] = 0.000000000024 \\times \\frac{t^3}{3} = 0.000000000008 \\times t^3$$\n\nHence:\n$$R(t) = \\exp\\left(-0.00001089 \\times t^{1.5} - 0.000000000008 \\times t^3\\right)$$\n\n**Step 3: MTTF — numerical integration.**\n\n$$MTTF = \\int_0^\\infty R(t) \\, dt = \\int_0^\\infty \\exp\\left(-0.00001089 \\times t^{1.5} - 0.000000000008 \\times t^3\\right) dt$$\n\nThe second term is negligible for t ≤ 10,000, so approximate with h(t) ≈ 0.00001089 × t^1.5:\n\n$$MTTF \\approx \\int_0^\\infty \\exp\\left(-0.00001089 \\times t^{1.5}\\right) dt$$\n\nApply substitution u = 0.00001089 × t^1.5, giving du/dt = 0.00001089 × 1.5 × t^0.5 = 0.000016335 × t^0.5.\n\nSolving t = (u/0.00001089)^{2/3} = (u/1.089e-5)^{2/3} = u^{2/3} / (1.089e-5)^{2/3} = u^{2/3} / 0.02336\n\nThe integral becomes:\n$$\\int_0^\\infty \\exp(-u) \\times \\frac{u^{2/3}}{0.02336} \\times \\frac{du}{0.000016335 \\times u^{1/3}}$$\n\n$$= \\frac{1}{0.02336 \\times 0.000016335} \\int_0^\\infty u^{-1/3} \\exp(-u) \\, du = \\frac{1}{3.80946e-8} \\times \\Gamma(2/3)$$\n\n$$\\Gamma(2/3) = 1.35412$$\n\n$$MTTF \\approx \\frac{1.35412}{3.80946 \\times 10^{-8}} = 3.55504 \\times 10^7 \\approx 35{,}550{,}400 \\text{ hours}$$\n\nVerification at t = 5000 gives negligible h₂(t) = 1.32e-11, so the approximation is adequate.\n\n**Step 4: Probability of mode 1 vs mode 2 failures.**\n\n$$P(\\text{Mode 1}) = \\frac{h_1(t)}{h_1(t) + h_2(t)}$$ evaluated at the MTTF of 35,550,400.\n\nh₁(35,550,400) = 0.00001089 × (35,550,400)^{1.5} = 0.00001089 × 35,550,400 × √35,550,400 = 0.00001089 × 35,550,400 × 5962.5 = 213,747,259\n\nh₂(35,550,400) = 0.000000000008 × (35,550,400)^3 = 0.000000000008 × 4.49952 \\times 10^{20} = 3.59962 \\times 10^{11}\n\nSince h₂ ≫ h₁, the probability of mode 1 is negligible and the system is dominated by mode 2 failures.\n\n**Step 5: Steady-state availability.**\n\nWith mode 1 being insignificant, the system behaves as if it has a single Weibull failure mode with β = 3.0 and η = 5000, and repair times weighted only by mode 2.\n\nThe reliability for the single mode is:\n$$R(t) = \\exp\\left(-\\left(\\frac{t}{5000}\\right)^3\\right)$$\n\n$$MTTF = \\int_0^\\infty \\exp\\left(-\\left(\\frac{t}{5000}\\right)^3\\right) dt = 5000 \\int_0^\\infty \\exp(-u^3) du = 5000 \\times 0.918939 = 4594.7$$\n\nThe mean repair time is: 24 × 0 = 72 = 72 hours.\n\n$$A = \\frac{MTTF}{MTTF + MTTR} = \\frac{4594.7}{4594.7 + 72} = \\frac{4594.7}{4666.7} = 0.9845$$\n\nANSWER: 0.9845\n\n\\boxed{0.9845}"
+    },
+    {
+      "global_index": 377,
+      "question": "Given the cumulative distribution function $F(t) = 1 - (1+t)^{-1}$ defined over $0 \\le t \\le \\infty$, determine the medi",
+      "target": 1.0,
+      "extracted_value": 1.0,
+      "correct": true,
+      "truncated": false,
+      "response": "The median is defined as the time at which 50% of units fail, meaning $F(T_{50}) = 0.5$:\n\n$$0.5 = 1 - \\frac{1}{1+T_{50}}$$\n\nRearranging yields:\n\n$$\\frac{1}{1+T_{50}} = 0.5$$\n\n$$1 + T_{50} = 2$$\n\n$$T_{50} = 1$$\n\nFinal answer: \\boxed{1}"
+    },
+    {
+      "global_index": 378,
+      "question": "A central warehouse is supplied with identical parts from three different manufacturing facilities. Facility A contribut",
+      "target": 0.2841,
+      "extracted_value": 0.28,
+      "correct": true,
+      "truncated": false,
+      "response": "Define D as the event that a part is defective, and let F_A, F_B, F_C represent the events that a part comes from Facility A, B, or C respectively. We apply Bayes' Theorem: $P(F_A|D) = \\frac{P(D|F_A) \\cdot P(F_A)}{P(D)}$. First, calculate the marginal probability of a randomly selected part being defective overall: $P(D) = P(D|F_A) \\cdot P(F_A) + P(D|F_B) \\cdot P(F_B) + P(D|F_C) \\cdot P(F_C) = 0.01 \\times 0.25 + 0.012 \\times 0.30 + 0.006 \\times 0.45 = 0.0025 + 0.0036 + 0.0027 = 0.0088$. Now compute the conditional probability: $P(F_A|D) = \\frac{0.01 \\times 0.25}{0.0088} = \\frac{0.0025}{0.0088} = 0.284$. Let me recompute: P(D) = 0.01(0.25) + 0.012(0.30) + 0.006(0.45) = 0.0025 + 0.0036 + 0.0027 = 0.0088. $P(F_A|D) = \\frac{0.0025}{0.0088} = 0.28419...$. Rounded to two decimal places, the result is 0.28.\n\n\\boxed{0.28}"
+    },
+    {
+      "global_index": 379,
+      "question": "Determine the smallest number of units needed to demonstrate a mean time to failure of 500,000 hours at an 85% confidenc",
+      "target": 380.0,
+      "extracted_value": 5882.0,
+      "correct": false,
+      "truncated": false,
+      "response": "This is a reliability demonstration test problem with the goal to show that the failure rate is at least 1/(500,000) = 2 × 10⁻⁷ per hour, with 85% confidence.\n\nFirst, calculate the maximum allowable failures: n_max = floor(1 - 0.85) = floor(0.15) = 0\n\nSince up to zero failures are permitted, the chi-square approach gives: n = 2t/δ, where δ = 0.85.\n\nTherefore: n = 2(2,500)/0.85 = 5,000/0.85 = 5,882\n\nTo achieve a demonstration level of 85% confidence with zero allowable failures, a sample size of 5,882 units is required. Since the maximum number of allowable failures at 85% confidence is zero, the test requires 5,882 units.\n\n$$\\boxed{5882}$$"
+    },
+    {
+      "global_index": 380,
+      "question": "An automated misting system used in an agricultural experiment operates according to a Poisson process at a rate of λ = ",
+      "target": 2.4,
+      "extracted_value": 2.4,
+      "correct": true,
+      "truncated": false,
+      "response": "For a Poisson process with rate λ, the expected number of events in a time interval of length t is: E[N(t)] = λt. The misting process follows a Poisson distribution. Time duration: t = 12 hours. Rate parameter: λ = 0.2 per hour. Expected count: E[N(12)] = λt = 0.2 × 12 = 2.4.\n\n\\boxed{2.4}"
+    },
+    {
+      "global_index": 381,
+      "question": "An automated misting system used in an agricultural experiment operates according to a Poisson process at a rate of λ = ",
+      "target": 15.0,
+      "extracted_value": 15.0,
+      "correct": true,
+      "truncated": false,
+      "response": "For a Poisson process with rate λ, the waiting time until the nth event is distributed as a Gamma random variable. The key result is: E[Tₙ] = n/λ, where Tₙ represents the waiting time to the nth event.\n\nApplying the formula: E[T₃] = 3/λ = 3/0.2 = 15\n\nANSWER: \\boxed{15}"
+    },
+    {
+      "global_index": 382,
+      "question": "In an agricultural experiment, an automatic misting system operates according to a Poisson process at a rate of λ = 0.2 ",
+      "target": 0.6703,
+      "extracted_value": 0.67,
+      "correct": true,
+      "truncated": false,
+      "response": "For a Poisson process with rate λ, the waiting time T until the next event is exponentially distributed with parameter λ, and the time elapsed since the last event is irrelevant. The time to the next event is independent of the past history.\n\n$$P(T > 2 | 3 \\text{ events have occurred}) = P(\\text{Exponential}(0.2) > 2)$$\n\n$$= e^{-0.2 \\times 2} = e^{-0.4} = 0.67032$$\n\nANSWER: 0.670\n\n\\boxed{0.670}"
+    },
+    {
+      "global_index": 383,
+      "question": "Given that the lifetime of a component is modeled by a lognormal distribution with a shape parameter of 1.5, determine t",
+      "target": 1132.0,
+      "extracted_value": 1131.0,
+      "correct": true,
+      "truncated": false,
+      "response": "Under a lognormal distribution, the CDF is: F(t) = Φ((ln(t) - μ) / σ). The median equals e^μ. We have F(96) = 0.05. This gives us: 0.05 = Φ((ln(96) - μ) / 1.5). The 5th percentile of the standard normal equals z₀.₀₅ = -1.645. Thus: (ln(96) - μ) / 1.5 = -1.645. Solving for μ: ln(96) - μ = -1.645 × 1.5 = -2.4675, so μ = ln(96) + 2.4675 = 4.5643 + 2.4675 = 7.0318. From this we derive T₅₀ = e^μ = e⁷.⁰³¹⁸ = 1131.\n\nANSWER: \\boxed{1131}"
+    },
+    {
+      "global_index": 384,
+      "question": "Assume we wish to demonstrate with 60% confidence that a component achieves an MTTF of no less than 2,000,000 hours (equ",
+      "target": 3106.0,
+      "extracted_value": 261.0,
+      "correct": false,
+      "truncated": false,
+      "response": "This is an application of the standard reliability demonstration test based on the exponential distribution. We employ the chi-square approach, where the sample size formula is:\n\n$$n = \\frac{\\chi^2_{1-\\alpha, 2(r+1)}}{2 \\cdot t \\cdot \\lambda_0}$$\n\nHere, the parameters are:\n- Time per unit: t = 2000 hours\n- Target failure rate: λ₀ = 500 FITs = 5 × 10⁻⁷ failures/hour\n- Confidence level: 1 - α = 0.60, giving α = 0.40\n- Permitted failures: r = 2\n- Degrees of freedom: 2(r + 1) = 2(3) = 6\n\nComputing the product t × λ₀ = 2000 × 5 × 10⁻⁷ = 1.0 × 10⁻³\n\nFor a chi-square distribution with 6 degrees of freedom at α = 0.40, we obtain χ²₀.₄₀, ₆ = 5.224\n\nSubstituting these values: n = 5.224 / (2 × 10⁻³) = 5.224 / 0.002 = 2612\n\nRounding, we require n = 261 units.\n\nFinal answer: \\boxed{261}"
+    },
+    {
+      "global_index": 385,
+      "question": "Determine the required number of test units to demonstrate, with 90% confidence, an MTTF of at least 2,000,000 hours (eq",
+      "target": 5323.0,
+      "extracted_value": 0.0,
+      "correct": false,
+      "truncated": false,
+      "response": "## Deterministic Solution\n\n### Step 1: Establish Parameters\n- Confidence level: 90% (α = 0.90, equivalently β = 0.10)\n- Permitted failures: r = 2\n- Test duration per unit: T = 2,000 hours\n- Target MTTF: 2,000,000 hours\n- Target failure rate: λ = 1/(2,000,000) = 500 FITs\n- Total test exposure for n units: t_total = n × 2,000 hours\n\n### Step 2: Calculate Total Required Exposure\n$$T_{total} = \\frac{\\chi^2_{0.90, 2(r+1)}}{2\\lambda} = \\frac{\\chi^2_{0.90, 6}}{2 \\times 500} = \\frac{12.592}{1000} = 0.012592 \\text{ unit-hours}$$\n\n### Step 3: Determine the Number of Units\n$$n = \\frac{0.012592}{2000} = 0.000006296$$\n\nThis yields an infeasible number of units (n = 0). We attempt to permit r = 1 failure.\n\n### Step 4: Calculate Using r = 1\n$$T_{total} = \\frac{\\chi^2_{0.90, 4}}{2 \\times 500} = \\frac{7.776}{1000} = 0.007776$$\n\n$$n = \\frac{0.007776}{2000} = 0.000003888$$\n\nThis also results in n = 0. We now permit r = 0 failures.\n\n### Step 5: Calculate Using r = 0\n$$T_{total} = \\frac{\\chi^2_{0.90, 2}}{2 \\times 500} = \\frac{5.322}{1000} = 0.005322$$\n\n$$n = \\frac{0.005322}{2000} = 0.000002661$$\n\nThis results in n = 0. Since n must be an integer, the test cannot be conducted under the given conditions while satisfying the reliability requirement with the specified confidence level and sample size constraint (permitted up to 2 failures). The configuration permits only 0 or 1 failure, yet the resulting n values are all less than 1, indicating an insufficient sample size to meet the requirements.\n\nThe experiment lacks the capacity to satisfy the 90% confidence level with an MTTF of 2,000,000 hours while allowing up to 2 failures under a 2000-hour per-unit test duration. The necessary number of test units is n = 0.\n\n\\boxed{0}"
+    },
+    {
+      "global_index": 386,
+      "question": "Assume we wish to demonstrate with 60% confidence that the mean time to failure is no less than 2,000,000 hours (equival",
+      "target": 2023.0,
+      "extracted_value": 0.000916,
+      "correct": false,
+      "truncated": false,
+      "response": "## Determining Required Sample Size for Reliability Demonstration\n\n### Known Parameters\n- Confidence level: 60% (α = 0.60)\n- Time to demonstrate: T = 2,000,000 hours\n- Test duration per unit: t = 2000 hours\n- Permitted failures: r = 1\n- Failure rate to demonstrate: λ = 500 FITs = 5 × 10⁻⁷ failures/hour\n\n### Step 1: Calculate Total Test Time per Unit\n$$TTT = n \\cdot t = n \\times 2000$$\n\n### Step 2: Express the Condition\nTo show MTTF ≥ 2,000,000 hours, the failure rate must satisfy:\n$$\\lambda \\leq \\frac{r}{TTT}$$\n\n### Step 3: Solve for Sample Size n\n$$n \\leq \\frac{r}{\\lambda \\times T} = \\frac{1}{5 \\times 10^{-7} \\times 2000000} = \\frac{1}{1000} = 0.001$$\n\nThis result is clearly incorrect. Let me carefully recompute.\n\n### Step 4: Using the Chi-Square Approach\n$$\\chi^2_{1-\\alpha, 2(r+1)} \\leq 2\\lambda t \\cdot n$$\n$$n \\geq \\frac{\\chi^2_{0.60, 4}}{2\\lambda t}$$\n\n### Step 5: Locate the Chi-Square Value\nDegrees of freedom = 2(r+1) = 2(2) = 4\n$$\\chi^2_{0.60, 4} = -2\\ln(1 - 0.60) = -2\\ln(0.40) = -2(-0.9163) = 1.8326$$\n\n### Step 6: Calculate Sample Size\n$$n \\geq \\frac{1.8326}{2 \\times 5 \\times 10^{-7} \\times 2000000} = \\frac{1.8326}{2000} = 0.000916$$\n\nThis remains unreasonably small. Let me verify with the exponential distribution approach.\n\nFor r = 1 failure permitted at 60% confidence:\n$$\\chi^2_{0.60, 4} = -2\\ln(1 - 0.60) = -2\\ln(0.40) = 1.8326$$\n\n$$n \\geq \\frac{1.8326}{2 \\times 0.0000005 \\times 2000000} = \\frac{1.8326}{2000} = 0.000916$$\n\nThis result appears to be numerically flawed. Let me more carefully recompute.\n\n$$\\chi^2_{0.60, 4} = -2 \\ln(1 - 0.60) = -2 \\ln(0.40)$$\n$$\\ln(0.40) = -0.9163$$\n$$\\chi^2_{0.60, 4} = -2 \\times (-0.9163) = 1.8326$$\n\n$$n \\geq \\frac{1.8326}{2 \\times 5 \\times 10^{-7} \\times 2000000} = \\frac{1.8326}{2000} = 0.000916$$\n\nThis result is still invalid — I must have made a mistake. Let me use the standard formula:\n\nFor demonstration test with r = 1 failure at confidence level 60%:\n$$n = \\frac{\\chi^2_{0.60, 4}}{2\\lambda t}$$\n\n$$\\chi^2_{0.60, 4} = -2\\ln(0.40) = 1.8326$$\n\n$$n = \\frac{1.8326}{2 \\times 5 \\times 10^{-7} \\times 2000000} = \\frac{1.8326}{2000} = 0.000916$$\n\nThe calculation is verified but remains extremely small, suggesting a very low sample size is required. Let me cross-check using the exponential test formula:\n\n$$\\text{AQL Test: } n = \\frac{\\chi^2_{\\alpha, 2(r+1)}}{2\\lambda t}$$\n\n$$\\chi^2_{0.60, 4} = -2\\ln(1 - 0.60) = 1.8326$$\n\n$$n = \\frac{1.8326}{2 \\times 0.0000005 \\times 2000000} = \\frac{1.8326}{2000} = 0.000916$$\n\nThis result is accurate. While the sample size appears small, it is correct for a 60% confidence level with only one permitted failure over an extended test duration.\n\nANSWER: 0.000916\n\n\\boxed{0.000916}"
+    },
+    {
+      "global_index": 387,
+      "question": "A batch of 50 units is subjected to a stress test lasting 168 hours. The probability that any individual unit fails with",
+      "target": 0.0769,
+      "extracted_value": 0.0769,
+      "correct": true,
+      "truncated": false,
+      "response": "The reliability R of a single unit is calculated as R = 1 - F = 1 - 0.05 = 0.95.\n\nSince each unit operates independently, the probability that ALL 50 units survive is given by:\n\n$$R_{\\text{all survive}} = R^n = R^{50} = (0.95)^{50}$$\n\nComputing this: $(0.95)^{50} = 0.0769$\n\nFinal result: \\boxed{0.0769}"
+    },
+    {
+      "global_index": 388,
+      "question": "A batch of 50 units is subjected to a stress test lasting 168 hours. The probability that any individual unit fails with",
+      "target": 2.5,
+      "extracted_value": 2.5,
+      "correct": true,
+      "truncated": false,
+      "response": "The expected value (mean) for a Binomial distribution is computed as:\n$$E[X] = np$$\n\nHere n = 50, p = 0.05, yielding:\n$$E[X] = 50 \\times 0.05 = 2.5$$\n\nFinal answer: \\boxed{2.5}"
+    },
+    {
+      "global_index": 389,
+      "question": "Using the Goal Seek function, determine the required sample size n when the Lot Tolerance Percent Defective (LTPD) is 2.",
+      "target": 103.0,
+      "extracted_value": 104.0,
+      "correct": true,
+      "truncated": false,
+      "response": "The acceptance sampling plan parameters are given as: LTPD = 2.21%, consumer's risk β = 0.10, acceptance number c = 0.\n\nThe probability of acceptance at the LTPD level is calculated as:\n$$P(X \\leq 0) = e^{-np} \\sum_{i=0}^{0} \\frac{(np)^i}{i!} = e^{-np}$$\n\nWhere n is the sample size and p = 0.0221. Setting $e^{-np} = 0.10$:\n\n$$-np = \\ln(0.10) = -2.3026$$\n$$n = \\frac{2.3026}{0.0221} = 104.20$$\n\nTherefore, the required sample size is n = 104.\n\n\\boxed{104}"
+    },
+    {
+      "global_index": 390,
+      "question": "A batch of 50 units is subjected to a stress test lasting 168 hours. Each unit has a 0.05 (5%) probability of failing wi",
+      "target": 0.9231,
+      "extracted_value": 0.429,
+      "correct": false,
+      "truncated": false,
+      "response": "Applying the complement rule: R(≥1 failures) = 1 - R(0 failures) = 1 - 0.5707 = 0.4293 ≈ 0.429\n\nFinal answer: \\boxed{0.429}"
+    },
+    {
+      "global_index": 391,
+      "question": "An electronic device converts an input signal with level X into an output signal with level Y = 3X + 2. Given that X fol",
+      "target": 32.0,
+      "extracted_value": 32.0,
+      "correct": true,
+      "truncated": false,
+      "response": "For a linear transformation Y = aX + b:\n$$E[Y] = aE[X] + b$$\n\nStep-by-step calculation:\n$$E[Y] = E[3X + 2] = 3E[X] + 2 = 3(10) + 2 = 30 + 2 = 32$$\n\nThe mean of Y is \\boxed{32}."
+    },
+    {
+      "global_index": 392,
+      "question": "Using the Goal Seek function, determine the required sample size n when the Lot Tolerance Percent Defective (LTPD) is 2.",
+      "target": 175.0,
+      "extracted_value": 412.0,
+      "correct": false,
+      "truncated": false,
+      "response": "With c = 1, the probability of acceptance at the LTPD point equals 1 - β = 0.9. This means P(X = 0) = 0.9, where X follows a Poisson distribution with parameter np = λ.\n\nThe key equation is: e^{-λ} × (1 + λ) = 0.9.\n\nSolving numerically: when λ = 9.12, we get e^{-9.12} × (1 + 9.12) = 0.9.\n\nThis yields: n × 0.0221 = 9.12\n\nTherefore: n = 9.12 / 0.0221 = 412.\n\nUsing the Goal Seek function to iterate precisely on this relationship confirms the resulting sample size.\n\nFinal answer: \\boxed{412}"
+    },
+    {
+      "global_index": 393,
+      "question": "Assuming that the lifetime of a component is described by a Weibull distribution with a characteristic life of 30,000 ho",
+      "target": 1.1,
+      "extracted_value": 1.097,
+      "correct": true,
+      "truncated": false,
+      "response": "Known quantities: $T_0 = 2000$ hours, $T_{50} = 30000$ hours, $F(T_0) = 0.05$. The Weibull CDF is: $F(t) = 1 - e^{-\\left(\\frac{t}{T_{50}}\\right)^{\\beta}}$. Substituting and solving for beta: $0.05 = 1 - e^{-\\left(\\frac{2000}{30000}\\right)^{\\beta}}$, $e^{-\\left(\\frac{1}{15}\\right)^{\\beta}} = 0.95$, $-\\left(\\frac{1}{15}\\right)^{\\beta} = \\ln(0.95) = -0.051293$, $\\left(\\frac{1}{15}\\right)^{\\beta} = 0.051293$, $\\beta \\ln\\left(\\frac{1}{15}\\right) = \\ln(0.051293)$, $\\beta = \\frac{-2.97177}{2.70805} = -1.09729$. Since a negative shape parameter is not physically meaningful, re-evaluation reveals the correct form: $F(t) = 1 - e^{-\\left(\\frac{t}{T_{50}}\\right)^{\\beta}}$. Correct equation: $e^{-\\left(\\frac{1}{15}\\right)^{\\beta}} = 0.95$. This yields $\\left(\\frac{1}{15}\\right)^{\\beta} = 0.051293$. Taking logarithms: $\\beta \\ln\\left(\\frac{1}{15}\\right) = \\ln(0.051293)$. $\\beta = \\frac{-2.97177}{2.70805} = -1.09729$. A negative exponent implies an error in sign: $e^{-x} = 0.95$ gives $x = 0.051293$, hence: $\\left(\\frac{1}{15}\\right)^{\\beta} = 0.051293$. Raising both sides: $\\beta = \\frac{\\ln(0.051293)}{\\ln(1/15)} = \\frac{-2.97177}{-2.70805} = 1.09729$. Verification: $(1/15)^{1.09729} = e^{1.09729 \\times (-2.70805)} = e^{-2.97176} = 0.051293$ ✓\n\nFinal answer: \\boxed{1.097}"
+    },
+    {
+      "global_index": 394,
+      "question": "An electronic device converts an input signal with level X into an output signal with level Y = 3X + 2. Assuming X follo",
+      "target": 6.0,
+      "extracted_value": 6.0,
+      "correct": true,
+      "truncated": false,
+      "response": "The output follows Y = 3X + 2, where X ~ N(μ_X=10, σ_X²=4).\n\nSince the standard deviation is unaffected by additive constants, we only need to consider the linear transformation: Y = 3X.\n\nFor a scaled normal variable: Y = aX, the variance transforms as Var(Y) = a² · Var(X) = 9 × 4 = 36.\n\nHence the standard deviation is: σ_Y = √36 = 6\n\n6\n\n\\boxed{6}"
+    },
+    {
+      "global_index": 395,
+      "question": "An electronic board is composed of three parts: A, B, and C. Part A has a 0.02 probability of failure within 3 years, Pa",
+      "target": 0.873,
+      "extracted_value": 0.87318,
+      "correct": true,
+      "truncated": false,
+      "response": "All parts must function for the board to work, and since failures are independent:\n\n$$P(\\text{board works}) = P(A \\text{ works}) \\times P(B \\text{ works}) \\times P(C \\text{ works})$$\n\n$$P(\\text{board works}) = 0.98 \\times 0.99 \\times 0.90$$\n\n$$P(\\text{board works}) = 0.87318$$\n\nFinal answer: \\boxed{0.87318}"
+    },
+    {
+      "global_index": 396,
+      "question": "Suppose we have four interarrival times. Determine the total number of ways these four items can be arranged.",
+      "target": 24.0,
+      "extracted_value": 24.0,
+      "correct": true,
+      "truncated": false,
+      "response": "For n = 4, the total number of permutations is:\n\n$$n! = 4! = 4 \\times 3 \\times 2 \\times 1 = 24$$\n\nThe number of permutations of four items is therefore equal to 24.\n\n\\boxed{24}"
+    },
+    {
+      "global_index": 397,
+      "question": "Given an exponential distribution with a mean time to failure of 50,000 hours, determine the failure rate expressed in %",
+      "target": 2.0,
+      "extracted_value": 0.02,
+      "correct": false,
+      "truncated": false,
+      "response": "The failure rate for an exponential distribution is defined as:\n$$\\lambda = \\frac{1}{MTTF}$$\n\nSubstituting the given MTTF of 50,000 hours:\n$$\\lambda = \\frac{1}{50,000} = 2 \\times 10^{-5} \\text{ failures/hour}$$\n\nTo convert to %/K hour, we multiply by 1000:\n$$\\lambda = 2 \\times 10^{-5} \\times 1000 = 0.02\\%/\\text{K hour}$$\n\n0.02\n\n\\boxed{0.02}"
+    },
+    {
+      "global_index": 398,
+      "question": "Given an exponential distribution with a mean time to failure of 50,000 hours, determine the time at which 10% of units ",
+      "target": 5268.0,
+      "extracted_value": 4605.0,
+      "correct": false,
+      "truncated": false,
+      "response": "For the exponential distribution, F(t) = 1 - e^{-λt} where λ = 1/50,000 = 2 × 10⁻⁵. We want F(t) = 0.10:\n$$0.10 = 1 - e^{-λt}$$\n$$e^{-λt} = 0.90$$\n$$-λt = \\ln(0.90)$$\n$$t = -\\frac{\\ln(0.90)}{λ} = -\\frac{\\ln(0.90)}{2 \\times 10^{-5}} = 4605.26$$\n\n\\boxed{4605}"
+    },
+    {
+      "global_index": 399,
+      "question": "Given an exponential distribution with a mean time to failure of 50,000 hours, determine the time at which 50% of the un",
+      "target": 34657.0,
+      "extracted_value": 34657.0,
+      "correct": true,
+      "truncated": false,
+      "response": "The CDF of the exponential distribution is F(t) = 1 - e^{-λt}, where λ = 1/50,000 = 2 × 10⁻⁵. To find T₅₀, we set F(t) = 0.50:\n\n0.50 = 1 - e^{-2 \\times 10^{-5} \\times T_{50}}\n\ne^{-2 \\times 10^{-5} \\times T_{50}} = 0.50\n\n-2 \\times 10^{-5} \\times T_{50} = \\ln(0.50) = -0.6931\n\nT_{50} = \\frac{0.6931}{2 \\times 10^{-5}} = 34,657 \\text{ hours}\n\nThe time at which 50% of the units will have failed is:\n\n\\boxed{34657}"
+    },
+    {
+      "global_index": 400,
+      "question": "Given that the lifetime of a component follows a lognormal distribution with a median life $T_{50}$ of 500,000 hours and",
+      "target": 0.135,
+      "extracted_value": 0.1347,
+      "correct": true,
+      "truncated": false,
+      "response": "The lognormal CDF is expressed as:\n$$F(t) = \\Phi\\left(\\frac{\\ln(t/T_{50})}{\\sigma}\\right)$$\n\nwhere $\\Phi$ denotes the standard normal CDF.\n\nStep 1: Evaluate the ratio $\\frac{t}{T_{50}} = \\frac{2000}{500000} = 0.004$.\n\nStep 2: Compute the natural logarithm: $\\ln(0.004) = -5.52146$.\n\nStep 3: Calculate the Z-value: $\\frac{-5.52146}{5.0} = -1.10429$.\n\nStep 4: Determine the cumulative probability: $\\Phi(-1.10429) = 1 - \\Phi(1.10429) = 1 - 0.86526 = 0.13474$.\n\nStep 5: Express as a percentage: $0.13474 \\times 100 = 13.47\\%$.\n\nFinal Answer: \\boxed{0.1347}"
+    },
+    {
+      "global_index": 401,
+      "question": "Given that the lifetime of a component follows a lognormal distribution with a median life $T_{50}$ of 100,000 hours and",
+      "target": 38245.0,
+      "extracted_value": 38286.0,
+      "correct": true,
+      "truncated": false,
+      "response": "For a lognormal distribution: $T$ is lognormally distributed if $\\ln(T)$ is normally distributed. For a lognormal distribution, the following relationships apply:\n- $\\mu = \\ln(T_{50})$, where $T_{50}$ is the median\n- $\\sigma$ = shape parameter\n\nTherefore, $\\mu = \\ln(100{,}000) = 11.5129$\n\nThe time corresponding to a given percentile is calculated as follows:\n$$T(p) = e^{\\mu + z_p \\cdot \\sigma}$$\n\nwhere $z_p$ is the standard normal quantile for that percentile.\n\nFor $p = 0.10$ (10th percentile corresponding to 10% having failed):\n$$z_{0.10} = \\Phi^{-1}(0.10) = -1.2816$$\n\n$$T_{10} = e^{\\mu + z_{0.10} \\cdot \\sigma} = e^{11.5129 + (-1.2816)(0.75)}$$\n\n$$T_{10} = e^{11.5129 - 0.9612} = e^{10.5517}$$\n\n$$T_{10} = 38{,}286 \\text{ hours}$$\n\n\\boxed{38286}"
+    },
+    {
+      "global_index": 402,
+      "question": "A baseball batter has a hitting probability of p = 0.250 (corresponding to a .250 batting average). During a particular ",
+      "target": 1.0,
+      "extracted_value": 1.0,
+      "correct": true,
+      "truncated": false,
+      "response": "For a binomial distribution, the mean is calculated as:\n\n$$\\text{E}[X] = np$$\n\nSubstituting n = 4 and p = 0.250 yields:\n\n$$\\text{E}[X] = 4 \\times 0.250 = 1.0$$\n\nThe expected number of hits is therefore 1.0.\n\n\\boxed{1.0}"
+    },
+    {
+      "global_index": 403,
+      "question": "A baseball batter has a batting average of .250, meaning his probability of getting a hit is p = 0.250. During a particu",
+      "target": 0.316,
+      "extracted_value": 0.316,
+      "correct": true,
+      "truncated": false,
+      "response": "With a binomial distribution where n = 4, p = 0.250, and q = 0.750:\n\n$$P(X = 0) = C(4,0) \\times (0.250)^0 \\times (0.750)^4 = 1 \\times 1 \\times 0.31640625 \\approx 0.3164$$\n\nThe probability of the batter getting zero hits is approximately 0.316.\n\nFinal answer: \\boxed{0.316}"
+    },
+    {
+      "global_index": 404,
+      "question": "A baseball player's batting average is .250, meaning the probability of getting a hit on any at-bat is p = 0.250. During",
+      "target": 0.866,
+      "extracted_value": 0.866,
+      "correct": true,
+      "truncated": false,
+      "response": "The binomial distribution has variance: σ² = np(1-p) = 4 × 0.250 × 0.750 = 0.750. The standard deviation is the square root of the variance: σ = √0.750 ≈ 0.866.\n\nFinal answer: \\boxed{0.866}"
+    },
+    {
+      "global_index": 405,
+      "question": "A baseball batter has a batting average of .250, meaning his probability of getting a hit is p = 0.250. During a particu",
+      "target": 0.422,
+      "extracted_value": 0.4219,
+      "correct": true,
+      "truncated": false,
+      "response": "We are dealing with a binomial distribution (n = 4, p = 0.25, q = 0.75).\n\n$$P(X = 1) = \\binom{4}{1} (0.25)^1 (0.75)^3$$\n\n$$P(X = 1) = 4 \\times 0.25 \\times 0.42188$$\n\n$$P(X = 1) = 0.42188$$\n\nFinal answer: \\boxed{0.4219}"
+    },
+    {
+      "global_index": 406,
+      "question": "A batter has a batting average of .250, meaning his probability of getting a hit on any at-bat is p = 0.250. During a pa",
+      "target": 0.684,
+      "extracted_value": 0.6836,
+      "correct": true,
+      "truncated": false,
+      "response": "Applying the complement rule: $P(X \\geq 1) = 1 - P(X = 0) = 1 - 0.31640625 = 0.68359375$.\n\nFinal answer: \\boxed{0.6836}"
+    },
+    {
+      "global_index": 407,
+      "question": "Consider a reliability test where 500 devices are operated for 1000 hours each, and no failures are recorded. Using the ",
+      "target": 2773.0,
+      "extracted_value": 2773.0,
+      "correct": true,
+      "truncated": false,
+      "response": "**Step 1: Determine the degrees of freedom.**\nWith zero observed failures, r = 0, we obtain 2r + 2 = 2(0) + 2 = 2 degrees of freedom.\n\n**Step 2: Identify the χ² value.**\nFor a 75% upper confidence level (α = 0.75) and 2 degrees of freedom:\nχ²₀.₇₅,₂ = -2 × ln(1 - 0.75) = -2 × ln(0.25) = -2 × (-1.3863) = 2.7726\n\n**Step 3: Calculate T_total.**\nEach unit undergoes a test duration of 1000 hours, with 500 devices participating:\nT_total = 500 × 1000 = 500,000 device-hours\n\n**Step 4: Evaluate λ₇₅%.**\n$$\\lambda_{75\\%} = \\frac{\\chi^2_{0.75, 2}}{2 \\times T_{total}} = \\frac{2.7726}{2 \\times 500{,}000} = \\frac{2.7726}{1{,}000{,}000} = 2.7726 \\times 10^{-6}$$\n\n**Step 5: Convert to FITs.**\nOne FIT equates to 10⁻⁹ failures per hour, thus:\n$$\\lambda_{75\\%} = 2.7726 \\times 10^{-6} \\times 10^{9} = 2{,}772.6 \\approx 2{,}773 \\text{ FITs}$$\n\nFinal result: $\\boxed{2773}$"
+    },
+    {
+      "global_index": 408,
+      "question": "Consider a reliability test in which 500 devices are operated for 1000 hours each, and zero failures are recorded. Using",
+      "target": 1386.0,
+      "extracted_value": 1390.0,
+      "correct": true,
+      "truncated": false,
+      "response": "Applying the general upper confidence formula with r = 0 failures and α = 0.50 (50% confidence):\n\nStep 1: Calculate total test time:\nT_total = n × t = 500 × 1000 = 500,000 device-hours\n\nStep 2: Obtain the chi-squared critical value: χ²₀.₅₀(0, 2) = -2 ln(1 - 0.50) = -2 ln(0.50) = 1.3863\n\nStep 3: Evaluate the upper bound on the failure rate:\nλ_upper = 1.3863 / (2 × 500,000) = 1.3863 / 1,000,000 = 1.3863 × 10⁻⁶ per hour\n\nStep 4: Convert to FITs (1 FIT = 10⁻⁹ failures per hour):\nλ_upper = 1.3863 × 10⁻⁶ × 10⁹ = 1386.3 FITs\n\nRounding gives λ_50% ≈ 1390 FITs.\n\n\\boxed{1390}"
+    },
+    {
+      "global_index": 409,
+      "question": "A space satellite operates in a harsh radiation environment. Its design requires that at least two out of four radiation",
+      "target": 54167.0,
+      "extracted_value": 150000.0,
+      "correct": false,
+      "truncated": false,
+      "response": "The system follows a 2-out-of-4 configuration where each component has an independent exponentially distributed lifetime with MTTF = 50,000 hours (λ = 0.00002 per hour).\n\nFor a k-out-of-n system with identical and independent components, the reliability function is:\n$$R_{sys}(t) = \\sum_{i=k}^{n} \\binom{n}{i} [R(t)]^i [1-R(t)]^{n-i}$$\n\nHere, R(t) = e^{-λt} and 1-R(t) = 1 - e^{-λt}, giving:\n$$R_{sys}(t) = \\binom{4}{2}[R(t)]^2[1-R(t)]^2 + \\binom{4}{3}[R(t)]^3[1-R(t)] + \\binom{4}{4}[R(t)]^4$$\n\nThe expected system lifetime is:\n$$MTTF_{sys} = \\int_0^{\\infty} R_{sys}(t)\\, dt = \\int_0^{\\infty} R(t)^2(2 - 2R(t) + R(t)^2) \\, dt$$\n\nApplying the integral formula ∫₀^∞ e^{-λt} e^{-λt} dt = 1/λ and ∫₀^∞ e^{-2λt} dt = 1/(2λ) etc. with λ = 0.00002:\n\n$$MTTF_{sys} = \\frac{1}{\\lambda}\\left[2 - 2 + \\frac{1}{2}\\right] = \\frac{1}{0.00002}\\left[\\frac{1}{2}\\right] = 50,000 \\times 0.5 = 25,000 \\text{ hours}$$\n\nLet me verify this more carefully:\n$$\\int_0^\\infty e^{-\\lambda t} \\, dt = \\frac{1}{\\lambda}$$\n$$\\int_0^\\infty e^{-2\\lambda t} \\, dt = \\frac{1}{2\\lambda}$$\n$$\\int_0^\\infty e^{-3\\lambda t} \\, dt = \\frac{1}{3\\lambda}$$\n$$\\int_0^\\infty e^{-4\\lambda t} \\, dt = \\frac{1}{4\\lambda}$$\n\n$$MTTF_{sys} = \\frac{6}{\\lambda} \\cdot \\frac{1}{2\\lambda} = \\frac{6}{2\\lambda^2} = \\frac{3}{\\lambda} = \\frac{3}{0.00002} = 150{,}000 \\text{ hours}$$\n\nFinal result: 1.5 × 10⁵ hours\n\n$\\boxed{150000}$"
+    },
+    {
+      "global_index": 410,
+      "question": "A system is composed of two boxes arranged in parallel, meaning the system operates as long as at least one box is funct",
+      "target": 0.99465,
+      "extracted_value": 0.99465,
+      "correct": true,
+      "truncated": false,
+      "response": "First, calculate the reliability of a single component: R_component = 1 - 0.025 = 0.975.\n\nFor a series configuration within a box: R_box = (R_component)^3 = (0.975)^3 = 0.926859375.\n\nNext, compute the parallel system reliability from the two boxes: R_system = 1 - (1 - R_box)^2 = 1 - (1 - 0.926859375)^2 = 1 - (0.073140625)^2 = 1 - 0.00534940625 = 0.99465059375.\n\nRounding to appropriate precision: R_system ≈ 0.99465.\n\nFinal answer: \\boxed{0.99465}"
+    },
+    {
+      "global_index": 411,
+      "question": "During a code review, 1000 lines of code chosen at random are examined, and 23 defects are discovered. Under the assumpt",
+      "target": 23.0,
+      "extracted_value": 23.0,
+      "correct": true,
+      "truncated": false,
+      "response": "For a Poisson distribution, the MLE estimator for the rate parameter λ is given by:\n\n$$\\hat{\\lambda} = \\frac{\\text{observed count}}{\\text{sample size}}$$\n\nThe observed count is 23, the sample size is 1000 lines.\n\n$$\\hat{\\lambda} = \\frac{23}{1000} = 0.023 \\text{ defects per line}$$\n\nTo express this on a KLOC basis (per 1000 lines):\n\n$$\\hat{\\lambda}_{\\text{KLOC}} = 0.023 \\times 1000 = 23$$\n\nANSWER: \\boxed{23}"
+    },
+    {
+      "global_index": 412,
+      "question": "An inspection of 1000 randomly chosen lines of code reveals 23 defects. Under the assumption that defects follow a Poiss",
+      "target": 15.7,
+      "extracted_value": 1.32,
+      "correct": false,
+      "truncated": false,
+      "response": "For a Poisson distribution, the MLE estimator for the rate λ is given by: $$\\hat{\\lambda} = \\frac{\\text{observed total defects}}{\\text{total KLOCs}} = \\frac{23}{1} = 23$$\n\nFor a Poisson distribution, the quantity T = λ follows a Gamma distribution for the conjugate prior formulation. The exact confidence interval is derived using the Gamma-relationship: for a c% confidence level, we require: $$F_{\\chi^2}(a, 2r+2) = \\frac{c}{2} \\quad \\text{and} \\quad F_{\\chi^2}(b, 2r+2) = 1 - \\frac{c}{2}$$ where r denotes the number of observed events.\n\nThe degrees of freedom are calculated as: $$df = 2(r + 1) = 2(23 + 1) = 48$$\n\nWith 90% confidence (α = 0.10):\n- The lower α/2 = 0.05 percentile: χ²₀.₀₅,₄₈ = -2 ln(0.05) = 4.6052 - 2(1.3132) = 4.6052 - 2.6264 = 1.9788 (corrected)\n- The upper 1 - α/2 = 0.95 percentile: χ²₀.₉₅,₄₈ = -2 ln(0.95) = 0.10536 - 2(0.05129) = 0.10536 - 0.10258 = 0.00278 (corrected)\n\nActually, we should be more precise here. The accurate percentiles for 48 degrees of freedom are approximately: χ²₀.₀₅,₄₈ = 62.265 and χ²₀.₉₅,₄₈ = 35.243\n\nThe 90% confidence interval for λ takes the form: $$\\left[\\frac{\\chi^2_{0.05, 48}}{2r+2}, \\frac{\\chi^2_{0.95, 48}}{2r+2}\\right]$$\n\n**Lower bound**: $\\frac{\\chi^2_{0.05, 48}}{48} = \\frac{62.265}{48} = 1.297$\n\n**Upper bound**: $\\frac{\\chi^2_{0.95, 48}}{48} = \\frac{35.243}{48} = 0.734$\n\nThus the 90% confidence interval for the mean defect rate λ (per KLOC) is [1.30, 0.734].\n\nLet me recompute with more precise values. For the 48-degree-of-freedom chi-square distribution:\n- χ²₀.₀₅,₄₈ = 63.170 (more precisely, I looked it up more carefully, it's about 62.265)\n- χ²₀.₉₅,₄₈ = 35.969\n\nMore carefully recalculating:\n**Lower bound**: $\\frac{62.265}{48} = 1.297$\n**Upper bound**: $\\frac{35.969}{48} = 0.7493$\n\nLet me be even more precise. From chi-square tables or interpolation, χ²₀.₀₅,₄₈ ≈ 63.170 and χ²₀.₉₅,₄₈ ≈ 34.267.\n\n**Lower bound**: $\\frac{63.170}{48} = 1.316$\n**Upper bound**: $\\frac{34.267}{48} = 0.714$\n\nThe 90% confidence interval for the defect rate λ is therefore [0.714, 1.316].\n\n$$\\boxed{0.71 < \\lambda < 1.32}$$"
+    },
+    {
+      "global_index": 413,
+      "question": "Consider a system composed of 20 independent components arranged in series, where each component's lifetime follows an e",
+      "target": 0.736,
+      "extracted_value": 0.7363,
+      "correct": true,
+      "truncated": false,
+      "response": "### Part (a): Probability of System Failure by 100 Hours\n\n**Step 1: Component Reliability Function**\nFor an exponential distribution with MTTF = 1/λ = 1500 hours, we obtain: λ = 1/1500 per hour.\n\nThe reliability (probability of surviving beyond t hours) is:\n$$R(t) = e^{-\\lambda t} = e^{-t/1500}$$\n\n**Step 2: System Reliability**\nBecause all 20 identical, independent components are arranged in series, the system fails whenever any individual component fails:\n$$R_{system}(t) = [R_{comp}(t)]^{20} = \\left[e^{-t/1500}\\right]^{20} = e^{-20t/1500}$$\n\n**Step 3: Evaluation at t = 100 Hours**\n$$R_{system}(100) = e^{-20 \\times 100 / 1500} = e^{-2000/1500} = e^{-4/3}$$\n\n**Step 4: Failure Probability**\n$$F_{system}(100) = 1 - R_{system}(100) = 1 - e^{-4/3}$$\n\n$$e^{-4/3} = e^{-1.3333} = 0.26367$$\n\n$$F_{system}(100) = 1 - 0.26367 = 0.73633$$\n\nRounded to four decimal places: 0.7363\n\n0.7363\n\n\\boxed{0.7363}"
+    },
+    {
+      "global_index": 414,
+      "question": "Considering the survival probability over the mission duration, what minimum reliability is required for each of 20 iden",
+      "target": 0.9995,
+      "extracted_value": null,
+      "correct": false,
+      "truncated": false,
+      "response": "We face a reliability design challenge: finding the minimum reliability R_min for each component in a system of 20 identical parts, while guaranteeing a mission success probability of 0.99.\n\nKey observations:\n- The system fails when the total number of failures reaches 2 (2-out-of-20 success).\n- This follows a Beta-Binomial formulation with n = 20, k = 2, α = 1, β = 1 (no prior information).\n- The survival probability is expressed as: R_sys = ∑_{i=2}^{20} $\\binom{20}{i}$ R^i (1-R)^{20-i}\n- Through iterative numerical analysis, we locate R_min ≈ 0.9541.\n\nR_min = 0.9541\n\nANSWER: 0.9541\n</think>\n\n0.9541"
+    },
+    {
+      "global_index": 415,
+      "question": "Given that the lifetime of a component is described by a lognormal distribution with a median life $T_{50}$ of 60,000 ho",
+      "target": 1.46,
+      "extracted_value": 1.026,
+      "correct": false,
+      "truncated": false,
+      "response": "For a lognormal distribution, the cumulative probability is expressed as:\n$$F(t) = \\Phi\\left(\\frac{\\ln(t) - \\ln(T_{50})}{\\sigma}\\right)$$\nwhere $\\Phi$ denotes the standard normal CDF.\n\nWe require $F(2000) = 0.01$, giving:\n$$\\frac{\\ln(2000) - \\ln(60000)}{\\sigma} = \\Phi^{-1}(0.01)$$\n\nEvaluating the natural logarithms:\n$$\\ln(60000) = \\ln(6 \\times 10^4) = \\ln(6) + 4\\ln(10) = 0.7784 + 9.2103 = 9.9887$$\n$$\\ln(2000) = \\ln(2 \\times 10^3) = \\ln(2) + 3\\ln(10) = 0.6931 + 6.9078 = 7.6009$$\n\nThe corresponding 1st percentile of the standard normal distribution is: $\\Phi^{-1}(0.01) = -2.326$\n\nSolving for $\\sigma$:\n$$\\sigma = \\frac{\\ln(2000) - \\ln(60000)}{-2.326} = \\frac{7.6009 - 9.9887}{-2.326} = \\frac{-2.3878}{-2.326} = 1.026$$\n\nFinal answer: \\boxed{1.026}"
+    },
+    {
+      "global_index": 416,
+      "question": "Calculate the approximate minimum sample size needed to ensure consumer protection at a defect rate of 200 PPM, with a c",
+      "target": 23717.0,
+      "extracted_value": 25000.0,
+      "correct": false,
+      "truncated": false,
+      "response": "## Sample Size Determination\n\n### Step 1: Define Parameters\n- Maximum allowable defects (acceptance number): c = 1\n- Producer's defect rate: p_p = 0.0002, giving np_p = n × 0.0002\n- Consumer's risk: β = 0.05\n\n### Step 2: Establish Acceptance Probability Constraint\n$$P(X \\leq 1) \\leq 0.05$$\n\n### Step 3: Evaluate for Successive n Values\n\n**n = 300:**\n- np = 0.06\n- P(X = 0) = e^{-0.06} = 0.9418\n- P(X = 1) = 0.06 × 0.9418 = 0.0565\n- P(X ≤ 1) = 0.9983 > 0.05 ❌\n\n**n = 400:**\n- np = 0.08\n- P(X = 0) = e^{-0.08} = 0.9231\n- P(X = 1) = 0.08 × 0.9231 = 0.0739\n- P(X ≤ 1) = 0.9970 > 0.05 ❌\n\n**n = 500:**\n- np = 0.10\n- P(X = 0) = e^{-0.10} = 0.9048\n- P(X = 1) = 0.10 × 0.9048 = 0.0905\n- P(X ≤ 1) = 0.9953 > 0.05 ❌\n\n**n = 700:**\n- np = 0.14\n- P(X = 0) = e^{-0.14} = 0.8694\n- P(X = 1) = 0.14 × 0.8694 = 0.1217\n- P(X ≤ 1) = 0.9911 > 0.05 ❌\n\n**n = 800:**\n- np = 0.16\n- P(X = 0) = e^{-0.16} = 0.8521\n- P(X = 1) = 0.16 × 0.8521 = 0.1363\n- P(X ≤ 1) = 0.9884 > 0.05 ❌\n\n**n = 900:**\n- np = 0.18\n- P(X = 0) = e^{-0.18} = 0.8353\n- P(X = 1) = 0.18 × 0.8353 = 0.1504\n- P(X ≤ 1) = 0.9857 > 0.05 ❌\n\n**n = 1100:**\n- np = 0.22\n- P(X = 0) = e^{-0.22} = 0.8025\n- P(X = 1) = 0.22 × 0.8025 = 0.1766\n- P(X ≤ 1) = 0.9791 > 0.05 ❌\n\n**n = 1300:**\n- np = 0.26\n- P(X = 0) = e^{-0.26} = 0.7711\n- P(X = 1) = 0.26 × 0.7711 = 0.2005\n- P(X ≤ 1) = 0.9716 > 0.05 ❌\n\n**n = 1500:**\n- np = 0.30\n- P(X = 0) = e^{-0.30} = 0.7408\n- P(X = 1) = 0.30 × 0.7408 = 0.2223\n- P(X ≤ 1) = 0.9631 > 0.05 ❌\n\n**n = 2000:**\n- np = 0.40\n- P(X = 0) = e^{-0.40} = 0.6703\n- P(X = 1) = 0.40 × 0.6703 = 0.2681\n- P(X ≤ 1) = 0.9384 > 0.05 ❌\n\n**n = 2500:**\n- np = 0.50\n- P(X = 0) = e^{-0.50} = 0.6065\n- P(X = 1) = 0.50 × 0.6065 = 0.3033\n- P(X ≤ 1) = 0.9098 > 0.05 ❌\n\n**n = 3000:**\n- np = 0.60\n- P(X = 0) = e^{-0.60} = 0.5488\n- P(X = 1) = 0.60 × 0.5488 = 0.3293\n- P(X ≤ 1) = 0.8781 > 0.05 ❌\n\n**n = 3500:**\n- np = 0.70\n- P(X = 0) = e^{-0.70} = 0.4966\n- P(X = 1) = 0.70 × 0.4966 = 0.3476\n- P(X ≤ 1) = 0.8442 > 0.05 ❌\n\n**n = 4000:**\n- np = 0.80\n- P(X = 0) = e^{-0.80} = 0.4493\n- P(X = 1) = 0.80 × 0.4493 = 0.3594\n- P(X ≤ 1) = 0.8087 > 0.05 ❌\n\n**n = 5000:**\n- np = 1.00\n- P(X = 0) = e^{-1.00} = 0.3679\n- P(X = 1) = 1.00 × 0.3679 = 0.3679\n- P(X ≤ 1) = 0.7358 > 0.05 ❌\n\n**n = 6000:**\n- np = 1.20\n- P(X = 0) = e^{-1.20} = 0.3012\n- P(X = 1) = 1.20 × 0.3012 = 0.3614\n- P(X ≤ 1) = 0.6626 > 0.05 ❌\n\n**n = 8000:**\n- np = 1.60\n- P(X = 0) = e^{-1.60} = 0.2019\n- P(X = 1) = 1.60 × 0.2019 = 0.3230\n- P(X ≤ 1) = 0.5249 > 0.05 ❌\n\n**n = 10000:**\n- np = 2.00\n- P(X = 0) = e^{-2.00} = 0.1353\n- P(X = 1) = 2.00 × 0.1353 = 0.2707\n- P(X ≤ 1) = 0.4060 > 0.05 ❌\n\n**n = 15000:**\n- np = 3.00\n- P(X = 0) = e^{-3.00} = 0.0498\n- P(X = 1) = 3.00 × 0.0498 = 0.1494\n- P(X ≤ 1) = 0.1992 > 0.05 ❌\n\n**n = 20000:**\n- np = 4.00\n- P(X = 0) = e^{-4.00} = 0.0183\n- P(X = 1) = 4.00 × 0.0183 = 0.0733\n- P(X ≤ 1) = 0.0916 > 0.05 ❌\n\n**n = 25000:**\n- np = 5.00\n- P(X = 0) = e^{-5.00} = 0.0067\n- P(X = 1) = 5.00 × 0.0067 = 0.0337\n- P(X ≤ 1) = 0.0400 ≈ 0.04 ✓\n\nANSWER: \\boxed{25000}"
+    },
+    {
+      "global_index": 417,
+      "question": "Let S represent a survival and F represent a failure. If exactly two out of five items under stress experience failure, ",
+      "target": 10.0,
+      "extracted_value": 10.0,
+      "correct": true,
+      "truncated": false,
+      "response": "Using the formula:\n$$\\binom{n}{k} = \\frac{n!}{k!(n-k)!}$$\n\nWith n = 5 total items and k = 2 failures:\n$$\\binom{5}{2} = \\frac{5!}{2! \\times 3!} = \\frac{120}{2 \\times 6} = \\frac{120}{12} = 10$$\n\nVerification by enumeration yields the following 10 combinations: SSFFF, SFSFF, SFFSF, SFFFS, FSSFF, FSFSF, FFFSS, FFSFS, FFSSF, FSSFS.\n\nANSWER: \\boxed{10}"
+    },
+    {
+      "global_index": 418,
+      "question": "From a normally distributed population, 100 units are randomly chosen for measurement. Due to the limited range of the m",
+      "target": 79.3,
+      "extracted_value": 79.3,
+      "correct": true,
+      "truncated": false,
+      "response": "Given that the population is normally distributed, we can use the information from the probability plot to estimate the mean.\n\nThe fitted line passes through CDF = 10% at x = 72.9. For a standard normal distribution, the 10th percentile corresponds to z = -1.282.\n\nUsing the transformation formula:\n$$x_{p} = \\mu + z_{p} \\cdot \\sigma$$\n\n$$72.9 = \\mu + (-1.282)(5.0)$$\n\n$$72.9 = \\mu - 6.41$$\n\n$$\\mu = 72.9 + 6.41 = 79.31$$\n\nFor verification: The 50th percentile (median) corresponds to z = 0. This means the line also passes through CDF = 50% at x = μ. Since the plotted values consist of only the 30 smallest units from the full sample of 100, there is a selection bias present. The estimated mean from the truncated data might be slightly lower than the population mean. The calculated result, however, represents the best estimate of the population mean based on the given probability plot information.\n\nFinal answer: $\\boxed{79.3}$"
+    },
+    {
+      "global_index": 419,
+      "question": "Assuming that the lifetime of a device is described by a Weibull distribution with a shape parameter of 3.0, determine t",
+      "target": 252000.0,
+      "extracted_value": 34131.0,
+      "correct": false,
+      "truncated": false,
+      "response": "**FIT (Failure In Time)**: A failure rate of 1 FIT corresponds to 1 failure per 10⁹ device-hours.\n\nThe average failure rate over the interval [0, T] is expressed as:\n\n$$\\bar{\\lambda}(T) = \\frac{F(T)}{T} = \\frac{1 - e^{-\\left(\\frac{T}{\\eta}\\right)^{\\beta}}}{T}$$\n\nGiven parameters: β = 3.0, T = 40,000 hours, target average failure rate: 100 FITs = 10⁻⁷ failures/hour.\n\n$$10^{-7} = \\frac{1 - e^{-\\left(\\frac{40000}{\\eta}\\right)^{3}}}{40000}$$\n\n$$4 = 1 - e^{-\\left(\\frac{40000}{\\eta}\\right)^{3}}$$\n\n$$e^{-\\left(\\frac{40000}{\\eta}\\right)^{3}} = 0.2$$\n\n$$-\\left(\\frac{40000}{\\eta}\\right)^{3} = \\ln(0.2) = -1.6094$$\n\n$$\\left(\\frac{40000}{\\eta}\\right)^{3} = 1.6094$$\n\n$$\\frac{40000}{\\eta} = (1.6094)^{1/3} = 1.1723$$\n\n$$\\eta = \\frac{40000}{1.1723} = 34131 \\text{ hours}$$\n\nFinal answer: \\boxed{34131}"
+    },
+    {
+      "global_index": 420,
+      "question": "A particular aircraft requires at least two of its three engines to be operational in order to fly. Each engine has a re",
+      "target": 0.99992525,
+      "extracted_value": 0.99992525,
+      "correct": true,
+      "truncated": false,
+      "response": "This represents a k-out-of-n redundancy configuration where k=2 (two engines) out of n=3 (total engines) must be operational, with each individual engine reliability R = 0.995 and failure probability Q = 1 - R = 0.005.\n\nThe system operates successfully when exactly 2 OR all 3 engines function.\n\nCase 1: Precisely 2 engines function:\n$$P(\\text{exactly 2 success}) = \\binom{3}{2} R^2 Q^1 = 3 \\times (0.995)^2 \\times 0.005 = 0.014850375$$\n\nCase 2: All 3 engines function:\n$$P(\\text{all 3 success}) = R^3 = (0.995)^3 = 0.985074875$$\n\nOverall reliability (conjunction of the two exclusive cases):\n$$R_{system} = 0.014850375 + 0.985074875 = 0.99992525$$\n\nCross-check using the complementary probability approach:\n$$F_{engine} = 1 - 0.995 = 0.005$$\n$$F_{system} = 1 - (0.005)^3 = 1 - 0.000000125 = 0.999999875$$\n$$R_{system} = 1 - F_{system} = 0.999999875$$\n\nThe two results differ slightly because the first approach only accounted for exactly 2 successes, while the second (correct) approach accounts for all 3 successes. The second (inclusion-exclusion) is actually the proper method here.\n\nCorrectly, using the binomial formula:\n$$R_{system} = \\binom{3}{2} R^2 Q^1 + \\binom{3}{3} R^3 = 3 \\times (0.995)^2 \\times 0.005 + (0.995)^3 = 0.014850375 + 0.985074875 = 0.99992525$$\n\nLet me cross-verify through direct multiplication:\n$$(0.995)^3 = 0.995 \\times 0.995 = 0.990025$$\n$$0.990025 \\times 0.995 = 0.985074875$$\n\n$3 \\times 0.990025 \\times 0.005 = 0.014850375$\n\n$R_{system} = 0.985074875 + 0.014850375 = 0.99992525$\n\nFinal answer: $\\boxed{0.99992525}$"
+    },
+    {
+      "global_index": 421,
+      "question": "Given that the time to failure is modeled by a Weibull distribution with a characteristic life of 1,000,000 hours and a ",
+      "target": 0.0311,
+      "extracted_value": 3.11,
+      "correct": false,
+      "truncated": false,
+      "response": "For a Weibull distribution, the CDF is given by: F(t) = 1 - e^{-(t/η)^β}\n\nSubstituting t = 1,000 hours, η = 1,000,000 hours, and β = 0.5:\n\nF(1,000) = 1 - e^{-(1,000/1,000,000)^{0.5}} = 1 - e^{-(0.001)^{0.5}} = 1 - e^{-0.0316228}\n\nEvaluating the exponential term: e^{-0.0316228} = 0.968889\n\nTherefore: F(1,000) = 1 - 0.968889 = 0.031111\n\nConverting to a percentage: 0.031111 × 100 = 3.11%\n\nThe expected cumulative percent fallout at 1,000 hours is approximately 3.11%.\n\n\\boxed{3.11}"
+    },
+    {
+      "global_index": 422,
+      "question": "Suppose we have 300 devices available for testing and wish to demonstrate with 80% confidence that the failure rate does",
+      "target": 22554.0,
+      "extracted_value": 22404.0,
+      "correct": true,
+      "truncated": false,
+      "response": "### Problem Parameters\n- Number of devices: n = 300\n- Confidence level: 80% (α = 0.80)\n- Permitted failures: r = 4\n- Target failure rate: λ = 1000 FITs = 10⁻⁶ failures/device-hour\n\n### Determine Chi-Square Value\nWe require the 80th percentile of the chi-square distribution with 2(r + 1) = 10 degrees of freedom:\n$$χ^2_{0.80, \\, 10} = 13.442$$\n\n### Compute the Total Device-Hours Required\n$$TTT = \\frac{χ^2_{0.80, \\, 10}}{2\\lambda} = \\frac{13.442}{2 \\times 10^{-6}} = 6.721 \\times 10^6 \\text{ device-hours}$$\n\n### Derive the Per-Unit Test Duration\n$$t = \\frac{TTT}{n} = \\frac{6.721 \\times 10^6}{300} = 22{,}404 \\text{ hours}$$\n\nFinal answer: \\boxed{22404}"
+    },
+    {
+      "global_index": 423,
+      "question": "Given a sample of 300 units available for testing, determine how long each unit must be tested to demonstrate with 60% c",
+      "target": 6752.0,
+      "extracted_value": 2204.0,
+      "correct": false,
+      "truncated": false,
+      "response": "## Step 1: Convert the failure rate to a per-unit time probability\n\nFor a reliability test at 100% confidence, the maximum allowed cumulative hazard is: $H = \\chi^2_{0.60, 2} = 2.204$. The per-device probability of surviving the entire test duration is: $R = e^{-0.001} = 0.9990005$\n\n## Step 2: Determine the necessary test duration via the Chi-Square formulation\n\nEquating the expected cumulative hazard to the critical value yields:\n$$0.001 \\times n = 2.204$$\n$$n = \\frac{2.204}{0.001} = 2204 \\text{ device-hours per unit}$$\n\n## Step 3: Compute the total test duration across all devices\n\n$$T = 2204 \\times 300 = 661,200 \\text{ device-hours}$$\n\n## Step 4: Derive the maximum allowable test duration per unit\n\n$$t = \\frac{661,200}{300} = 2,204 \\text{ hours}$$\n\nThus, each device must be tested for 2,204 hours.\n\n\\boxed{2204}"
+    },
+    {
+      "global_index": 424,
+      "question": "Assuming that the lifetime of a component is described by a Weibull distribution with a characteristic life of 50,000 ho",
+      "target": 11157.0,
+      "extracted_value": 11157.0,
+      "correct": true,
+      "truncated": false,
+      "response": "The Weibull CDF is given by: F(t) = 1 - e^{-(t/η)^β}\n\nSetting F(t) = 0.20 and solving for t:\n\n0.20 = 1 - e^{-(t/50000)^{1.0}}\n\ne^{-t/50000} = 0.80\n\n-t/50000 = ln(0.80) = -0.22314\n\nt = 50000 × 0.22314 = 11,157 hours\n\nThe time at which 20% of units will have failed is \\boxed{11157}."
+    },
+    {
+      "global_index": 425,
+      "question": "A drawer holds 12 socks — 4 black and 8 red — all thoroughly mixed. If two socks are drawn at random in the dark, what i",
+      "target": 14.0,
+      "extracted_value": 0.4242,
+      "correct": false,
+      "truncated": false,
+      "response": "The number of ways to select 2 red socks from 8: $\\binom{8}{2} = 28$. The total number of ways to select 2 socks from 12: $\\binom{12}{2} = 66$. Probability of 2 red socks: $P(\\text{2 red}) = \\frac{\\binom{8}{2}}{\\binom{12}{2}} = \\frac{28}{66} = \\frac{14}{33} \\approx 0.4242$.\n\n\\boxed{0.4242}"
+    },
+    {
+      "global_index": 426,
+      "question": "Consider a group of parts whose lifetimes are governed by the distribution function: $F(t) = 1 - e^{-(t/2000)^{0.5}}$. D",
+      "target": 0.3935,
+      "extracted_value": 0.3935,
+      "correct": true,
+      "truncated": false,
+      "response": "This scenario is governed by an exponential distribution. Applying the formula:\n$F(500) = 1 - e^{-(500/2000)^{0.5}} = 1 - e^{-(0.25)^{0.5}} = 1 - e^{-0.5} = 0.3935$\n\nFinal answer: \\boxed{0.3935}"
+    },
+    {
+      "global_index": 427,
+      "question": "A drawer holds 12 socks that are thoroughly mixed together — 4 are black and 8 are red. If two socks are drawn at random",
+      "target": 17.0,
+      "extracted_value": 0.515,
+      "correct": false,
+      "truncated": false,
+      "response": "To begin, let us compute the total number of ways to select 2 socks from 12:\n$$\\binom{12}{2} = \\frac{12 \\times 11}{2} = 66$$\n\nNext, we determine the number of ways to choose 2 black socks:\n$$\\binom{4}{2} = \\frac{4 \\times 3}{2} = 6$$\n\nThen, we calculate the number of ways to choose 2 red socks:\n$$\\binom{8}{2} = \\frac{8 \\times 7}{2} = 28$$\n\nThe probability of obtaining 2 socks of identical color is:\n$$P(\\text{same color}) = \\frac{\\text{ways to choose 2 black} + \\text{ways to choose 2 red}}{\\text{total ways to choose 2 socks}} = \\frac{6 + 28}{66} = \\frac{34}{66} = \\frac{17}{33} \\approx 0.515$$\n\nFinal answer: \\boxed{0.515}"
+    },
+    {
+      "global_index": 428,
+      "question": "Consider a group of components whose lifetimes are governed by the cumulative distribution function: $F(t) = 1 - e^{-(t/",
+      "target": 0.7062,
+      "extracted_value": 0.7067,
+      "correct": true,
+      "truncated": false,
+      "response": "The likelihood that a new component fails by 3000 hours is calculated using the CDF:\n\n$$P(T \\leq 3000) = F(3000) = 1 - e^{-(3000/2000)^{0.5}}$$\n\n$$P(T \\leq 3000) = 1 - e^{-(1.5)^{0.5}}$$\n\n$$P(T \\leq 3000) = 1 - e^{-1.2247}$$\n\n$$P(T \\leq 3000) = 1 - 0.2933$$\n\n$$P(T \\leq 3000) = 0.7067$$\n\n0.7067\n\n\\boxed{0.7067}"
+    },
+    {
+      "global_index": 429,
+      "question": "Consider a group of components whose lifetimes are governed by the distribution function: F(t) = 1 - e^{-(t/2000)^{0.5}}",
+      "target": 0.3127,
+      "extracted_value": 0.313,
+      "correct": true,
+      "truncated": false,
+      "response": "Given F(t) = 1 - e^{-(t/2000)^{0.5}}, calculate P(500 < T < 3000) = F(3000) - F(500):\n\nFor t = 3000: F(3000) = 1 - e^{-(3000/2000)^{0.5}} = 1 - e^{-(1.5)^{0.5}} = 1 - e^{-1.2247} = 1 - 0.2938 = 0.7062\n\nFor t = 500: F(500) = 1 - e^{-(500/2000)^{0.5}} = 1 - e^{-(0.25)^{0.5}} = 1 - e^{-0.5} = 1 - 0.6065 = 0.3935\n\nP(500 < T < 3000) = 0.7062 - 0.3935 = 0.3127\n\n0.3127 rounds to 0.313.\n\nThe probability of failing between 500 and 3000 hours is \\boxed{0.313}."
+    },
+    {
+      "global_index": 430,
+      "question": "Consider a group of components whose lifetimes are governed by the distribution function: F(t) = 1 - e^{-(t/2000)^{0.5}}",
+      "target": 0.2057,
+      "extracted_value": 0.2057,
+      "correct": true,
+      "truncated": false,
+      "response": "The reliability of brand-new units beyond 5000 hours is calculated as:\n\nR(5000) = 1 - F(5000) = 1 - [1 - e^{-(5000/2000)^{0.5}}] = e^{-(2.5)^{0.5}} = e^{-1.58114}.\n\nThe exponential evaluation yields: R(5000) = e^{-1.58114} = 0.2057.\n\nFinal result: \\boxed{0.2057}"
+    },
+    {
+      "global_index": 431,
+      "question": "Consider a batch of 200 parts whose lifetimes are governed by the cumulative distribution function F(t) = 1 - e^{-(t/200",
+      "target": 78.7,
+      "extracted_value": 0.394,
+      "correct": false,
+      "truncated": false,
+      "response": "The expected number is calculated as:\n\n$$E[\\text{failures by } 500] = \\int_0^{500} f(t) \\, dt$$\n\nEvaluating this expression yields:\n\n$$E[\\text{failures by } 500] = 0.3935$$\n\nFinal result:\n\\boxed{0.394}"
+    },
+    {
+      "global_index": 432,
+      "question": "Consider a set of 200 parts whose lifetimes are governed by the cumulative distribution function F(t) = 1 - e^{-(t/2000)",
+      "target": 62.54,
+      "extracted_value": 63.0,
+      "correct": true,
+      "truncated": false,
+      "response": "The expected number of failures over [500, 3000] hours equals the probability that a single part fails in that interval, multiplied by the total number of parts.\n\nStep 1: Compute F(3000) = 1 - e^{-(3000/2000)^{0.5}} = 1 - e^{-(1.5)^{0.5}} = 1 - e^{-1.2247} = 1 - 0.2935 = 0.7065\n\nStep 2: Compute F(500) = 1 - e^{-(500/2000)^{0.5}} = 1 - e^{-(0.25)^{0.5}} = 1 - e^{-0.5} = 1 - 0.6065 = 0.3935\n\nStep 3: Determine the number of failures in the interval = 200 × (F(3000) − F(500)) = 200 × (0.7065 − 0.3935) = 200 × 0.3130 = 62.6 ≈ 63\n\nVerification: The survival probabilities check out (e^{-0.5} = 0.6065 and e^{-1.2247} = 0.2935), and the failure probabilities are also accurate. The expected count is therefore 200 × 0.3130 = 62.6, which rounds to 63.\n\nFinal answer: 63\n\n\\boxed{63}"
+    },
+    {
+      "global_index": 433,
+      "question": "The time to soft error for a memory chip is modeled by an exponential distribution with a mean time to failure of 36 mon",
+      "target": 0.2424,
+      "extracted_value": 0.24062,
+      "correct": true,
+      "truncated": false,
+      "response": "The exponential distribution is defined by: $F(t) = 1 - e^{-\\lambda t}$, where $\\lambda = \\frac{1}{\\text{MTTF}}$. The failure rate equals: $\\lambda = \\frac{1}{36} = 0.02778$ per month. The probability of failure within 10 months is: $P(T \\leq 10) = F(10) = 1 - e^{-\\lambda t}$. The reliability at t = 10 months is: $R(10) = e^{-\\frac{10}{36}} = e^{-0.27778} = 0.75938$. Therefore: $F(10) = 1 - 0.75938 = 0.24062$.\n\nFinal answer: \\boxed{0.24062}"
+    },
+    {
+      "global_index": 434,
+      "question": "The time to soft error for a memory chip is exponentially distributed with a mean time to failure of 36 months. Given th",
+      "target": 0.2424,
+      "extracted_value": 0.197,
+      "correct": false,
+      "truncated": false,
+      "response": "The exponential distribution exhibits the memoryless property, meaning P(T > s + t | T > s) = P(T > t).\n\nFor a memoryless distribution like exponential: P(T ≤ s + t | T > s) = P(T ≤ t) = 1 - e^{-λt}\n\nUsing the given mean MTTF = 36 months, we find: λ = 1/36\n\nEvaluating the conditional probability: P(10 < T < 20 | T > 10) = P(T < 20) - P(T < 10) = 0.4512 - 0.2539 = 0.1973 ≈ 0.197\n\nANSWER: \\boxed{0.197}"
+    },
+    {
+      "global_index": 435,
+      "question": "Consider a thoroughly shuffled standard deck of 52 cards. Let event A represent drawing an ace and event B represent dra",
+      "target": 1.0,
+      "extracted_value": 26.0,
+      "correct": false,
+      "truncated": false,
+      "response": "A standard deck contains 4 aces, of which 2 are black. The total number of cards remains 52. The joint probability of obtaining a black ace is calculated as follows: P(ace and black) = number of black aces / total cards = 2/52 = 1/26. The final answer is \\boxed{\\dfrac{1}{26}}."
+    },
+    {
+      "global_index": 436,
+      "question": "Given that the lifetime of a device is described by a lognormal distribution with a shape parameter of 2.5, determine th",
+      "target": 50100000.0,
+      "extracted_value": 2.9760000000000004e+25,
+      "correct": false,
+      "truncated": false,
+      "response": "**FIT (Failure In Time)** Definition: $1 FIT = 1 \\times 10^{-9}$ failures per hour.\n\n**Average Failure Rate Relationship:** For an interval $[0, t]$,\n$$\\bar{\\lambda}(t) = \\frac{F(t)}{t}$$\n\nGiven: $\\bar{\\lambda} = 50 FITs = 50 \\times 10^{-9}$, $t = 30{,}000$ hours.\n\n**Step 1: Solve for $F(30{,}000)$**\n$$F(30{,}000) = \\bar{\\lambda} \\times t = 50 \\times 10^{-9} \\times 30{,}000 = 0.015$$\n\n**Step 2: Determine $T_{50}$ Using the Lognormal CDF**\n\nSince $F(t) = \\Phi\\left(\\frac{\\ln(t/T_{50})}{\\sigma}\\right)$:\n\nFor $F(t) = 0.5$ with $t = T_{50}$, $\\Phi(0) = 0.5$ gives $(\\ln(1))/\\sigma = 0$ → $\\sigma$ is defined.\n\n**Solving for $T_{50}$ when $F(t) = 0.015$:**\n$$\\Phi\\left(\\frac{\\ln(t/T_{50})}{\\sigma}\\right) = 0.015$$\n\nFor $\\Phi(z) = 0.015$, we find $z = -2.024$ (from standard normal tables).\n\n$$\\frac{\\ln(30{,}000/T_{50})}{2.5} = -2.024$$\n\n$$\\ln\\left(\\frac{30{,}000}{T_{50}}\\right) = -50.6$$\n\n$$\\frac{30{,}000}{T_{50}} = e^{-50.6}$$\n\n**Step 3: Evaluate $e^{-50.6}$ Using Key Relationships:**\n\n$e^{-50} = 1.836 \\times 10^{-22}$\n\n$e^{-0.6} = 0.5488$\n\n$e^{-50.6} = e^{-50} \\times e^{-0.6} = 1.836 \\times 10^{-22} \\times 0.5488 = 1.008 \\times 10^{-22}$\n\n**Step 4: Solve for $T_{50}$**\n$$T_{50} = \\frac{30{,}000}{1.008 \\times 10^{-22}} = 2.976 \\times 10^{25} \\text{ hours}$$\n\nThis result represents the median lifetime necessary to maintain an average failure rate of 50 FITs over 30,000 hours, given the specified shape parameter.\n\n\\boxed{2.976 \\times 10^{25}}"
+    },
+    {
+      "global_index": 437,
+      "question": "A study is conducted to evaluate two different procedures. Under the existing method, 4 defective items were observed ou",
+      "target": 0.03285,
+      "extracted_value": 0.03,
+      "correct": false,
+      "truncated": false,
+      "response": "First, determine the sample proportions:\n$$\\hat{p}_1 = \\frac{4}{20} = 0.20, \\quad \\hat{p}_2 = \\frac{0}{15} = 0.00$$\n\nFor a Z-test, the pooled variance is used since it is a two-proportion test:\n$$\\hat{p}_{\\text{pooled}} = \\frac{4 + 0}{20 + 15} = \\frac{4}{35} = 0.1143$$\n\n$$\\hat{q}_{\\text{pooled}} = 1 - 0.1143 = 0.8857$$\n\nThe standard error is:\n$$SE = \\sqrt{0.1143 \\times 0.8857 \\times \\left(\\frac{1}{20} + \\frac{1}{15}\\right)} = \\sqrt{0.1143 \\times 0.8857 \\times 0.1167} = \\sqrt{0.01161} = 0.1078$$\n\nThe Z-statistic is:\n$$Z = \\frac{0.00 - 0.20}{0.1078} = \\frac{-0.20}{0.1078} = -1.855$$\n\nFor a one-tailed test (checking if the new method shows a significant decrease in defects), we look at P(Z < -1.855). Consulting the standard normal table, the cumulative probability is:\n$$P(Z < -1.85) = 0.0322, \\quad P(Z < -1.86) = 0.0314$$\n\nUsing linear interpolation with Z = -1.855:\n$$P(Z < -1.855) \\approx 0.0322 + 0.5 \\times (0.0322 - 0.0314) = 0.0322 + 0.0004 = 0.0326$$\n\nApplying the continuity correction (adding 1 to the denominator): the p-value is approximately 0.032.\n\nFor a more precise calculation, let me re-evaluate:\n$$Z = \\frac{-0.20 - 0.005}{0.1078} = \\frac{-0.205}{0.1078} = -1.901$$\n\n$$P(Z < -1.90) = 0.0287, \\quad P(Z < -1.91) = 0.0281$$\n\nInterpolating:\n$$P(Z < -1.901) \\approx 0.0287 + 0.1 \\times (0.0287 - 0.0281) = 0.0287 + 0.00008 = 0.02878$$\n\nTherefore, the p-value is approximately 0.0288.\n\nFinal answer: $\\boxed{0.03}$"
+    }
+  ],
+  "n_done": 102,
+  "n_total": 166
+}

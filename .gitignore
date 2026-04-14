@@ -25,24 +25,9 @@ logs/
 *.err
 
 # Model checkpoints
-lora_model*/
 grpo_saved_lora*/
 merged_model*/
 checkpoints/
-
-# Data — kept local only
-data/
-
-# Results — large JSON kept local, only summaries on GitHub
-results/Last run/eval_v3_base_A_training.json
-results/Last run/eval_v3_base_B_hard_holdout.json
-results/Last run/eval_v3_base_C_master_holdout.json
-results/Last run/eval_v3_finetuned_A_training.json
-results/Last run/eval_v3_finetuned_B_hard_holdout.json
-results/Last run/eval_v3_finetuned_C_master_holdout.json
-
-# Local-only files
-LOCAL_HISTORY.md
 
 # HuggingFace cache
 .cache/
@@ -57,5 +42,28 @@ Thumbs.db
 # Temporary
 mytmp*/
 
-# Claude
+# Local tool config
 .claude/
+
+# Secrets
+key.txt
+*.key
+
+# Data (too large for git — stored locally)
+data/
+
+# Local-only results (keep locally, don't push)
+results/Exp7/
+results/Chunck strict/
+
+# Google Colab artifacts
+google-colab/
+google-colab.zip
+
+# Paper heavy directories
+paper/.git/
+paper/ocr_output/
+paper/literature/
+
+# Eval detail JSONs (large per-question outputs)
+eval_details_*.json

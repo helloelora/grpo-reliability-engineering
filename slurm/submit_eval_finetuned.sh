@@ -9,6 +9,8 @@
 #SBATCH --gres=gpu:1
 #SBATCH --partition=gpua100
 #SBATCH --time=24:00:00
+#SBATCH --mail-type=END,FAIL
+#SBATCH --mail-user=elora.drouilhet@student-cs.fr
 
 # ============================================================
 # Evaluate fine-tuned model on 3 splits (255 questions x 4 gen)
