@@ -36,7 +36,7 @@
 \usepackage{hyperref}
 
 % ── Metadata ────────────────────────────────────────────────────
-\title[Domain-Specific LLM for Reliability]{Developing a Domain-Specific LLM through\\Self-Instruct for Reliability Engineering}
+\title[Domain-Specific LLM for Reliability]{Developing a domain-specific LLM through\\self-instruct for Reliability Engineering}
 \author[Dalban \& Drouilhet]{Alexandre Dalban \and Elora Drouilhet}
 \institute[CentraleSup\'elec]{%
   Laboratoire G\'enie Industriel (LGI)\\
@@ -53,7 +53,7 @@
 \begin{center}
   \small\textbf{Supervisors:} Dr.\ Zhiguo Zeng, Jean Meunier-Pion\\[4pt]
   \footnotesize\texttt{alexandre.dalban@student-cs.fr} \quad\texttt{elora.drouilhet@student-cs.fr}\\[2pt]
-  \footnotesize Code \& data: \url{https://github.com/ADnocap/Reliability-Domain-Specific-LLM}
+  \footnotesize Code \& data: \url{https://github.com/ADnocap/Reliability-Domain-Specific-LLM} & \url{https://github.com/helloelora/grpo-reliability-engineering}
 \end{center}
 \end{frame}
 
@@ -97,13 +97,13 @@
 % ── Slide 4: Bootstrapping Challenge ──────────────────────────
 \begin{frame}{The Bootstrapping Challenge}
 \begin{block}{Central question}
-  How to build a high-quality training dataset from only \textbf{56 seed questions}?
+  How can you create a high-quality training dataset from a \textbf{small dataset}?
 \end{block}
 
 \vspace{0.5em}
 \textbf{Key challenges:}
 \begin{itemize}
-  \item Manually creating reliability engineering Q\&A pairs is \textbf{prohibitively expensive} --- each problem requires expert knowledge
+  \item Manually creating reliability engineering Q\&A pairs is \textbf{prohibitively expensive}
   \item Self-Instruct [Wang et al.\ 2023] can bootstrap data, but \textbf{same-model consistency checks} are trivially satisfied in technical domains (92--97\% pass rate)
   \item Generating harder questions yields \textbf{diminishing returns} (+65 hard questions $\to$ only +2.0\%)
   \item Prior SFT attempts on small data ($\leq$51 samples) caused \textbf{catastrophic forgetting} ($-8.19$pp)
@@ -123,8 +123,7 @@
 % ── Slide 5: Research Questions ────────────────────────────────
 \begin{frame}{Research Problem}
 \begin{alertblock}{Central question}
-  How can we adapt a general-purpose LLM to reliability engineering\\
-  using only \textbf{56 seed questions}, without catastrophic forgetting?
+  How can we adapt a general-purpose LLM to reliability engineering using only \textbf{56 seed questions}?
 \end{alertblock}
 
 \vspace{0.5em}
@@ -133,7 +132,7 @@
   \item \textbf{Data scarcity:} How to bootstrap a high-quality training set from 56 textbook questions?
   \item \textbf{Quality control:} How to ensure synthetic questions are correct and non-trivial?
   \item \textbf{Catastrophic forgetting:} How to gain domain accuracy without losing generalization?
-  \item \textbf{RL on small data:} Can GRPO work with only $\sim$266 training questions?
+  \item \textbf{SFT and RL on small data:} Can they work with only a few training questions?
 \end{enumerate}
 \end{frame}
 
@@ -396,7 +395,7 @@ Qwen3-8B has a \texttt{\textbf{<think>}} mode (chain-of-thought scratchpad befor
 \begin{itemize}\small
   \item No critic model needed (group-relative baseline)
   \item No pre-computed preference pairs
-  \item Verifiable numerical rewards --- no learned reward model
+  \item Verifiable numerical rewards: no learned reward model
 \end{itemize}
 
 \column{0.44\textwidth}
@@ -444,7 +443,7 @@ Each question evaluated \textbf{4 times} with base Qwen3-8B:
 } % <--- Et ici
 
 \vspace{0.3em}
-\small \textbf{Why this split?} 0/4 and 4/4 produce \textbf{zero reward variance} in GRPO (all generations same outcome) $\to$ no gradient signal. But they work fine for SFT. Only 1--3/4 questions have the natural variance GRPO needs.
+\small \textbf{Why this split?} 0/4 and 4/4 produce \textbf{zero reward variance} in GRPO (all generations same outcome) $\to$ no gradient signal
 
 \column{0.48\textwidth}
 \textbf{Dynamic sampling (DAPO):}
@@ -480,7 +479,7 @@ Each question evaluated \textbf{4 times} with base Qwen3-8B:
 \end{frame}
 
 % ── Slide 13b: Journey from TRL to custom loop ───────────────
-\begin{frame}{From TRL to Custom Training Loop}
+\begin{frame}{From TRL to custom training loop}
 \begin{columns}[T]
 \column{0.50\textwidth}
 \textbf{Phase 1: TRL GRPOTrainer}
@@ -524,8 +523,8 @@ Pure PyTorch loop: if all $G$ generations agree, \textbf{discard and re-sample}.
 \vspace{0.3em}
 $\to$ Waste rate: \textbf{42\% $\to$ 23\%}
 
-\vspace{0.5em}
-\textbf{Accuracy by difficulty: base vs.\ GRPO iterations}
+\vspace{1.2em}
+\textbf{Accuracy by difficulty}
 
 \vspace{0.3em}
 \centering
@@ -543,13 +542,8 @@ $\to$ Waste rate: \textbf{42\% $\to$ 23\%}
 \raggedright
 {\footnotesize
 Easy = base scores 4/4. Hard = base scores 0/4.\\
-Exp 1--5: 281q, no screening.\\
-Exp 7: 298 unseen questions, with screening.
 }
 
-\vspace{0.3em}
-\small \textbf{Exp 1--5:} GRPO \textbf{broke} hard questions (38\%$\to$24\%).\\
-\textbf{Exp 7:} GRPO \textbf{solves} 47\% of previously impossible questions while preserving 95\% of easy ones.
 \end{columns}
 \end{frame}
 
@@ -614,6 +608,9 @@ Exp 7: 298 unseen questions, with screening.
   \draw[-{Stealth},thick,green!50!black] (7.7,5.0) -- (7.7,5.8) node[above,font=\tiny,green!50!black] {$+7.5$pp};
 \end{tikzpicture}
 
+\vspace{0.3em}
+{\small\textbf{Fig.\ 1:} Accuracy on 266q in-distribution (blue) vs.\ 54q holdout (orange)}
+
 \column{0.43\textwidth}
 
 \begin{alertblock}{\small The SFT Paradox}
@@ -646,7 +643,7 @@ Exp 7: 298 unseen questions, with screening.
   \toprule
   \textbf{Model} & \textbf{Accuracy} \\
   \midrule
-  Claude Sonnet 4.6      & \textbf{93.0\%} \\
+  Claude Sonnet 4.6      & 93.0\% \\
   o3-mini                & 85.6\% \\
   \textbf{Qwen3-8B (SFT+GRPO)}   & \textbf{77.2\%} \\
   Gemini 3.1 Pro         & 70.1\% \\
@@ -656,7 +653,7 @@ Exp 7: 298 unseen questions, with screening.
 
 \vspace{0.5em}
 
-\column{0.43\textwidth}
+\column{0.4\textwidth}
 \textbf{Key takeaways:}
 \begin{itemize}\small
   \item GRPO places \textbf{between Gemini 3.1 Pro and o3-mini} on unseen questions
@@ -664,23 +661,7 @@ Exp 7: 298 unseen questions, with screening.
 \end{itemize}
 
 \vspace{0.5em}
-\textbf{GRPO breakdown on 298q:}
-\vspace{0.2em}
 
-\centering
-\begin{tabular}{@{}lcc@{}}
-  \toprule
-  \textbf{Base screening} & $n$ & \textbf{GRPO} \\
-  \midrule
-  4/4 (base correct) & 186 & 95.2\% \\
-  0/4 (base wrong) & 112 & 47.3\% \\
-  \midrule
-  \textbf{Total} & \textbf{298} & \textbf{77.2\%} \\
-  \bottomrule
-\end{tabular}
-
-\vspace{0.3em}
-{\footnotesize GRPO solves \textbf{47\% of questions the base couldn't answer} while preserving 95\% of what it already knew.}
 \end{columns}
 \end{frame}
 
@@ -696,7 +677,7 @@ Exp 7: 298 unseen questions, with screening.
   \item \textbf{Statistically rigorous:} 10-fold CV, Wilcoxon test ($p=0.002$)
   \item \textbf{Cross-model verification:} higher quality than self-consistency
   \item \textbf{Paraphrase $\gg$ difficulty:} +18.6\% vs +2.0\%
-  \item \textbf{8B model competitive with frontier} on domain tasks (see previous slide)
+  \item \textbf{8B model competitive with frontier} on domain tasks
   \item \textbf{Self-instruct ceiling effect} identified: novel finding for synthetic data
   \item \textbf{Reproducible:} open-source code and data
 \end{itemize}
@@ -704,11 +685,10 @@ Exp 7: 298 unseen questions, with screening.
 \column{0.48\textwidth}
 \textbf{\textcolor{red}{Limitations:}}
 \begin{itemize}\small
-  \item \textbf{Single numeric answer only:} all Q\&A require exactly one numerical answer --- excludes derivations, proofs, conceptual questions, and multi-part problems
-  \item \textbf{Narrow seed base:} all 866 examples derived from only 56 seed questions --- models may specialize on a subset of reliability concepts
+  \item \textbf{Single numeric answer only:} all Q\&A require exactly one numerical answer $\to$ excludes derivations, proofs, conceptual questions, and multi-part problems
+  \item \textbf{Narrow seed base:} all 866 examples derived from only 56 seed questions $\to$ models may specialize on a subset of reliability concepts
     \item \textbf{Small holdout set:} 54 questions, limits statistical power for OOD conclusions
   \item \textbf{Self-instruct ceiling:} synthetic data stays within the generator's capability envelope (Claude & ChatGPT)
-  \item \textbf{GRPO gains modest:} $+7.5$pp in-distribution (vs base), no significant effect on holdout
   \item \textbf{Single domain:} not yet validated on other engineering fields
 \end{itemize}
 \end{columns}
