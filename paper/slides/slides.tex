@@ -525,31 +525,31 @@ Pure PyTorch loop: if all $G$ generations agree, \textbf{discard and re-sample}.
 $\to$ Waste rate: \textbf{42\% $\to$ 23\%}
 
 \vspace{0.5em}
-\textbf{GRPO accuracy by difficulty: before vs.\ after}
+\textbf{Accuracy by difficulty: base vs.\ GRPO iterations}
 
 \vspace{0.3em}
 \centering
-\begin{tabular}{@{}lcc@{}}
+\begin{tabular}{@{}lccc@{}}
   \toprule
-  & \textbf{Exp 1--5} & \textbf{Exp 7} \\
-  \textbf{Difficulty} & (TRL, no screening) & (custom + screening) \\
+  & & \textbf{Exp 1--5} & \textbf{Exp 7} \\
+  & \textbf{Base} & (TRL) & (custom) \\
   \midrule
-  Easy & 89\% & \textcolor{green!50!black}{\textbf{95\%}} \\
-  Hard & \textcolor{red}{\textbf{24\%}} & \textcolor{green!50!black}{\textbf{47\%}} \\
+  Easy & 83\% & 89\% & \textcolor{green!50!black}{\textbf{95\%}} \\
+  Hard & 38\% & \textcolor{red}{\textbf{24\%}} & \textcolor{green!50!black}{\textbf{47\%}} \\
   \bottomrule
 \end{tabular}
 
 \vspace{0.3em}
 \raggedright
 {\footnotesize
-Easy = questions the base model solves (4/4).\\
-Hard = questions the base model fails (0/4).\\
-Exp 1--5: 281q. Exp 7: 298 unseen questions.
+Easy = base scores 4/4. Hard = base scores 0/4.\\
+Exp 1--5: 281q, no screening.\\
+Exp 7: 298 unseen questions, with screening.
 }
 
 \vspace{0.3em}
-\small \textbf{Before:} GRPO \textbf{broke} hard questions (38\%$\to$24\%).\\
-\textbf{After:} GRPO \textbf{solves} 47\% of previously impossible questions while preserving 95\% of easy ones.
+\small \textbf{Exp 1--5:} GRPO \textbf{broke} hard questions (38\%$\to$24\%).\\
+\textbf{Exp 7:} GRPO \textbf{solves} 47\% of previously impossible questions while preserving 95\% of easy ones.
 \end{columns}
 \end{frame}
 
