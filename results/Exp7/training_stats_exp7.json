@@ -1,0 +1,2860 @@
+{
+  "useful_steps": 200,
+  "wasted_steps": 60,
+  "total_attempts": 260,
+  "resample_events": 60,
+  "losses": [
+    -0.015350341796875,
+    0.0055999755859375,
+    -0.00557708740234375,
+    -0.006866455078125,
+    -0.020660400390625,
+    -0.013885498046875,
+    -0.01407623291015625,
+    -0.009063720703125,
+    -0.002593994140625,
+    0.025360107421875,
+    -0.00372314453125,
+    -0.0087738037109375,
+    -0.01275634765625,
+    -0.011148929595947266,
+    -0.009735107421875,
+    -0.0213775634765625,
+    -0.001678466796875,
+    0.002838134765625,
+    0.00777435302734375,
+    0.00054931640625,
+    -0.0081787109375,
+    -0.014617919921875,
+    -0.01317596435546875,
+    -0.0195465087890625,
+    -0.005126953125,
+    0.0035858154296875,
+    -0.0069122314453125,
+    -0.0130767822265625,
+    -0.0099945068359375,
+    -0.0218505859375,
+    -0.02016448974609375,
+    -0.018280029296875,
+    -0.021514892578125,
+    -0.0079498291015625,
+    -0.0184326171875,
+    -0.0195770263671875,
+    -0.0216522216796875,
+    -0.016937255859375,
+    -0.0196533203125,
+    -0.00933837890625,
+    0.00589752197265625,
+    -0.007598876953125,
+    0.0086822509765625,
+    -0.029946327209472656,
+    -0.0220947265625,
+    -0.0156707763671875,
+    -0.007537841796875,
+    -0.022857666015625,
+    -0.0107574462890625,
+    -0.013153076171875
+  ],
+  "rewards_per_step": [
+    {
+      "useful_step": 1,
+      "total_step": 1,
+      "question": "Electronic control units in automotive applications are found to have lifetimes ",
+      "target": 0.0621,
+      "n_correct": 3,
+      "rewards": [
+        0.8,
+        0.8,
+        0.01,
+        0.8
+      ],
+      "loss": -0.00506591796875
+    },
+    {
+      "useful_step": 2,
+      "total_step": 2,
+      "question": "A quality control engineer is developing a single sampling plan for incoming lot",
+      "target": 0.13,
+      "n_correct": 1,
+      "rewards": [
+        0.0,
+        0.01,
+        0.01,
+        0.4
+      ],
+      "loss": -0.02142333984375
+    },
+    {
+      "useful_step": 3,
+      "total_step": 3,
+      "question": "A study is conducted to evaluate two manufacturing procedures. Under the existin",
+      "target": 0.03285,
+      "n_correct": 1,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0,
+        0.8
+      ],
+      "loss": -0.0421142578125
+    },
+    {
+      "useful_step": 4,
+      "total_step": 4,
+      "question": "A safety-critical system is composed of two identical subsystems arranged in par",
+      "target": 0.117647,
+      "n_correct": 3,
+      "rewards": [
+        1.0,
+        1.0,
+        0.01,
+        1.0
+      ],
+      "loss": 0.0072021484375
+    },
+    {
+      "useful_step": 5,
+      "total_step": 5,
+      "question": "A chemical processing facility employs a safety system composed of three identic",
+      "target": 0.86676,
+      "n_correct": 1,
+      "rewards": [
+        0.01,
+        0.4,
+        0.01,
+        0.01
+      ],
+      "loss": 0.0225830078125
+    },
+    {
+      "useful_step": 6,
+      "total_step": 6,
+      "question": "An engineer is conducting an accelerated life test on ceramic capacitors using t",
+      "target": 5336.6,
+      "n_correct": 1,
+      "rewards": [
+        0.01,
+        0.4,
+        0.01,
+        0.01
+      ],
+      "loss": 0.000732421875
+    },
+    {
+      "useful_step": 7,
+      "total_step": 7,
+      "question": "A memory chip lifetime for soft errors follows the exponential distribution with",
+      "target": 0.2424,
+      "n_correct": 4,
+      "rewards": [
+        0.8,
+        1.0,
+        0.8,
+        0.8
+      ],
+      "loss": 0.01287841796875
+    },
+    {
+      "useful_step": 8,
+      "total_step": 8,
+      "question": "Let us assume the lifetime follows a Weibull distribution. Find the characterist",
+      "target": 252000.0,
+      "n_correct": 2,
+      "rewards": [
+        0.0,
+        0.0,
+        0.8,
+        0.8
+      ],
+      "loss": -0.0137939453125
+    },
+    {
+      "useful_step": 9,
+      "total_step": 9,
+      "question": "A reliability engineer is evaluating components from two different suppliers for",
+      "target": 8333.0,
+      "n_correct": 3,
+      "rewards": [
+        1.0,
+        1.0,
+        0.01,
+        1.0
+      ],
+      "loss": -0.010589599609375
+    },
+    {
+      "useful_step": 10,
+      "total_step": 10,
+      "question": "A critical safety system is composed of two identical subsystems operating in ac",
+      "target": 0.96982,
+      "n_correct": 1,
+      "rewards": [
+        0.01,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "loss": 0.000732421875
+    },
+    {
+      "useful_step": 11,
+      "total_step": 13,
+      "question": "A safety-critical system is composed of two subsystems arranged in series. Subsy",
+      "target": 0.930068,
+      "n_correct": 1,
+      "rewards": [
+        0.8,
+        0.0,
+        0.01,
+        0.0
+      ],
+      "loss": -0.01953125
+    },
+    {
+      "useful_step": 12,
+      "total_step": 14,
+      "question": "Assume the lifetime follows a lognormal distribution, find the $T_{50}$ necessar",
+      "target": 50100000.0,
+      "n_correct": 1,
+      "rewards": [
+        0.01,
+        0.01,
+        1.0,
+        0.01
+      ],
+      "loss": 0.007080078125
+    },
+    {
+      "useful_step": 13,
+      "total_step": 15,
+      "question": "A critical safety system is designed with two identical components arranged in a",
+      "target": 0.4871,
+      "n_correct": 1,
+      "rewards": [
+        0.01,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "loss": -0.025634765625
+    },
+    {
+      "useful_step": 14,
+      "total_step": 16,
+      "question": "50 devices are placed on stress for 168 hours. The probability of a device faili",
+      "target": 0.9231,
+      "n_correct": 3,
+      "rewards": [
+        0.8,
+        1.0,
+        0.01,
+        0.8
+      ],
+      "loss": 0.024658203125
+    },
+    {
+      "useful_step": 15,
+      "total_step": 17,
+      "question": "A protective system is composed of two identical subsystems arranged in a parall",
+      "target": 0.9344,
+      "n_correct": 0,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0,
+        0.01
+      ],
+      "loss": 0.0098876953125
+    },
+    {
+      "useful_step": 16,
+      "total_step": 18,
+      "question": "A fleet of 10 identical turbines is placed on test. Their lifetimes (in thousand",
+      "target": 8.0129,
+      "n_correct": 1,
+      "rewards": [
+        0.01,
+        0.0,
+        0.01,
+        1.0
+      ],
+      "loss": -0.036376953125
+    },
+    {
+      "useful_step": 17,
+      "total_step": 19,
+      "question": "A safety-critical system consists of two subsystems in series. Subsystem A is a ",
+      "target": 0.581327,
+      "n_correct": 1,
+      "rewards": [
+        0.0,
+        0.8,
+        0.0,
+        0.01
+      ],
+      "loss": -0.010986328125
+    },
+    {
+      "useful_step": 18,
+      "total_step": 20,
+      "question": "50 devices are placed on stress for 168 hours. The probability of a device faili",
+      "target": 0.9231,
+      "n_correct": 3,
+      "rewards": [
+        1.0,
+        0.8,
+        0.0,
+        0.8
+      ],
+      "loss": -0.06719970703125
+    },
+    {
+      "useful_step": 19,
+      "total_step": 21,
+      "question": "A satellite communication system consists of three redundant transmitters arrang",
+      "target": 0.988,
+      "n_correct": 3,
+      "rewards": [
+        0.01,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "loss": -0.01177978515625
+    },
+    {
+      "useful_step": 20,
+      "total_step": 22,
+      "question": "A critical safety system uses two identical components arranged in a parallel co",
+      "target": 0.4871,
+      "n_correct": 1,
+      "rewards": [
+        0.01,
+        0.8,
+        0.0,
+        0.01
+      ],
+      "loss": 0.00732421875
+    },
+    {
+      "useful_step": 21,
+      "total_step": 23,
+      "question": "Consider a reliability test where five identical components are tested simultane",
+      "target": 0.004105,
+      "n_correct": 4,
+      "rewards": [
+        0.8,
+        1.0,
+        0.8,
+        0.8
+      ],
+      "loss": -0.02734375
+    },
+    {
+      "useful_step": 22,
+      "total_step": 24,
+      "question": "Chemical processing facilities employ industrial pumps whose lifetimes are model",
+      "target": 0.9208,
+      "n_correct": 4,
+      "rewards": [
+        0.8,
+        1.0,
+        0.8,
+        0.8
+      ],
+      "loss": -0.01153564453125
+    },
+    {
+      "useful_step": 23,
+      "total_step": 26,
+      "question": "A data center runs a critical storage array consisting of 5 independent hard dri",
+      "target": 0.3915,
+      "n_correct": 4,
+      "rewards": [
+        1.0,
+        0.8,
+        0.8,
+        1.0
+      ],
+      "loss": -0.02093505859375
+    },
+    {
+      "useful_step": 24,
+      "total_step": 27,
+      "question": "Electronic control units in automotive applications are found to have lifetimes ",
+      "target": 0.0621,
+      "n_correct": 1,
+      "rewards": [
+        0.8,
+        0.01,
+        0.01,
+        0.01
+      ],
+      "loss": 0.0042724609375
+    },
+    {
+      "useful_step": 25,
+      "total_step": 28,
+      "question": "A critical safety system is composed of two subsystems connected in series. Subs",
+      "target": 0.95272,
+      "n_correct": 1,
+      "rewards": [
+        0.0,
+        0.0,
+        0.8,
+        0.01
+      ],
+      "loss": -0.0244140625
+    },
+    {
+      "useful_step": 26,
+      "total_step": 29,
+      "question": "A fiber optic transmitter module is being subjected to a life test by a telecomm",
+      "target": 5.235e-05,
+      "n_correct": 3,
+      "rewards": [
+        0.01,
+        0.8,
+        0.4,
+        1.0
+      ],
+      "loss": 0.00506591796875
+    },
+    {
+      "useful_step": 27,
+      "total_step": 30,
+      "question": "An industrial manufacturer produces control units with lifetimes that are lognor",
+      "target": 2.08,
+      "n_correct": 2,
+      "rewards": [
+        1.0,
+        0.01,
+        0.4,
+        0.01
+      ],
+      "loss": -0.039398193359375
+    },
+    {
+      "useful_step": 28,
+      "total_step": 31,
+      "question": "A fleet manager monitors a fleet of identical vehicles whose engines have lifeti",
+      "target": 574.326,
+      "n_correct": 1,
+      "rewards": [
+        0.0,
+        0.4,
+        0.01,
+        0.0
+      ],
+      "loss": 0.00244140625
+    },
+    {
+      "useful_step": 29,
+      "total_step": 32,
+      "question": "A safety-critical system is composed of two subsystems arranged in series. Subsy",
+      "target": 0.7711,
+      "n_correct": 3,
+      "rewards": [
+        1.0,
+        0.01,
+        1.0,
+        0.8
+      ],
+      "loss": 0.00579833984375
+    },
+    {
+      "useful_step": 30,
+      "total_step": 33,
+      "question": "Determine the smallest number of units needed to demonstrate a mean time to fail",
+      "target": 380.0,
+      "n_correct": 0,
+      "rewards": [
+        0.01,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "loss": 0.02923583984375
+    },
+    {
+      "useful_step": 31,
+      "total_step": 34,
+      "question": "A fleet operator is analyzing failure data for a critical engine part. Based on ",
+      "target": 0.49128,
+      "n_correct": 2,
+      "rewards": [
+        0.01,
+        1.0,
+        0.01,
+        0.8
+      ],
+      "loss": -0.02734375
+    },
+    {
+      "useful_step": 32,
+      "total_step": 35,
+      "question": "A power supply module exhibits a constant failure rate of λ = 0.004 failures per",
+      "target": 0.0067,
+      "n_correct": 1,
+      "rewards": [
+        0.01,
+        0.01,
+        0.8,
+        0.01
+      ],
+      "loss": -0.0439453125
+    },
+    {
+      "useful_step": 33,
+      "total_step": 36,
+      "question": "A set of 15 identical turbine blades undergoes an accelerated life test. Under n",
+      "target": 0.00198,
+      "n_correct": 4,
+      "rewards": [
+        0.8,
+        1.0,
+        0.8,
+        1.0
+      ],
+      "loss": 0.009765625
+    },
+    {
+      "useful_step": 34,
+      "total_step": 38,
+      "question": "A chemical processing facility employs a safety system composed of three indepen",
+      "target": 0.98037,
+      "n_correct": 3,
+      "rewards": [
+        0.4,
+        0.8,
+        0.8,
+        0.01
+      ],
+      "loss": -0.0040283203125
+    },
+    {
+      "useful_step": 35,
+      "total_step": 39,
+      "question": "A reliability engineer is designing a cold standby redundancy configuration cons",
+      "target": 0.70956,
+      "n_correct": 0,
+      "rewards": [
+        0.01,
+        0.01,
+        0.0,
+        0.0
+      ],
+      "loss": -0.019287109375
+    },
+    {
+      "useful_step": 36,
+      "total_step": 40,
+      "question": "A satellite communication system has a critical transponder subsystem consisting",
+      "target": 0.9712,
+      "n_correct": 0,
+      "rewards": [
+        0.01,
+        0.0,
+        0.0,
+        0.01
+      ],
+      "loss": 0.003173828125
+    },
+    {
+      "useful_step": 37,
+      "total_step": 41,
+      "question": "1000 randomly selected lines of code are inspected. 23 bugs are found. Assuming ",
+      "target": 23.0,
+      "n_correct": 2,
+      "rewards": [
+        1.0,
+        1.0,
+        0.01,
+        0.01
+      ],
+      "loss": 0.074951171875
+    },
+    {
+      "useful_step": 38,
+      "total_step": 43,
+      "question": "A data center runs a critical storage array consisting of 5 independent hard dri",
+      "target": 0.3915,
+      "n_correct": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        0.8,
+        1.0
+      ],
+      "loss": 0.0018310546875
+    },
+    {
+      "useful_step": 39,
+      "total_step": 44,
+      "question": "Assume the lifetime follows a lognormal distribution, find the $T_{50}$ necessar",
+      "target": 50100000.0,
+      "n_correct": 0,
+      "rewards": [
+        0.01,
+        0.01,
+        0.0,
+        0.01
+      ],
+      "loss": 0.036376953125
+    },
+    {
+      "useful_step": 40,
+      "total_step": 45,
+      "question": "The time to soft error for a memory chip is exponentially distributed with a mea",
+      "target": 0.2424,
+      "n_correct": 2,
+      "rewards": [
+        1.0,
+        0.8,
+        0.01,
+        0.0
+      ],
+      "loss": -0.01171875
+    },
+    {
+      "useful_step": 41,
+      "total_step": 46,
+      "question": "A chemical processing facility employs a safety system composed of three identic",
+      "target": 0.86676,
+      "n_correct": 2,
+      "rewards": [
+        0.01,
+        0.4,
+        0.01,
+        0.4
+      ],
+      "loss": 0.0107421875
+    },
+    {
+      "useful_step": 42,
+      "total_step": 47,
+      "question": "A data center has 5 independent cooling units arranged in a k-out-of-n configura",
+      "target": 0.924,
+      "n_correct": 3,
+      "rewards": [
+        0.8,
+        0.8,
+        0.8,
+        0.01
+      ],
+      "loss": -0.03173828125
+    },
+    {
+      "useful_step": 43,
+      "total_step": 48,
+      "question": "A chemical processing facility relies on a critical safety system structured as ",
+      "target": 0.6958,
+      "n_correct": 1,
+      "rewards": [
+        0.01,
+        0.01,
+        0.4,
+        0.01
+      ],
+      "loss": 0.00830078125
+    },
+    {
+      "useful_step": 44,
+      "total_step": 50,
+      "question": "A quality assurance engineer is developing a single sampling plan for incoming s",
+      "target": 78.0,
+      "n_correct": 0,
+      "rewards": [
+        0.01,
+        0.01,
+        0.01,
+        0.0
+      ],
+      "loss": -0.002197265625
+    },
+    {
+      "useful_step": 45,
+      "total_step": 51,
+      "question": "A batch of 50 units is subjected to a stress test lasting 168 hours. Each unit h",
+      "target": 0.9231,
+      "n_correct": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        0.8
+      ],
+      "loss": -0.015625
+    },
+    {
+      "useful_step": 46,
+      "total_step": 52,
+      "question": "A quality control technician has a batch of 20 electronic parts: 15 are working ",
+      "target": 0.4605,
+      "n_correct": 4,
+      "rewards": [
+        1.0,
+        0.8,
+        0.8,
+        1.0
+      ],
+      "loss": -0.000732421875
+    },
+    {
+      "useful_step": 47,
+      "total_step": 53,
+      "question": "An aerospace company is conducting life testing on a new hydraulic actuator desi",
+      "target": 0.0001272,
+      "n_correct": 4,
+      "rewards": [
+        0.8,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "loss": -0.00823974609375
+    },
+    {
+      "useful_step": 48,
+      "total_step": 54,
+      "question": "A protective system is composed of two identical subsystems arranged in a parall",
+      "target": 0.9344,
+      "n_correct": 1,
+      "rewards": [
+        0.4,
+        0.01,
+        0.01,
+        0.01
+      ],
+      "loss": -0.010498046875
+    },
+    {
+      "useful_step": 49,
+      "total_step": 55,
+      "question": "A chemical processing facility employs a safety mechanism composed of two identi",
+      "target": 0.77907,
+      "n_correct": 2,
+      "rewards": [
+        0.8,
+        0.8,
+        0.01,
+        0.0
+      ],
+      "loss": -0.00390625
+    },
+    {
+      "useful_step": 50,
+      "total_step": 57,
+      "question": "A current lot acceptance plan permits up to three defectives in a sample of 300 ",
+      "target": 180.0,
+      "n_correct": 1,
+      "rewards": [
+        0.0,
+        0.01,
+        0.4,
+        0.01
+      ],
+      "loss": -0.0416259765625
+    },
+    {
+      "useful_step": 51,
+      "total_step": 58,
+      "question": "In an agricultural experiment, an automatic misting system operates according to",
+      "target": 0.6703,
+      "n_correct": 3,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "loss": -0.00634765625
+    },
+    {
+      "useful_step": 52,
+      "total_step": 60,
+      "question": "A fleet of 10 identical devices is placed on a reliability test starting at time",
+      "target": 1598.6,
+      "n_correct": 0,
+      "rewards": [
+        0.01,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "loss": 0.0008544921875
+    },
+    {
+      "useful_step": 53,
+      "total_step": 61,
+      "question": "A chemical processing facility relies on a critical safety system structured as ",
+      "target": 0.6958,
+      "n_correct": 2,
+      "rewards": [
+        0.4,
+        0.01,
+        0.4,
+        0.01
+      ],
+      "loss": 0.0013427734375
+    },
+    {
+      "useful_step": 54,
+      "total_step": 62,
+      "question": "Chemical processing facilities use industrial pumps whose lifetimes are modeled ",
+      "target": 2916.0,
+      "n_correct": 3,
+      "rewards": [
+        0.0,
+        1.0,
+        0.8,
+        0.8
+      ],
+      "loss": -0.00775146484375
+    },
+    {
+      "useful_step": 55,
+      "total_step": 63,
+      "question": "A satellite communication system has a critical transponder subsystem consisting",
+      "target": 0.9711,
+      "n_correct": 3,
+      "rewards": [
+        0.8,
+        0.4,
+        0.4,
+        0.01
+      ],
+      "loss": -0.008279800415039062
+    },
+    {
+      "useful_step": 56,
+      "total_step": 64,
+      "question": "Ten identical turbine engines are subjected to a reliability life test. The engi",
+      "target": 0.957843,
+      "n_correct": 1,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "loss": -0.0299072265625
+    },
+    {
+      "useful_step": 57,
+      "total_step": 65,
+      "question": "Let us assume the lifetime follows a Weibull distribution. Find the characterist",
+      "target": 252000.0,
+      "n_correct": 0,
+      "rewards": [
+        0.0,
+        0.01,
+        0.0,
+        0.01
+      ],
+      "loss": -0.0164794921875
+    },
+    {
+      "useful_step": 58,
+      "total_step": 66,
+      "question": "A fleet manager observes failure data for a critical engine component. From prio",
+      "target": 0.49128,
+      "n_correct": 1,
+      "rewards": [
+        0.01,
+        0.8,
+        0.0,
+        0.0
+      ],
+      "loss": -0.044921875
+    },
+    {
+      "useful_step": 59,
+      "total_step": 67,
+      "question": "A telecommunications company is designing a redundant power supply system for a ",
+      "target": 0.945,
+      "n_correct": 3,
+      "rewards": [
+        0.4,
+        0.8,
+        0.01,
+        0.8
+      ],
+      "loss": -0.0057373046875
+    },
+    {
+      "useful_step": 60,
+      "total_step": 68,
+      "question": "A quality assurance engineer is developing a single sampling plan for incoming s",
+      "target": 78.0,
+      "n_correct": 1,
+      "rewards": [
+        0.4,
+        0.01,
+        0.01,
+        0.01
+      ],
+      "loss": 0.0281982421875
+    },
+    {
+      "useful_step": 61,
+      "total_step": 69,
+      "question": "A memory chip lifetime for soft errors follows the exponential distribution with",
+      "target": 0.2424,
+      "n_correct": 2,
+      "rewards": [
+        0.01,
+        1.0,
+        0.8,
+        0.01
+      ],
+      "loss": -0.059326171875
+    },
+    {
+      "useful_step": 62,
+      "total_step": 70,
+      "question": "Consider a series system composed of two subsystems. Subsystem A employs a 2-out",
+      "target": 0.3479,
+      "n_correct": 2,
+      "rewards": [
+        0.8,
+        0.0,
+        0.01,
+        0.8
+      ],
+      "loss": -0.0179443359375
+    },
+    {
+      "useful_step": 63,
+      "total_step": 71,
+      "question": "Assume the lifetime follows a lognormal distribution, find the expected cumulati",
+      "target": 0.135,
+      "n_correct": 4,
+      "rewards": [
+        0.8,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "loss": -0.00994873046875
+    },
+    {
+      "useful_step": 64,
+      "total_step": 72,
+      "question": "A fleet manager observes failure data for a critical engine component. From prio",
+      "target": 0.49128,
+      "n_correct": 1,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0,
+        0.8
+      ],
+      "loss": 0.001708984375
+    },
+    {
+      "useful_step": 65,
+      "total_step": 73,
+      "question": "A communications satellite includes a vital oscillator unit with a Weibull-distr",
+      "target": 3.0,
+      "n_correct": 1,
+      "rewards": [
+        1.0,
+        0.01,
+        0.01,
+        0.0
+      ],
+      "loss": 0.0028076171875
+    },
+    {
+      "useful_step": 66,
+      "total_step": 74,
+      "question": "A fleet manager observes failure data for a critical engine component from 20 un",
+      "target": 0.06516,
+      "n_correct": 2,
+      "rewards": [
+        0.4,
+        0.0,
+        0.01,
+        0.4
+      ],
+      "loss": -0.0128173828125
+    },
+    {
+      "useful_step": 67,
+      "total_step": 75,
+      "question": "A chemical processing plant has a safety system consisting of two identical pres",
+      "target": 0.77907,
+      "n_correct": 2,
+      "rewards": [
+        0.0,
+        0.01,
+        1.0,
+        1.0
+      ],
+      "loss": -0.004638671875
+    },
+    {
+      "useful_step": 68,
+      "total_step": 78,
+      "question": "A hydraulic system is composed of three series-connected subsystems. Subsystem A",
+      "target": 0.6466,
+      "n_correct": 1,
+      "rewards": [
+        0.8,
+        0.0,
+        0.01,
+        0.01
+      ],
+      "loss": 0.0079345703125
+    },
+    {
+      "useful_step": 69,
+      "total_step": 79,
+      "question": "Consider a series system composed of two subsystems. Subsystem A uses a 2-out-of",
+      "target": 0.686475,
+      "n_correct": 2,
+      "rewards": [
+        0.01,
+        0.4,
+        0.01,
+        0.4
+      ],
+      "loss": 0.0040283203125
+    },
+    {
+      "useful_step": 70,
+      "total_step": 80,
+      "question": "Consider a series system composed of two subsystems. Subsystem A employs a 2-out",
+      "target": 0.686475,
+      "n_correct": 4,
+      "rewards": [
+        1.0,
+        0.4,
+        0.4,
+        0.8
+      ],
+      "loss": 0.002197265625
+    },
+    {
+      "useful_step": 71,
+      "total_step": 84,
+      "question": "Chemical processing facilities employ industrial pumps whose lifetimes are model",
+      "target": 0.2915,
+      "n_correct": 1,
+      "rewards": [
+        0.4,
+        0.0,
+        0.01,
+        0.01
+      ],
+      "loss": -0.0106201171875
+    },
+    {
+      "useful_step": 72,
+      "total_step": 85,
+      "question": "Assume the lifetime follows a lognormal distribution, find the time to achieve 1",
+      "target": 38245.0,
+      "n_correct": 2,
+      "rewards": [
+        0.8,
+        0.01,
+        0.01,
+        0.4
+      ],
+      "loss": 0.0157470703125
+    },
+    {
+      "useful_step": 73,
+      "total_step": 86,
+      "question": "Ten identical turbine engines are subjected to a reliability life test. The engi",
+      "target": 0.957843,
+      "n_correct": 3,
+      "rewards": [
+        0.4,
+        0.8,
+        0.0,
+        1.0
+      ],
+      "loss": 0.0128173828125
+    },
+    {
+      "useful_step": 74,
+      "total_step": 87,
+      "question": "A telecommunications company is designing a redundant power supply system for a ",
+      "target": 0.945,
+      "n_correct": 3,
+      "rewards": [
+        0.01,
+        0.8,
+        1.0,
+        0.4
+      ],
+      "loss": -0.00225830078125
+    },
+    {
+      "useful_step": 75,
+      "total_step": 88,
+      "question": "A quality control engineer is developing a single sampling plan for incoming lot",
+      "target": 0.13,
+      "n_correct": 3,
+      "rewards": [
+        1.0,
+        0.01,
+        0.8,
+        0.8
+      ],
+      "loss": 0.023590087890625
+    },
+    {
+      "useful_step": 76,
+      "total_step": 89,
+      "question": "Electronic control units in automotive applications are found to have lifetimes ",
+      "target": 23790.0,
+      "n_correct": 4,
+      "rewards": [
+        0.8,
+        1.0,
+        0.8,
+        0.8
+      ],
+      "loss": -0.0030517578125
+    },
+    {
+      "useful_step": 77,
+      "total_step": 90,
+      "question": "Consider a series system composed of two subsystems. Subsystem A employs a 2-out",
+      "target": 0.686475,
+      "n_correct": 4,
+      "rewards": [
+        0.4,
+        0.8,
+        0.4,
+        0.4
+      ],
+      "loss": 0.00054931640625
+    },
+    {
+      "useful_step": 78,
+      "total_step": 91,
+      "question": "Ten identical turbines are placed on a reliability test as a fleet. Their lifeti",
+      "target": 1084.56,
+      "n_correct": 1,
+      "rewards": [
+        1.0,
+        0.01,
+        0.01,
+        0.0
+      ],
+      "loss": 0.00360107421875
+    },
+    {
+      "useful_step": 79,
+      "total_step": 92,
+      "question": "A critical safety system consists of two subsystems in series. Subsystem A is a ",
+      "target": 0.7711,
+      "n_correct": 4,
+      "rewards": [
+        0.8,
+        0.8,
+        1.0,
+        1.0
+      ],
+      "loss": 0.003173828125
+    },
+    {
+      "useful_step": 80,
+      "total_step": 93,
+      "question": "A safety-critical system is built from two identical redundant subsystems arrang",
+      "target": 0.31322,
+      "n_correct": 4,
+      "rewards": [
+        1.0,
+        0.8,
+        1.0,
+        1.0
+      ],
+      "loss": -0.005126953125
+    },
+    {
+      "useful_step": 81,
+      "total_step": 94,
+      "question": "A critical safety system consists of two identical components in parallel (both ",
+      "target": 0.4871,
+      "n_correct": 1,
+      "rewards": [
+        0.01,
+        0.01,
+        0.0,
+        0.8
+      ],
+      "loss": 0.00457763671875
+    },
+    {
+      "useful_step": 82,
+      "total_step": 95,
+      "question": "A telecom provider is engineering a redundant power supply configuration for a c",
+      "target": 6.0,
+      "n_correct": 1,
+      "rewards": [
+        0.01,
+        0.01,
+        0.0,
+        1.0
+      ],
+      "loss": -0.0230712890625
+    },
+    {
+      "useful_step": 83,
+      "total_step": 96,
+      "question": "A reliability engineer is evaluating components from two different suppliers for",
+      "target": 8333.0,
+      "n_correct": 3,
+      "rewards": [
+        1.0,
+        1.0,
+        0.01,
+        1.0
+      ],
+      "loss": -0.04315185546875
+    },
+    {
+      "useful_step": 84,
+      "total_step": 99,
+      "question": "A fleet of 10 identical devices is placed on a reliability test starting at time",
+      "target": 1598.6,
+      "n_correct": 1,
+      "rewards": [
+        0.0,
+        0.4,
+        0.0,
+        0.01
+      ],
+      "loss": 0.0289306640625
+    },
+    {
+      "useful_step": 85,
+      "total_step": 101,
+      "question": "A fleet operator collects failure data for a critical engine part across 20 unit",
+      "target": 0.06516,
+      "n_correct": 1,
+      "rewards": [
+        0.4,
+        0.01,
+        0.01,
+        0.01
+      ],
+      "loss": -0.01898193359375
+    },
+    {
+      "useful_step": 86,
+      "total_step": 102,
+      "question": "A power supply unit has a constant failure rate of λ = 0.004 failures per 1000 h",
+      "target": 0.00109,
+      "n_correct": 3,
+      "rewards": [
+        1.0,
+        0.01,
+        1.0,
+        1.0
+      ],
+      "loss": -0.02337646484375
+    },
+    {
+      "useful_step": 87,
+      "total_step": 103,
+      "question": "Consider a reliability test where five identical components are tested simultane",
+      "target": 0.004105,
+      "n_correct": 4,
+      "rewards": [
+        0.8,
+        0.8,
+        0.8,
+        1.0
+      ],
+      "loss": -0.01171875
+    },
+    {
+      "useful_step": 88,
+      "total_step": 104,
+      "question": "A repairable power generation unit experiences two statistically independent fai",
+      "target": 0.98331,
+      "n_correct": 3,
+      "rewards": [
+        0.8,
+        0.4,
+        0.0,
+        0.4
+      ],
+      "loss": -0.00439453125
+    },
+    {
+      "useful_step": 89,
+      "total_step": 106,
+      "question": "Assume the lifetime follows a lognormal distribution, find the time to achieve 1",
+      "target": 38245.0,
+      "n_correct": 2,
+      "rewards": [
+        0.4,
+        0.01,
+        0.8,
+        0.01
+      ],
+      "loss": -0.0185546875
+    },
+    {
+      "useful_step": 90,
+      "total_step": 107,
+      "question": "A fleet manager observes failure data for a critical engine component from 20 un",
+      "target": 0.06516,
+      "n_correct": 1,
+      "rewards": [
+        0.0,
+        0.01,
+        0.01,
+        0.4
+      ],
+      "loss": -0.00390625
+    },
+    {
+      "useful_step": 91,
+      "total_step": 109,
+      "question": "A chemical processing facility employs a safety system composed of two subsystem",
+      "target": 0.90317,
+      "n_correct": 0,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0,
+        0.01
+      ],
+      "loss": 0.01611328125
+    },
+    {
+      "useful_step": 92,
+      "total_step": 110,
+      "question": "A semiconductor component follows a lognormal failure distribution characterized",
+      "target": 33700.0,
+      "n_correct": 3,
+      "rewards": [
+        1.0,
+        0.8,
+        0.01,
+        1.0
+      ],
+      "loss": -0.046356201171875
+    },
+    {
+      "useful_step": 93,
+      "total_step": 111,
+      "question": "A power supply unit has a constant failure rate of λ = 0.004 failures per 1000 h",
+      "target": 0.00109,
+      "n_correct": 2,
+      "rewards": [
+        1.0,
+        0.01,
+        1.0,
+        0.01
+      ],
+      "loss": -0.0081787109375
+    },
+    {
+      "useful_step": 94,
+      "total_step": 112,
+      "question": "A satellite communication system has a critical transponder subsystem consisting",
+      "target": 0.9711,
+      "n_correct": 2,
+      "rewards": [
+        0.01,
+        0.8,
+        0.4,
+        0.01
+      ],
+      "loss": -0.04052734375
+    },
+    {
+      "useful_step": 95,
+      "total_step": 113,
+      "question": "A satellite communication system includes a critical transponder subsystem compo",
+      "target": 0.915,
+      "n_correct": 2,
+      "rewards": [
+        0.8,
+        0.8,
+        0.01,
+        0.01
+      ],
+      "loss": -0.0140380859375
+    },
+    {
+      "useful_step": 96,
+      "total_step": 114,
+      "question": "A mission-critical avionics system employs a hybrid redundancy architecture cons",
+      "target": 0.9101,
+      "n_correct": 2,
+      "rewards": [
+        0.01,
+        1.0,
+        0.4,
+        0.01
+      ],
+      "loss": -0.01544189453125
+    },
+    {
+      "useful_step": 97,
+      "total_step": 115,
+      "question": "Assume the lifetime follows a Weibull distribution, find the expected cumulative",
+      "target": 0.0311,
+      "n_correct": 3,
+      "rewards": [
+        0.8,
+        1.0,
+        0.01,
+        1.0
+      ],
+      "loss": -0.00421142578125
+    },
+    {
+      "useful_step": 98,
+      "total_step": 119,
+      "question": "Automotive electronic control units exhibit lifetimes modeled by a Weibull distr",
+      "target": 0.0621,
+      "n_correct": 3,
+      "rewards": [
+        0.8,
+        0.8,
+        0.8,
+        0.01
+      ],
+      "loss": -0.00177001953125
+    },
+    {
+      "useful_step": 99,
+      "total_step": 120,
+      "question": "An accelerated life test is conducted on ceramic capacitors at three elevated te",
+      "target": 300202.0,
+      "n_correct": 0,
+      "rewards": [
+        0.01,
+        0.0,
+        0.01,
+        0.01
+      ],
+      "loss": -0.0115966796875
+    },
+    {
+      "useful_step": 100,
+      "total_step": 121,
+      "question": "Consider a system composed of 20 independent components arranged in series, wher",
+      "target": 0.736,
+      "n_correct": 3,
+      "rewards": [
+        1.0,
+        1.0,
+        0.8,
+        0.01
+      ],
+      "loss": -0.0029296875
+    },
+    {
+      "useful_step": 101,
+      "total_step": 122,
+      "question": "A critical safety system consists of two identical components in parallel (both ",
+      "target": 0.4871,
+      "n_correct": 3,
+      "rewards": [
+        0.8,
+        0.8,
+        0.01,
+        1.0
+      ],
+      "loss": 0.03106689453125
+    },
+    {
+      "useful_step": 102,
+      "total_step": 123,
+      "question": "A safety-critical system is composed of two subsystems arranged in series. Subsy",
+      "target": 0.930068,
+      "n_correct": 3,
+      "rewards": [
+        0.01,
+        0.8,
+        0.8,
+        1.0
+      ],
+      "loss": 0.011962890625
+    },
+    {
+      "useful_step": 103,
+      "total_step": 124,
+      "question": "A critical safety system is composed of two subsystems connected in series. Subs",
+      "target": 0.95272,
+      "n_correct": 2,
+      "rewards": [
+        0.01,
+        0.01,
+        0.8,
+        0.4
+      ],
+      "loss": -0.0294189453125
+    },
+    {
+      "useful_step": 104,
+      "total_step": 125,
+      "question": "A protective system is composed of two identical subsystems arranged in a parall",
+      "target": 0.9344,
+      "n_correct": 1,
+      "rewards": [
+        0.8,
+        0.01,
+        0.01,
+        0.01
+      ],
+      "loss": 0.000732421875
+    },
+    {
+      "useful_step": 105,
+      "total_step": 126,
+      "question": "Two methods are being evaluated in a comparative study. The existing technique y",
+      "target": 0.03285,
+      "n_correct": 4,
+      "rewards": [
+        0.8,
+        0.8,
+        0.4,
+        0.8
+      ],
+      "loss": 0.01934814453125
+    },
+    {
+      "useful_step": 106,
+      "total_step": 127,
+      "question": "A mechanical component has a lifetime that follows a Weibull distribution with s",
+      "target": 0.407,
+      "n_correct": 2,
+      "rewards": [
+        0.01,
+        0.01,
+        1.0,
+        1.0
+      ],
+      "loss": -0.0452880859375
+    },
+    {
+      "useful_step": 107,
+      "total_step": 128,
+      "question": "A chemical processing facility employs a safety mechanism composed of two identi",
+      "target": 0.77907,
+      "n_correct": 1,
+      "rewards": [
+        0.01,
+        1.0,
+        0.01,
+        0.01
+      ],
+      "loss": 0.00830078125
+    },
+    {
+      "useful_step": 108,
+      "total_step": 129,
+      "question": "A safety-critical system is composed of two subsystems arranged in series. Subsy",
+      "target": 0.581327,
+      "n_correct": 2,
+      "rewards": [
+        0.8,
+        0.0,
+        0.8,
+        0.01
+      ],
+      "loss": -0.010009765625
+    },
+    {
+      "useful_step": 109,
+      "total_step": 130,
+      "question": "Ten identical turbines are placed on a reliability test as a fleet. Their lifeti",
+      "target": 1084.56,
+      "n_correct": 2,
+      "rewards": [
+        0.01,
+        0.0,
+        0.4,
+        0.8
+      ],
+      "loss": 0.01922607421875
+    },
+    {
+      "useful_step": 110,
+      "total_step": 131,
+      "question": "A chemical plant has a safety system consisting of two subsystems in series. Sub",
+      "target": 0.9731,
+      "n_correct": 2,
+      "rewards": [
+        1.0,
+        0.01,
+        0.8,
+        0.01
+      ],
+      "loss": -0.0352783203125
+    },
+    {
+      "useful_step": 111,
+      "total_step": 132,
+      "question": "The time to soft error for a memory chip is exponentially distributed with a mea",
+      "target": 0.2424,
+      "n_correct": 3,
+      "rewards": [
+        1.0,
+        0.8,
+        0.8,
+        0.01
+      ],
+      "loss": -0.00469970703125
+    },
+    {
+      "useful_step": 112,
+      "total_step": 134,
+      "question": "A protective system is composed of two identical subsystems arranged in a parall",
+      "target": 0.9344,
+      "n_correct": 3,
+      "rewards": [
+        0.8,
+        0.8,
+        0.4,
+        0.01
+      ],
+      "loss": -0.03155517578125
+    },
+    {
+      "useful_step": 113,
+      "total_step": 136,
+      "question": "A quality assurance team is performing a defect assessment on a recently built s",
+      "target": 17.0,
+      "n_correct": 3,
+      "rewards": [
+        1.0,
+        0.01,
+        1.0,
+        1.0
+      ],
+      "loss": 0.021240234375
+    },
+    {
+      "useful_step": 114,
+      "total_step": 137,
+      "question": "A chemical processing facility relies on a critical safety system structured as ",
+      "target": 0.6958,
+      "n_correct": 3,
+      "rewards": [
+        0.01,
+        0.8,
+        0.8,
+        0.4
+      ],
+      "loss": -0.0145263671875
+    },
+    {
+      "useful_step": 115,
+      "total_step": 138,
+      "question": "A safety-critical system is composed of two subsystems arranged in series. Subsy",
+      "target": 0.581327,
+      "n_correct": 1,
+      "rewards": [
+        0.01,
+        0.01,
+        0.01,
+        0.4
+      ],
+      "loss": -0.001708984375
+    },
+    {
+      "useful_step": 116,
+      "total_step": 141,
+      "question": "A semiconductor component follows a lognormal failure distribution characterized",
+      "target": 33700.0,
+      "n_correct": 3,
+      "rewards": [
+        0.01,
+        0.4,
+        0.8,
+        0.8
+      ],
+      "loss": -0.04498291015625
+    },
+    {
+      "useful_step": 117,
+      "total_step": 143,
+      "question": "A reliability engineer is designing a cold standby redundancy configuration cons",
+      "target": 0.70956,
+      "n_correct": 0,
+      "rewards": [
+        0.01,
+        0.01,
+        0.0,
+        0.0
+      ],
+      "loss": -0.0643310546875
+    },
+    {
+      "useful_step": 118,
+      "total_step": 145,
+      "question": "An electronic component acts to transform an input signal of level X into an out",
+      "target": 0.09121,
+      "n_correct": 2,
+      "rewards": [
+        0.8,
+        0.01,
+        0.01,
+        1.0
+      ],
+      "loss": -0.036865234375
+    },
+    {
+      "useful_step": 119,
+      "total_step": 147,
+      "question": "Ten identical turbine blades are subjected to a reliability life test. Six blade",
+      "target": 57.154,
+      "n_correct": 0,
+      "rewards": [
+        0.01,
+        0.01,
+        0.01,
+        0.0
+      ],
+      "loss": 0.017333984375
+    },
+    {
+      "useful_step": 120,
+      "total_step": 148,
+      "question": "A manufacturer produces industrial control units whose lifetimes follow a lognor",
+      "target": 11104.0,
+      "n_correct": 1,
+      "rewards": [
+        0.01,
+        0.4,
+        0.01,
+        0.01
+      ],
+      "loss": -0.0035400390625
+    },
+    {
+      "useful_step": 121,
+      "total_step": 149,
+      "question": "Let us assume the lifetime follows a Weibull distribution. Find the characterist",
+      "target": 252000.0,
+      "n_correct": 2,
+      "rewards": [
+        0.01,
+        0.01,
+        0.8,
+        0.8
+      ],
+      "loss": -0.0340576171875
+    },
+    {
+      "useful_step": 122,
+      "total_step": 150,
+      "question": "A safety-critical system is built from two identical redundant subsystems arrang",
+      "target": 0.31322,
+      "n_correct": 3,
+      "rewards": [
+        1.0,
+        0.01,
+        0.8,
+        1.0
+      ],
+      "loss": -0.018280029296875
+    },
+    {
+      "useful_step": 123,
+      "total_step": 151,
+      "question": "A facility operates 5 independent cooling units in a k-out-of-n redundancy schem",
+      "target": 0.924,
+      "n_correct": 2,
+      "rewards": [
+        0.8,
+        0.8,
+        0.01,
+        0.01
+      ],
+      "loss": -0.019775390625
+    },
+    {
+      "useful_step": 124,
+      "total_step": 153,
+      "question": "A facility operates 5 independent cooling units in a k-out-of-n redundancy schem",
+      "target": 0.924,
+      "n_correct": 3,
+      "rewards": [
+        0.8,
+        0.01,
+        0.8,
+        0.8
+      ],
+      "loss": -0.008544921875
+    },
+    {
+      "useful_step": 125,
+      "total_step": 156,
+      "question": "A critical safety system consists of two identical subsystems in parallel (both ",
+      "target": 0.35145,
+      "n_correct": 3,
+      "rewards": [
+        0.01,
+        1.0,
+        1.0,
+        0.4
+      ],
+      "loss": -0.0146484375
+    },
+    {
+      "useful_step": 126,
+      "total_step": 157,
+      "question": "A fleet of 10 identical turbines is placed on test. Their lifetimes follow a Wei",
+      "target": 0.4917,
+      "n_correct": 1,
+      "rewards": [
+        0.01,
+        1.0,
+        0.01,
+        0.01
+      ],
+      "loss": -0.00634765625
+    },
+    {
+      "useful_step": 127,
+      "total_step": 158,
+      "question": "A quality control engineer is designing a single sampling plan for incoming batc",
+      "target": 78.0,
+      "n_correct": 1,
+      "rewards": [
+        0.4,
+        0.01,
+        0.01,
+        0.01
+      ],
+      "loss": -0.0245361328125
+    },
+    {
+      "useful_step": 128,
+      "total_step": 161,
+      "question": "A defense contractor is performing life testing on a newly designed hydraulic ac",
+      "target": 0.0001272,
+      "n_correct": 3,
+      "rewards": [
+        1.0,
+        0.4,
+        0.01,
+        1.0
+      ],
+      "loss": -0.027587890625
+    },
+    {
+      "useful_step": 129,
+      "total_step": 164,
+      "question": "Twenty identical turbine blades are subjected to an accelerated life test at an ",
+      "target": 0.9717,
+      "n_correct": 4,
+      "rewards": [
+        1.0,
+        0.8,
+        1.0,
+        0.4
+      ],
+      "loss": -0.0167236328125
+    },
+    {
+      "useful_step": 130,
+      "total_step": 165,
+      "question": "Assume the lifetime follows a Weibull distribution, find the expected cumulative",
+      "target": 0.0311,
+      "n_correct": 2,
+      "rewards": [
+        0.8,
+        0.01,
+        0.8,
+        0.01
+      ],
+      "loss": -0.01904296875
+    },
+    {
+      "useful_step": 131,
+      "total_step": 166,
+      "question": "Assume the lifetime follows a lognormal distribution, find the time to achieve 1",
+      "target": 38245.0,
+      "n_correct": 2,
+      "rewards": [
+        0.8,
+        0.01,
+        0.4,
+        0.01
+      ],
+      "loss": -0.037841796875
+    },
+    {
+      "useful_step": 132,
+      "total_step": 167,
+      "question": "A chemical processing plant has a critical safety system with the following arch",
+      "target": 0.6958,
+      "n_correct": 1,
+      "rewards": [
+        0.01,
+        0.0,
+        0.4,
+        0.01
+      ],
+      "loss": -0.012451171875
+    },
+    {
+      "useful_step": 133,
+      "total_step": 169,
+      "question": "A processing facility employs a safety system composed of two subsystems arrange",
+      "target": 0.90317,
+      "n_correct": 1,
+      "rewards": [
+        0.01,
+        0.0,
+        0.4,
+        0.0
+      ],
+      "loss": -0.01318359375
+    },
+    {
+      "useful_step": 134,
+      "total_step": 170,
+      "question": "A fleet manager observes failure data for a critical engine component believed t",
+      "target": 0.77243,
+      "n_correct": 2,
+      "rewards": [
+        0.0,
+        0.4,
+        0.01,
+        1.0
+      ],
+      "loss": 0.01287841796875
+    },
+    {
+      "useful_step": 135,
+      "total_step": 171,
+      "question": "A critical safety system consists of two identical subsystems in active parallel",
+      "target": 0.96982,
+      "n_correct": 2,
+      "rewards": [
+        1.0,
+        1.0,
+        0.01,
+        0.0
+      ],
+      "loss": -0.040283203125
+    },
+    {
+      "useful_step": 136,
+      "total_step": 172,
+      "question": "A telecommunications company is designing a redundant power supply system for a ",
+      "target": 6.0,
+      "n_correct": 2,
+      "rewards": [
+        1.0,
+        0.01,
+        0.0,
+        1.0
+      ],
+      "loss": 0.0087890625
+    },
+    {
+      "useful_step": 137,
+      "total_step": 175,
+      "question": "A system consists of two subsystems in series. Subsystem A is a 2-out-of-3 redun",
+      "target": 0.686475,
+      "n_correct": 3,
+      "rewards": [
+        1.0,
+        0.01,
+        0.4,
+        0.8
+      ],
+      "loss": -0.0025634765625
+    },
+    {
+      "useful_step": 138,
+      "total_step": 176,
+      "question": "A critical safety system consists of two identical components in parallel (both ",
+      "target": 0.4871,
+      "n_correct": 2,
+      "rewards": [
+        0.8,
+        0.01,
+        0.01,
+        0.4
+      ],
+      "loss": -0.0579833984375
+    },
+    {
+      "useful_step": 139,
+      "total_step": 177,
+      "question": "Electronic control units in automotive applications are found to have lifetimes ",
+      "target": 0.0621,
+      "n_correct": 3,
+      "rewards": [
+        0.8,
+        0.01,
+        1.0,
+        0.8
+      ],
+      "loss": -0.003173828125
+    },
+    {
+      "useful_step": 140,
+      "total_step": 179,
+      "question": "A telecom provider is engineering a redundant power supply configuration for a c",
+      "target": 6.0,
+      "n_correct": 2,
+      "rewards": [
+        1.0,
+        1.0,
+        0.01,
+        0.01
+      ],
+      "loss": -0.010009765625
+    },
+    {
+      "useful_step": 141,
+      "total_step": 181,
+      "question": "A fleet of 20 identical turbine blades is placed on an accelerated life test at ",
+      "target": 0.995,
+      "n_correct": 0,
+      "rewards": [
+        0.0,
+        0.0,
+        0.01,
+        0.0
+      ],
+      "loss": 0.00830078125
+    },
+    {
+      "useful_step": 142,
+      "total_step": 182,
+      "question": "A system has a linearly increasing hazard rate given by h(t) = αt, where α is a ",
+      "target": 0.368,
+      "n_correct": 1,
+      "rewards": [
+        0.01,
+        0.01,
+        1.0,
+        0.01
+      ],
+      "loss": -0.04345703125
+    },
+    {
+      "useful_step": 143,
+      "total_step": 183,
+      "question": "A protective system is composed of two identical subsystems arranged in a parall",
+      "target": 0.9344,
+      "n_correct": 0,
+      "rewards": [
+        0.0,
+        0.01,
+        0.01,
+        0.01
+      ],
+      "loss": -0.028564453125
+    },
+    {
+      "useful_step": 144,
+      "total_step": 184,
+      "question": "Industrial pumps used in chemical processing plants have lifetimes that follow a",
+      "target": 0.2915,
+      "n_correct": 1,
+      "rewards": [
+        0.01,
+        0.01,
+        0.4,
+        0.01
+      ],
+      "loss": -0.01458740234375
+    },
+    {
+      "useful_step": 145,
+      "total_step": 185,
+      "question": "A chemical plant has a safety system consisting of two subsystems in series. Sub",
+      "target": 0.82715,
+      "n_correct": 3,
+      "rewards": [
+        0.4,
+        0.8,
+        0.01,
+        0.8
+      ],
+      "loss": -0.02813720703125
+    },
+    {
+      "useful_step": 146,
+      "total_step": 186,
+      "question": "A chemical processing system has two identical pumps in active parallel redundan",
+      "target": 0.535946,
+      "n_correct": 1,
+      "rewards": [
+        0.8,
+        0.01,
+        0.0,
+        0.01
+      ],
+      "loss": -0.0369873046875
+    },
+    {
+      "useful_step": 147,
+      "total_step": 187,
+      "question": "Industrial pumps used in chemical processing plants have lifetimes that follow a",
+      "target": 0.9208,
+      "n_correct": 4,
+      "rewards": [
+        0.8,
+        1.0,
+        1.0,
+        0.8
+      ],
+      "loss": -0.008056640625
+    },
+    {
+      "useful_step": 148,
+      "total_step": 189,
+      "question": "Given that the lifetime of a component is modeled by a lognormal distribution wi",
+      "target": 38245.0,
+      "n_correct": 4,
+      "rewards": [
+        0.8,
+        0.8,
+        1.0,
+        0.8
+      ],
+      "loss": -0.013427734375
+    },
+    {
+      "useful_step": 149,
+      "total_step": 190,
+      "question": "Two treatments are being compared in an experimental study. Under the old proced",
+      "target": 0.09253,
+      "n_correct": 2,
+      "rewards": [
+        0.01,
+        1.0,
+        1.0,
+        0.01
+      ],
+      "loss": -0.035888671875
+    },
+    {
+      "useful_step": 150,
+      "total_step": 191,
+      "question": "A fleet manager observes failure data for a critical engine component from 20 un",
+      "target": 0.06516,
+      "n_correct": 1,
+      "rewards": [
+        0.4,
+        0.01,
+        0.01,
+        0.01
+      ],
+      "loss": 0.0179443359375
+    },
+    {
+      "useful_step": 151,
+      "total_step": 193,
+      "question": "Consider a series system composed of two subsystems. Subsystem A uses a 2-out-of",
+      "target": 0.3479,
+      "n_correct": 1,
+      "rewards": [
+        0.0,
+        0.01,
+        0.01,
+        0.4
+      ],
+      "loss": -0.03076171875
+    },
+    {
+      "useful_step": 152,
+      "total_step": 194,
+      "question": "An industrial control unit produced by a certain company has a lifetime that is ",
+      "target": 11104.0,
+      "n_correct": 1,
+      "rewards": [
+        1.0,
+        0.01,
+        0.01,
+        0.01
+      ],
+      "loss": -0.01904296875
+    },
+    {
+      "useful_step": 153,
+      "total_step": 195,
+      "question": "A fleet of 20 identical turbine blades is placed on an accelerated life test at ",
+      "target": 0.9717,
+      "n_correct": 4,
+      "rewards": [
+        0.8,
+        1.0,
+        0.8,
+        1.0
+      ],
+      "loss": -0.0111083984375
+    },
+    {
+      "useful_step": 154,
+      "total_step": 196,
+      "question": "An industrial manufacturer produces control units with lifetimes that follow a l",
+      "target": 2.08,
+      "n_correct": 1,
+      "rewards": [
+        0.01,
+        1.0,
+        0.01,
+        0.01
+      ],
+      "loss": -0.025146484375
+    },
+    {
+      "useful_step": 155,
+      "total_step": 198,
+      "question": "A quality control engineer is designing a single sampling plan for incoming batc",
+      "target": 78.0,
+      "n_correct": 0,
+      "rewards": [
+        0.0,
+        0.0,
+        0.01,
+        0.01
+      ],
+      "loss": -0.0185546875
+    },
+    {
+      "useful_step": 156,
+      "total_step": 199,
+      "question": "Given that the lifetime of a device follows a lognormal distribution with a shap",
+      "target": 50100000.0,
+      "n_correct": 2,
+      "rewards": [
+        0.8,
+        0.01,
+        0.8,
+        0.01
+      ],
+      "loss": -0.0238037109375
+    },
+    {
+      "useful_step": 157,
+      "total_step": 200,
+      "question": "A data center runs a critical storage array consisting of 5 independent hard dri",
+      "target": 0.3915,
+      "n_correct": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        0.8,
+        1.0
+      ],
+      "loss": 0.017578125
+    },
+    {
+      "useful_step": 158,
+      "total_step": 201,
+      "question": "A critical avionics system uses a hybrid redundancy configuration with 4 identic",
+      "target": 0.9101,
+      "n_correct": 2,
+      "rewards": [
+        0.01,
+        0.01,
+        0.4,
+        0.8
+      ],
+      "loss": -0.039306640625
+    },
+    {
+      "useful_step": 159,
+      "total_step": 202,
+      "question": "A safety-critical system is composed of two identical subsystems arranged in par",
+      "target": 0.117647,
+      "n_correct": 3,
+      "rewards": [
+        1.0,
+        1.0,
+        0.01,
+        1.0
+      ],
+      "loss": 0.0008544921875
+    },
+    {
+      "useful_step": 160,
+      "total_step": 203,
+      "question": "Ten identical turbine engines are subjected to a reliability life test. The engi",
+      "target": 0.60681,
+      "n_correct": 1,
+      "rewards": [
+        0.01,
+        1.0,
+        0.01,
+        0.01
+      ],
+      "loss": -0.0164794921875
+    },
+    {
+      "useful_step": 161,
+      "total_step": 204,
+      "question": "A manufacturer of electronic components asserts that their latest microprocessor",
+      "target": 4000.0,
+      "n_correct": 2,
+      "rewards": [
+        1.0,
+        0.01,
+        1.0,
+        0.01
+      ],
+      "loss": 0.0133056640625
+    },
+    {
+      "useful_step": 162,
+      "total_step": 205,
+      "question": "Ten identical turbines are placed under test, with their lifetimes modeled by a ",
+      "target": 0.4917,
+      "n_correct": 3,
+      "rewards": [
+        0.8,
+        0.01,
+        0.8,
+        0.8
+      ],
+      "loss": -0.006591796875
+    },
+    {
+      "useful_step": 163,
+      "total_step": 207,
+      "question": "A satellite communication system consists of three redundant transmitters arrang",
+      "target": 0.988,
+      "n_correct": 3,
+      "rewards": [
+        1.0,
+        0.8,
+        0.8,
+        0.0
+      ],
+      "loss": 0.0245361328125
+    },
+    {
+      "useful_step": 164,
+      "total_step": 208,
+      "question": "A baseball player has a current batting average of .250 (probability of a hit p ",
+      "target": 0.0039,
+      "n_correct": 4,
+      "rewards": [
+        1.0,
+        0.8,
+        0.8,
+        0.8
+      ],
+      "loss": -0.007659912109375
+    },
+    {
+      "useful_step": 165,
+      "total_step": 209,
+      "question": "A chemical processing plant has a safety system consisting of two identical pres",
+      "target": 0.77907,
+      "n_correct": 1,
+      "rewards": [
+        0.01,
+        0.01,
+        0.01,
+        0.8
+      ],
+      "loss": -0.0037841796875
+    },
+    {
+      "useful_step": 166,
+      "total_step": 210,
+      "question": "Consider a series system composed of two subsystems. Subsystem A uses a 2-out-of",
+      "target": 0.3479,
+      "n_correct": 1,
+      "rewards": [
+        0.01,
+        0.0,
+        0.01,
+        0.8
+      ],
+      "loss": -0.0152587890625
+    },
+    {
+      "useful_step": 167,
+      "total_step": 211,
+      "question": "A fleet supervisor tracks a group of identical vehicles whose engines have lifet",
+      "target": 574.326,
+      "n_correct": 1,
+      "rewards": [
+        0.0,
+        0.4,
+        0.01,
+        0.01
+      ],
+      "loss": 0.030517578125
+    },
+    {
+      "useful_step": 168,
+      "total_step": 214,
+      "question": "A memory chip lifetime for soft errors follows the exponential distribution with",
+      "target": 0.2424,
+      "n_correct": 3,
+      "rewards": [
+        0.01,
+        1.0,
+        0.8,
+        0.8
+      ],
+      "loss": -0.0418701171875
+    },
+    {
+      "useful_step": 169,
+      "total_step": 215,
+      "question": "A protective system is composed of two identical subsystems arranged in a parall",
+      "target": 0.9344,
+      "n_correct": 1,
+      "rewards": [
+        0.01,
+        0.01,
+        0.0,
+        0.8
+      ],
+      "loss": 0.0076904296875
+    },
+    {
+      "useful_step": 170,
+      "total_step": 216,
+      "question": "A single-component system experiences failures that follow an exponential distri",
+      "target": 2.0,
+      "n_correct": 0,
+      "rewards": [
+        0.0,
+        0.0,
+        0.01,
+        0.01
+      ],
+      "loss": 0.02911376953125
+    },
+    {
+      "useful_step": 171,
+      "total_step": 217,
+      "question": "The time to soft error for a memory chip is exponentially distributed with a mea",
+      "target": 0.2424,
+      "n_correct": 4,
+      "rewards": [
+        0.8,
+        1.0,
+        0.4,
+        1.0
+      ],
+      "loss": -0.00537109375
+    },
+    {
+      "useful_step": 172,
+      "total_step": 218,
+      "question": "Ten identical turbines are placed on a reliability test as a fleet. Their lifeti",
+      "target": 1084.56,
+      "n_correct": 0,
+      "rewards": [
+        0.0,
+        0.01,
+        0.0,
+        0.01
+      ],
+      "loss": 0.0032958984375
+    },
+    {
+      "useful_step": 173,
+      "total_step": 219,
+      "question": "A chemical processing facility employs a safety system consisting of two identic",
+      "target": 0.8678,
+      "n_correct": 1,
+      "rewards": [
+        1.0,
+        0.01,
+        0.01,
+        0.0
+      ],
+      "loss": -0.0013427734375
+    },
+    {
+      "useful_step": 174,
+      "total_step": 220,
+      "question": "A logistics company manages a fleet of 50 identical trucks, each equipped with a",
+      "target": 0.9874,
+      "n_correct": 2,
+      "rewards": [
+        0.0,
+        0.4,
+        0.01,
+        0.4
+      ],
+      "loss": -0.0419921875
+    },
+    {
+      "useful_step": 175,
+      "total_step": 222,
+      "question": "A power supply module has a service life governed by a Weibull distribution with",
+      "target": 0.5929,
+      "n_correct": 3,
+      "rewards": [
+        1.0,
+        0.01,
+        1.0,
+        1.0
+      ],
+      "loss": -0.06494140625
+    },
+    {
+      "useful_step": 176,
+      "total_step": 223,
+      "question": "An industrial control unit produced by a certain company has a lifetime that is ",
+      "target": 11104.0,
+      "n_correct": 3,
+      "rewards": [
+        0.4,
+        0.01,
+        0.4,
+        0.8
+      ],
+      "loss": -0.011508941650390625
+    },
+    {
+      "useful_step": 177,
+      "total_step": 224,
+      "question": "A telecom provider seeks to verify that a fiber optic transmitter module achieve",
+      "target": 24.0,
+      "n_correct": 0,
+      "rewards": [
+        0.01,
+        0.01,
+        0.0,
+        0.01
+      ],
+      "loss": -0.03662109375
+    },
+    {
+      "useful_step": 178,
+      "total_step": 226,
+      "question": "The time to soft error for a memory chip is exponentially distributed with a mea",
+      "target": 0.2424,
+      "n_correct": 3,
+      "rewards": [
+        1.0,
+        0.8,
+        0.8,
+        0.01
+      ],
+      "loss": -0.032470703125
+    },
+    {
+      "useful_step": 179,
+      "total_step": 227,
+      "question": "A defense contractor is performing life testing on a newly developed hydraulic a",
+      "target": 0.0001272,
+      "n_correct": 3,
+      "rewards": [
+        0.8,
+        1.0,
+        1.0,
+        0.01
+      ],
+      "loss": 0.013671875
+    },
+    {
+      "useful_step": 180,
+      "total_step": 229,
+      "question": "A chemical plant has a safety system consisting of two subsystems in series. Sub",
+      "target": 0.9731,
+      "n_correct": 1,
+      "rewards": [
+        0.4,
+        0.0,
+        0.01,
+        0.0
+      ],
+      "loss": -0.032958984375
+    },
+    {
+      "useful_step": 181,
+      "total_step": 230,
+      "question": "An industrial control unit produced by a certain company has a lifetime that is ",
+      "target": 11104.0,
+      "n_correct": 3,
+      "rewards": [
+        0.4,
+        0.01,
+        1.0,
+        0.4
+      ],
+      "loss": -0.040924072265625
+    },
+    {
+      "useful_step": 182,
+      "total_step": 232,
+      "question": "A chemical plant has a safety system consisting of two subsystems in series. Sub",
+      "target": 0.51201,
+      "n_correct": 3,
+      "rewards": [
+        0.4,
+        0.8,
+        0.8,
+        0.01
+      ],
+      "loss": -0.019775390625
+    },
+    {
+      "useful_step": 183,
+      "total_step": 233,
+      "question": "Consider a series system composed of two subsystems. Subsystem A employs a 2-out",
+      "target": 0.686475,
+      "n_correct": 3,
+      "rewards": [
+        0.01,
+        0.4,
+        0.8,
+        0.4
+      ],
+      "loss": 0.009124755859375
+    },
+    {
+      "useful_step": 184,
+      "total_step": 235,
+      "question": "A hydraulic system is composed of three subsystems arranged in series. Subsystem",
+      "target": 0.6466,
+      "n_correct": 2,
+      "rewards": [
+        1.0,
+        0.8,
+        0.01,
+        0.01
+      ],
+      "loss": -0.0111083984375
+    },
+    {
+      "useful_step": 185,
+      "total_step": 236,
+      "question": "A safety-critical system consists of two subsystems in series. Subsystem A is a ",
+      "target": 0.930068,
+      "n_correct": 2,
+      "rewards": [
+        1.0,
+        0.01,
+        1.0,
+        0.0
+      ],
+      "loss": -0.0205078125
+    },
+    {
+      "useful_step": 186,
+      "total_step": 237,
+      "question": "A telecom provider is engineering a redundant power supply configuration for a c",
+      "target": 6.0,
+      "n_correct": 1,
+      "rewards": [
+        0.01,
+        0.0,
+        0.01,
+        1.0
+      ],
+      "loss": 0.021240234375
+    },
+    {
+      "useful_step": 187,
+      "total_step": 238,
+      "question": "A chemical plant has a safety system consisting of two subsystems in series. Sub",
+      "target": 0.9731,
+      "n_correct": 0,
+      "rewards": [
+        0.0,
+        0.0,
+        0.01,
+        0.01
+      ],
+      "loss": -0.0302734375
+    },
+    {
+      "useful_step": 188,
+      "total_step": 243,
+      "question": "Chemical processing facilities employ industrial pumps whose lifetimes are model",
+      "target": 0.2915,
+      "n_correct": 2,
+      "rewards": [
+        0.8,
+        0.8,
+        0.01,
+        0.01
+      ],
+      "loss": -0.0006103515625
+    },
+    {
+      "useful_step": 189,
+      "total_step": 244,
+      "question": "1000 randomly selected lines of code are inspected. 23 bugs are found. Assuming ",
+      "target": 23.0,
+      "n_correct": 2,
+      "rewards": [
+        1.0,
+        0.01,
+        0.01,
+        1.0
+      ],
+      "loss": -0.027099609375
+    },
+    {
+      "useful_step": 190,
+      "total_step": 246,
+      "question": "Ten identical turbine engines are subjected to a reliability life test. The engi",
+      "target": 0.60681,
+      "n_correct": 0,
+      "rewards": [
+        0.01,
+        0.0,
+        0.01,
+        0.01
+      ],
+      "loss": -0.041015625
+    },
+    {
+      "useful_step": 191,
+      "total_step": 247,
+      "question": "Assume the lifetime follows a lognormal distribution, find the time to achieve 1",
+      "target": 38245.0,
+      "n_correct": 2,
+      "rewards": [
+        0.01,
+        0.01,
+        0.8,
+        0.4
+      ],
+      "loss": -0.01416015625
+    },
+    {
+      "useful_step": 192,
+      "total_step": 248,
+      "question": "A semiconductor component has a lifetime described by a lognormal distribution w",
+      "target": 3169000.0,
+      "n_correct": 1,
+      "rewards": [
+        1.0,
+        0.01,
+        0.01,
+        0.01
+      ],
+      "loss": -0.0091552734375
+    },
+    {
+      "useful_step": 193,
+      "total_step": 250,
+      "question": "In an agricultural experiment, an automatic misting system operates according to",
+      "target": 0.6703,
+      "n_correct": 3,
+      "rewards": [
+        0.01,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "loss": 0.009521484375
+    },
+    {
+      "useful_step": 194,
+      "total_step": 252,
+      "question": "A safety-critical system is configured as two identical subsystems operating in ",
+      "target": 0.35145,
+      "n_correct": 3,
+      "rewards": [
+        1.0,
+        0.4,
+        0.01,
+        0.8
+      ],
+      "loss": -0.01776123046875
+    },
+    {
+      "useful_step": 195,
+      "total_step": 253,
+      "question": "Industrial pumps used in chemical processing plants have lifetimes that follow a",
+      "target": 2916.0,
+      "n_correct": 3,
+      "rewards": [
+        0.8,
+        0.8,
+        0.8,
+        0.01
+      ],
+      "loss": -0.0458984375
+    },
+    {
+      "useful_step": 196,
+      "total_step": 256,
+      "question": "A safety-critical system is composed of two subsystems arranged in series. Subsy",
+      "target": 0.581327,
+      "n_correct": 0,
+      "rewards": [
+        0.01,
+        0.0,
+        0.01,
+        0.0
+      ],
+      "loss": 0.0111083984375
+    },
+    {
+      "useful_step": 197,
+      "total_step": 257,
+      "question": "Assume the lifetime follows a Weibull distribution, find the expected cumulative",
+      "target": 0.0311,
+      "n_correct": 2,
+      "rewards": [
+        1.0,
+        0.01,
+        0.8,
+        0.01
+      ],
+      "loss": 0.0198974609375
+    },
+    {
+      "useful_step": 198,
+      "total_step": 258,
+      "question": "A fiber optic transmitter module is being subjected to a life test by a telecomm",
+      "target": 5.235e-05,
+      "n_correct": 4,
+      "rewards": [
+        1.0,
+        0.8,
+        0.8,
+        1.0
+      ],
+      "loss": -0.01873779296875
+    },
+    {
+      "useful_step": 199,
+      "total_step": 259,
+      "question": "A production plant has machine failures occurring according to a Poisson process",
+      "target": 2.449,
+      "n_correct": 3,
+      "rewards": [
+        1.0,
+        1.0,
+        0.01,
+        1.0
+      ],
+      "loss": -0.04534912109375
+    },
+    {
+      "useful_step": 200,
+      "total_step": 260,
+      "question": "A system has a linearly increasing hazard rate given by h(t) = αt, where α is a ",
+      "target": 0.368,
+      "n_correct": 2,
+      "rewards": [
+        1.0,
+        0.01,
+        1.0,
+        0.01
+      ],
+      "loss": -0.0084228515625
+    }
+  ]
+}

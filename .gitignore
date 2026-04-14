@@ -21,8 +21,6 @@ env/
 # Training outputs
 outputs*/
 logs/
-*.log
-*.err
 
 # Model checkpoints
 grpo_saved_lora*/
@@ -52,9 +50,15 @@ key.txt
 # Data (too large for git — stored locally)
 data/
 
-# Local-only results (keep locally, don't push)
-results/Exp7/
-results/Chunck strict/
+# Local-only results
+results/JSON experiments/
+results/Run 2/
+results/5exp + mid eval/
+results/Run 57+281/
+results/Run evaluation/
+results/Run finetuning complete/
+results/*.json
+results/*.md
 
 # Google Colab artifacts
 google-colab/

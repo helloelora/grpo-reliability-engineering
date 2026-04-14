@@ -1,0 +1,310 @@
+Job started at Fri Apr 10 16:09:08 CEST 2026
+Applied torch.Tensor.__mul__ patch
+🦥 Unsloth: Will patch your computer to enable 2x faster free finetuning.
+🦥 Unsloth Zoo will now patch everything to make training faster!
+Dataset: 266 questions
+==((====))==  Unsloth 2026.2.1: Fast Qwen2 patching. Transformers: 4.57.1. vLLM: 0.11.2.
+   \\   /|    NVIDIA A100-SXM4-40GB. Num GPUs = 1. Max memory: 39.494 GB. Platform: Linux.
+O^O/ \_/ \    Torch: 2.9.0+cu128. CUDA: 8.0. CUDA Toolkit: 12.8. Triton: 3.5.0
+\        /    Bfloat16 = TRUE. FA [Xformers = 0.0.33.post1. FA2 = False]
+ "-____-"     Free license: http://github.com/unslothai/unsloth
+Unsloth: Fast downloading is enabled - ignore downloading bars which are red colored!
+Base Qwen2.5-7B loaded
+
+Fold 1/5 (54 test questions)
+    [1/54] CORRECT | target=0.0039 pred=0.00390625
+    [2/54] WRONG | target=23.0 pred=2.3
+    [3/54] CORRECT | target=0.004105 pred=0.0041
+    [4/54] WRONG | target=173.1 pred=None
+    [5/54] WRONG | target=0.0001272 pred=0.001865
+    [6/54] WRONG | target=0.9712 pred=0.336
+    [7/54] WRONG | target=2916.0 pred=6344.0
+    [8/54] WRONG | target=78.0 pred=664.0
+    [9/54] CORRECT | target=0.4724 pred=0.4718
+    [10/54] WRONG | target=0.581327 pred=0.1436
+    [11/54] WRONG | target=0.535946 pred=0.438
+    [12/54] WRONG | target=0.6958 pred=0.74
+    [13/54] WRONG | target=0.6058 pred=0.0188
+    [14/54] WRONG | target=0.957843 pred=0.8186
+    [15/54] CORRECT | target=0.4871 pred=0.493
+    [16/54] WRONG | target=0.930068 pred=0.746
+    [17/54] WRONG | target=5604.0 pred=403.0
+    [18/54] WRONG | target=0.4917 pred=0.461
+    [19/54] WRONG | target=0.90317 pred=0.72
+    [20/54] WRONG | target=0.3479 pred=0.283
+    [21/54] WRONG | target=1598.6 pred=633.3
+    [22/54] WRONG | target=0.98037 pred=0.9174
+    [23/54] WRONG | target=0.930068 pred=0.0014
+    [24/54] WRONG | target=0.9874 pred=0.614
+    [25/54] WRONG | target=0.95272 pred=0.0106
+    [26/54] WRONG | target=0.77243 pred=0.987
+    [27/54] WRONG | target=0.8678 pred=0.184
+    [28/54] CORRECT | target=0.98331 pred=0.99155
+    [29/54] WRONG | target=0.6703 pred=0.3679
+    [30/54] WRONG | target=0.2424 pred=0.216
+    [31/54] WRONG | target=0.0106 pred=0.000922
+    [32/54] CORRECT | target=0.0039 pred=0.00390625
+    [33/54] WRONG | target=103.0 pred=35.0
+    [34/54] WRONG | target=0.029 pred=0.025
+    [35/54] WRONG | target=0.757 pred=0.661
+    [36/54] CORRECT | target=0.9912 pred=0.992
+    [37/54] WRONG | target=0.9101 pred=344.0
+    [38/54] WRONG | target=0.9711 pred=0.8091
+    [39/54] WRONG | target=0.9208 pred=0.999998454
+    [40/54] WRONG | target=3.0 pred=4.0
+    [41/54] WRONG | target=6.0 pred=8.0
+    [42/54] CORRECT | target=17.0 pred=17.0
+    [43/54] WRONG | target=0.915 pred=0.37
+    [44/54] WRONG | target=0.9712 pred=0.7722
+    [45/54] WRONG | target=2916.0 pred=3199.0
+    [46/54] CORRECT | target=17.0 pred=17.0
+    [47/54] WRONG | target=0.96982 pred=0.033
+    [48/54] WRONG | target=0.00198 pred=0.0016
+    [49/54] WRONG | target=0.90317 pred=0.3468
+    [50/54] WRONG | target=0.6058 pred=0.0725
+    [51/54] WRONG | target=252000.0 pred=1197.5
+    [52/54] WRONG | target=50100000.0 pred=30000.0
+    [53/54] WRONG | target=500000.0 pred=2283.4
+    [54/54] WRONG | target=2.08 pred=0.11
+  Fold 1: 9/54 correct (16.7%), 0 truncated
+
+Fold 2/5 (53 test questions)
+    [1/53] CORRECT | target=0.9231 pred=0.936
+    [2/53] WRONG | target=0.09121 pred=0.0669
+    [3/53] WRONG | target=2.0 pred=0.001
+    [4/53] WRONG | target=0.0311 pred=3.16
+    [5/53] WRONG | target=50100000.0 pred=167000.0
+    [6/53] WRONG | target=0.0016 pred=0.004
+    [7/53] WRONG | target=2.0 pred=59.0
+    [8/53] WRONG | target=23790.0 pred=47400.0
+    [9/53] WRONG | target=0.9101 pred=0.564
+    [10/53] WRONG | target=493.7 pred=156.52
+    [11/53] WRONG | target=4000.0 pred=0.01
+    [12/53] CORRECT | target=0.9208 pred=0.964
+    [13/53] WRONG | target=6.0 pred=15.0
+    [14/53] WRONG | target=0.86676 pred=0.699
+    [15/53] WRONG | target=0.51201 pred=0.18
+    [16/53] WRONG | target=0.06516 pred=0.01671
+    [17/53] WRONG | target=0.4917 pred=0.203
+    [18/53] WRONG | target=0.3479 pred=0.226
+    [19/53] WRONG | target=0.77907 pred=0.9961
+    [20/53] WRONG | target=0.86676 pred=0.212
+    [21/53] WRONG | target=0.35145 pred=6e-06
+    [22/53] WRONG | target=0.66582 pred=0.077
+    [23/53] WRONG | target=0.60681 pred=0.999996
+    [24/53] WRONG | target=0.117647 pred=0.1538
+    WARNING: Q25 truncated at 8192 tokens, no boxed found
+    [25/53] TRUNCATED | target=0.7299 pred=None
+    [26/53] WRONG | target=0.7711 pred=0.0411
+    [27/53] CORRECT | target=0.98728 pred=0.9996
+    [28/53] WRONG | target=0.9874 pred=0.241
+    [29/53] WRONG | target=38245.0 pred=33145.0
+    [30/53] CORRECT | target=0.736 pred=0.7355
+    [31/53] CORRECT | target=0.0311 pred=0.0316
+    [32/53] WRONG | target=38245.0 pred=149180.0
+    [33/53] WRONG | target=252000.0 pred=13400.0
+    [34/53] WRONG | target=180.0 pred=217.0
+    [35/53] CORRECT | target=3750.0 pred=3750.0
+    [36/53] WRONG | target=0.407 pred=0.751
+    [37/53] WRONG | target=0.004105 pred=0.004457
+    [38/53] CORRECT | target=666.67 pred=666.67
+    [39/53] WRONG | target=0.0001272 pred=0.001895
+    [40/53] CORRECT | target=0.6065 pred=0.6065
+    [41/53] WRONG | target=0.915 pred=0.813
+    [42/53] WRONG | target=0.2915 pred=0.346
+    [43/53] WRONG | target=0.0621 pred=0.174
+    [44/53] WRONG | target=0.9101 pred=0.5538
+    [45/53] WRONG | target=78.0 pred=478.0
+    [46/53] WRONG | target=13624.0 pred=1000.0
+    [47/53] WRONG | target=0.03285 pred=0.0
+    [48/53] WRONG | target=0.4605 pred=0.0504
+    [49/53] CORRECT | target=0.9625 pred=0.9625
+    [50/53] WRONG | target=4000.0 pred=6000.0
+    [51/53] WRONG | target=0.2915 pred=0.1518
+    [52/53] CORRECT | target=3.0 pred=3.0
+    [53/53] WRONG | target=0.4493 pred=0.4107
+  Fold 2: 10/53 correct (18.9%), 1 truncated
+
+Fold 3/5 (53 test questions)
+    [1/53] WRONG | target=0.6703 pred=-0.3679
+    [2/53] WRONG | target=34657.0 pred=0.05
+    [3/53] WRONG | target=38245.0 pred=168117.0
+    [4/53] WRONG | target=0.924 pred=0.9712
+    [5/53] WRONG | target=8333.0 pred=75000.0
+    [6/53] WRONG | target=3750.0 pred=4681.0
+    [7/53] WRONG | target=0.01 pred=100.0
+    [8/53] WRONG | target=0.0621 pred=0.17600000000000002
+    [9/53] WRONG | target=0.757 pred=0.7036
+    [10/53] WRONG | target=0.407 pred=0.6849
+    [11/53] CORRECT | target=0.9711 pred=0.9873
+    [12/53] WRONG | target=0.4493 pred=0.413
+    [13/53] WRONG | target=0.5929 pred=0.721
+    [14/53] WRONG | target=0.77243 pred=0.367
+    [15/53] WRONG | target=0.9731 pred=0.00038
+    [16/53] WRONG | target=1598.6 pred=1706.1
+    [17/53] CORRECT | target=0.7299 pred=0.718
+    [18/53] WRONG | target=0.6466 pred=None
+    WARNING: Q19 truncated at 8192 tokens, no boxed found
+    [19/53] TRUNCATED | target=0.6466 pred=None
+    [20/53] WRONG | target=5336.6 pred=831.1
+    [21/53] WRONG | target=0.96982 pred=None
+    [22/53] WRONG | target=0.6958 pred=0.9354
+    [23/53] WRONG | target=0.5169 pred=0.9978
+    [24/53] CORRECT | target=0.581327 pred=0.605
+    [25/53] WRONG | target=0.70956 pred=0.161
+    [26/53] WRONG | target=0.117647 pred=12.0
+    [27/53] WRONG | target=0.6958 pred=0.999
+    [28/53] WRONG | target=0.90317 pred=0.9976
+    [29/53] WRONG | target=0.957843 pred=0.789
+    [30/53] WRONG | target=0.98037 pred=0.001261
+    [31/53] WRONG | target=380.0 pred=327.0
+    [32/53] CORRECT | target=0.866 pred=0.866
+    [33/53] WRONG | target=252000.0 pred=40000.0
+    [34/53] WRONG | target=0.0106 pred=1.0
+    [35/53] WRONG | target=23717.0 pred=1996.0
+    [36/53] CORRECT | target=3169000.0 pred=3150000.0
+    [37/53] WRONG | target=0.01 pred=100.0
+    [38/53] WRONG | target=33700.0 pred=173413.0
+    [39/53] WRONG | target=11425.0 pred=992.33
+    [40/53] WRONG | target=2.08 pred=2.31
+    [41/53] WRONG | target=0.13 pred=0.706
+    [42/53] WRONG | target=24.0 pred=1116.0
+    [43/53] WRONG | target=33700.0 pred=31283.0
+    [44/53] WRONG | target=11104.0 pred=12975.0
+    [45/53] WRONG | target=0.4493 pred=0.4137
+    [46/53] WRONG | target=0.06516 pred=0.04
+    [47/53] CORRECT | target=0.117647 pred=0.11875
+    [48/53] WRONG | target=0.4917 pred=0.024
+    [49/53] WRONG | target=0.535946 pred=0.689
+    [50/53] WRONG | target=0.98728 pred=0.51342
+    [51/53] WRONG | target=0.09253 pred=0.018
+    [52/53] WRONG | target=23.0 pred=0.023
+    [53/53] WRONG | target=0.2424 pred=0.2803
+  Fold 3: 6/53 correct (11.3%), 1 truncated
+
+Fold 4/5 (53 test questions)
+    [1/53] WRONG | target=5268.0 pred=2.11
+    [2/53] WRONG | target=0.135 pred=0.862
+    [3/53] WRONG | target=0.736 pred=0.543
+    [4/53] WRONG | target=0.0106 pred=0.97
+    [5/53] CORRECT | target=0.368 pred=0.368
+    [6/53] WRONG | target=3169000.0 pred=2500000.0
+    [7/53] WRONG | target=0.00109 pred=0.00012064
+    [8/53] WRONG | target=0.2915 pred=0.1554
+    [9/53] WRONG | target=0.9393 pred=0.9994
+    [10/53] WRONG | target=0.988 pred=0.9106
+    [11/53] WRONG | target=0.35145 pred=2.6e-06
+    [12/53] WRONG | target=0.995 pred=0.919
+    [13/53] WRONG | target=300202.0 pred=3680.0
+    [14/53] WRONG | target=0.9717 pred=0.32
+    [15/53] WRONG | target=0.31322 pred=0.0302
+    [16/53] WRONG | target=1084.56 pred=None
+    [17/53] WRONG | target=0.686475 pred=0.57
+    [18/53] WRONG | target=0.98037 pred=0.1614
+    [19/53] WRONG | target=0.49128 pred=0.724
+    [20/53] CORRECT | target=0.581327 pred=0.602487
+    [21/53] WRONG | target=5336.6 pred=34.4
+    [22/53] WRONG | target=0.06516 pred=0.0331
+    [23/53] WRONG | target=0.35145 pred=0.5574
+    [24/53] WRONG | target=0.9344 pred=0.887
+    [25/53] WRONG | target=0.4871 pred=0.577
+    [26/53] WRONG | target=0.49128 pred=0.7738
+    [27/53] WRONG | target=0.35145 pred=0.7999
+    [28/53] WRONG | target=0.4871 pred=0.4
+    WARNING: Q29 truncated at 8192 tokens, no boxed found
+    [29/53] TRUNCATED | target=1084.56 pred=None
+    [30/53] WRONG | target=0.686475 pred=0.000221
+    WARNING: Q31 truncated at 8192 tokens, no boxed found
+    [31/53] TRUNCATED | target=0.7711 pred=None
+    [32/53] WRONG | target=2.0 pred=0.02
+    [33/53] WRONG | target=23717.0 pred=10000.0
+    [34/53] CORRECT | target=0.0311 pred=0.0313
+    [35/53] WRONG | target=0.03285 pred=0.175
+    [36/53] WRONG | target=2.0 pred=637.0
+    [37/53] WRONG | target=180.0 pred=1000.0
+    [38/53] WRONG | target=23.0 pred=0.023
+    [39/53] WRONG | target=0.029 pred=0.067
+    [40/53] CORRECT | target=2.449 pred=2.345
+    [41/53] WRONG | target=0.3915 pred=0.0267
+    [42/53] WRONG | target=13624.0 pred=790.0
+    [43/53] WRONG | target=0.0001272 pred=0.0018
+    [44/53] CORRECT | target=0.982 pred=0.9687
+    WARNING: Q45 truncated at 8192 tokens, no boxed found
+    [45/53] TRUNCATED | target=6.0 pred=None
+    [46/53] WRONG | target=0.77907 pred=0.99
+    [47/53] WRONG | target=0.4871 pred=0.9
+    [48/53] WRONG | target=0.686475 pred=0.9173
+    [49/53] CORRECT | target=0.03285 pred=0.0336
+    [50/53] WRONG | target=0.924 pred=0.0022432
+    [51/53] WRONG | target=8333.0 pred=333.33
+    [52/53] WRONG | target=0.01 pred=111.0
+    [53/53] WRONG | target=5.235e-05 pred=0.000943396
+  Fold 4: 6/53 correct (11.3%), 3 truncated
+
+Fold 5/5 (53 test questions)
+    [1/53] WRONG | target=1386.0 pred=500.0
+    [2/53] WRONG | target=252000.0 pred=341.9
+    [3/53] CORRECT | target=0.2424 pred=0.241
+    [4/53] WRONG | target=0.2424 pred=0.0281
+    [5/53] CORRECT | target=0.9823 pred=0.9684
+    [6/53] WRONG | target=0.5 pred=0.0
+    [7/53] WRONG | target=0.915 pred=0.803
+    [8/53] WRONG | target=11104.0 pred=13374.0
+    [9/53] CORRECT | target=2.08 pred=2.06
+    [10/53] WRONG | target=0.945 pred=None
+    [11/53] WRONG | target=0.42 pred=0.285
+    [12/53] CORRECT | target=0.6466 pred=0.667
+    [13/53] WRONG | target=574.326 pred=359.4
+    [14/53] WRONG | target=0.6479 pred=0.589
+    [15/53] WRONG | target=5336.6 pred=2.3e+16
+    [16/53] WRONG | target=0.82715 pred=0.677
+    [17/53] WRONG | target=0.117647 pred=0.1761
+    [18/53] CORRECT | target=0.96982 pred=0.931
+    [19/53] WRONG | target=0.89502 pred=0.1056
+    [20/53] WRONG | target=0.7711 pred=0.871
+    [21/53] WRONG | target=8.0129 pred=3.7712
+    [22/53] WRONG | target=0.9874 pred=0.0
+    [23/53] WRONG | target=574.326 pred=1.16
+    [24/53] WRONG | target=0.9344 pred=0.414
+    [25/53] WRONG | target=0.9717 pred=0.0
+    [26/53] CORRECT | target=0.77907 pred=0.7597
+    [27/53] WRONG | target=0.31322 pred=0.0206
+    [28/53] WRONG | target=0.686475 pred=0.00018
+    [29/53] WRONG | target=57.154 pred=50.6
+    [30/53] WRONG | target=0.3479 pred=2.186
+    [31/53] WRONG | target=0.77907 pred=0.045
+    [32/53] WRONG | target=0.31322 pred=0.0
+    [33/53] WRONG | target=0.9231 pred=99625.0
+    [34/53] WRONG | target=23.0 pred=0.021
+    [35/53] WRONG | target=0.0016 pred=0.002
+    [36/53] WRONG | target=0.0016 pred=0.008
+    [37/53] WRONG | target=252000.0 pred=11110.0
+    [38/53] WRONG | target=252000.0 pred=13800.0
+    [39/53] CORRECT | target=0.368 pred=0.3679
+    [40/53] WRONG | target=0.0067 pred=1.0
+    [41/53] WRONG | target=173.1 pred=145.22
+    [42/53] WRONG | target=493.7 pred=191.78
+    [43/53] WRONG | target=0.924 pred=0.4318
+    [44/53] WRONG | target=8333.0 pred=2594.66
+    [45/53] WRONG | target=11425.0 pred=901.67
+    [46/53] WRONG | target=0.9818 pred=0.907196
+    [47/53] WRONG | target=0.6254 pred=0.5
+    [48/53] WRONG | target=38245.0 pred=258100.0
+    [49/53] WRONG | target=0.3915 pred=None
+    [50/53] WRONG | target=0.549 pred=0.4966
+    [51/53] WRONG | target=6.0 pred=7.0
+    [52/53] CORRECT | target=0.487 pred=0.4939
+    [53/53] CORRECT | target=0.5929 pred=0.58
+  Fold 5: 9/53 correct (17.0%), 0 truncated
+
+BASE QWEN2.5-7B RESULTS
+Per-fold: [16.7, 18.9, 11.3, 11.3, 17.0]
+Mean: 15.0% +/- 3.1%
+
+Running McNemar test against fine-tuned results...
+  Base right, FT wrong: 25
+  Base wrong, FT right: 66
+  McNemar p-value: 0.0000
+  Significant (p<0.05)? YES
+Done.
+Job finished at Fri Apr 10 21:13:01 CEST 2026

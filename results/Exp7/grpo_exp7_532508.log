@@ -1,0 +1,310 @@
+Job started at Sat Apr 11 01:51:27 CEST 2026
+Applied torch.Tensor.__mul__ patch
+Patched xformers BMGHK → PyTorch SDPA fallback
+🦥 Unsloth: Will patch your computer to enable 2x faster free finetuning.
+🦥 Unsloth Zoo will now patch everything to make training faster!
+Adapter config: r=16, alpha=32
+Dataset: 266 questions
+SFT LoRA: /gpfs/workdir/drouilheel/fine_tuning_qwen/fold_4 (fold 4)
+==((====))==  Unsloth 2026.2.1: Fast Qwen3 patching. Transformers: 4.57.1. vLLM: 0.11.2.
+   \\   /|    NVIDIA A100-SXM4-40GB. Num GPUs = 1. Max memory: 39.494 GB. Platform: Linux.
+O^O/ \_/ \    Torch: 2.9.0+cu128. CUDA: 8.0. CUDA Toolkit: 12.8. Triton: 3.5.0
+\        /    Bfloat16 = TRUE. FA [Xformers = 0.0.33.post1. FA2 = False]
+ "-____-"     Free license: http://github.com/unslothai/unsloth
+Unsloth: Fast downloading is enabled - ignore downloading bars which are red colored!
+Loading SFT LoRA...
+SFT LoRA loaded
+LoRA gradients enabled (43,646,976 params)
+Trainable params: 43,646,976 (504 tensors)
+
+============================================================
+GRPO Training with Dynamic Sampling
+  Target useful steps: 200
+  Max total attempts:  600
+  Max resample/step:   10
+  Generations/prompt:  4
+  lr=1e-05, grad_accum=4
+============================================================
+
+[step 1/200] correct=3/4 rewards=['0.80', '0.80', '0.01', '0.80'] loss=-0.0051 lr=0.00e+00 wasted=0 resampled=0
+[step 2/200] correct=1/4 rewards=['0.00', '0.01', '0.01', '0.40'] loss=-0.0214 lr=0.00e+00 wasted=0 resampled=0
+[step 3/200] correct=1/4 rewards=['0.00', '0.00', '0.00', '0.80'] loss=-0.0421 lr=0.00e+00 wasted=0 resampled=0
+[step 4/200] correct=3/4 rewards=['1.00', '1.00', '0.01', '1.00'] loss=0.0072 lr=0.00e+00 wasted=0 resampled=0
+[step 5/200] correct=1/4 rewards=['0.01', '0.40', '0.01', '0.01'] loss=0.0226 lr=3.33e-06 wasted=0 resampled=0
+[step 6/200] correct=1/4 rewards=['0.01', '0.40', '0.01', '0.01'] loss=0.0007 lr=3.33e-06 wasted=0 resampled=0
+[step 7/200] correct=4/4 rewards=['0.80', '1.00', '0.80', '0.80'] loss=0.0129 lr=3.33e-06 wasted=0 resampled=0
+[step 8/200] correct=2/4 rewards=['0.00', '0.00', '0.80', '0.80'] loss=-0.0138 lr=3.33e-06 wasted=0 resampled=0
+[step 9/200] correct=3/4 rewards=['1.00', '1.00', '0.01', '1.00'] loss=-0.0106 lr=6.67e-06 wasted=0 resampled=0
+[step 10/200] correct=1/4 rewards=['0.01', '1.00', '0.00', '0.00'] loss=0.0007 lr=6.67e-06 wasted=0 resampled=0
+  [attempt 11] SKIP (ALL_CORRECT, rewards=[0.4, 0.4, 0.4, 0.4]) — resampling
+  [attempt 12] SKIP (ALL_WRONG, rewards=[0.0, 0.0, 0.0, 0.0]) — resampling
+[step 11/200] correct=1/4 rewards=['0.80', '0.00', '0.01', '0.00'] loss=-0.0195 lr=6.67e-06 wasted=2 resampled=2
+[step 12/200] correct=1/4 rewards=['0.01', '0.01', '1.00', '0.01'] loss=0.0071 lr=6.67e-06 wasted=2 resampled=2
+[step 13/200] correct=1/4 rewards=['0.01', '0.00', '1.00', '0.00'] loss=-0.0256 lr=1.00e-05 wasted=2 resampled=2
+[step 14/200] correct=3/4 rewards=['0.80', '1.00', '0.01', '0.80'] loss=0.0247 lr=1.00e-05 wasted=2 resampled=2
+[step 15/200] correct=0/4 rewards=['0.00', '0.00', '0.00', '0.01'] loss=0.0099 lr=1.00e-05 wasted=2 resampled=2
+[step 16/200] correct=1/4 rewards=['0.01', '0.00', '0.01', '1.00'] loss=-0.0364 lr=1.00e-05 wasted=2 resampled=2
+[step 17/200] correct=1/4 rewards=['0.00', '0.80', '0.00', '0.01'] loss=-0.0110 lr=9.99e-06 wasted=2 resampled=2
+[step 18/200] correct=3/4 rewards=['1.00', '0.80', '0.00', '0.80'] loss=-0.0672 lr=9.99e-06 wasted=2 resampled=2
+[step 19/200] correct=3/4 rewards=['0.01', '1.00', '1.00', '1.00'] loss=-0.0118 lr=9.99e-06 wasted=2 resampled=2
+[step 20/200] correct=1/4 rewards=['0.01', '0.80', '0.00', '0.01'] loss=0.0073 lr=9.99e-06 wasted=2 resampled=2
+  Checkpoint saved at useful_step=20 (total_step=22)
+[step 21/200] correct=4/4 rewards=['0.80', '1.00', '0.80', '0.80'] loss=-0.0273 lr=9.96e-06 wasted=2 resampled=2
+[step 22/200] correct=4/4 rewards=['0.80', '1.00', '0.80', '0.80'] loss=-0.0115 lr=9.96e-06 wasted=2 resampled=2
+  [attempt 25] SKIP (ALL_WRONG, rewards=[0.0, 0.0, 0.0, 0.0]) — resampling
+[step 23/200] correct=4/4 rewards=['1.00', '0.80', '0.80', '1.00'] loss=-0.0209 lr=9.96e-06 wasted=3 resampled=3
+[step 24/200] correct=1/4 rewards=['0.80', '0.01', '0.01', '0.01'] loss=0.0043 lr=9.96e-06 wasted=3 resampled=3
+[step 25/200] correct=1/4 rewards=['0.00', '0.00', '0.80', '0.01'] loss=-0.0244 lr=9.90e-06 wasted=3 resampled=3
+[step 26/200] correct=3/4 rewards=['0.01', '0.80', '0.40', '1.00'] loss=0.0051 lr=9.90e-06 wasted=3 resampled=3
+[step 27/200] correct=2/4 rewards=['1.00', '0.01', '0.40', '0.01'] loss=-0.0394 lr=9.90e-06 wasted=3 resampled=3
+[step 28/200] correct=1/4 rewards=['0.00', '0.40', '0.01', '0.00'] loss=0.0024 lr=9.90e-06 wasted=3 resampled=3
+[step 29/200] correct=3/4 rewards=['1.00', '0.01', '1.00', '0.80'] loss=0.0058 lr=9.82e-06 wasted=3 resampled=3
+[step 30/200] correct=0/4 rewards=['0.01', '0.00', '0.00', '0.00'] loss=0.0292 lr=9.82e-06 wasted=3 resampled=3
+[step 31/200] correct=2/4 rewards=['0.01', '1.00', '0.01', '0.80'] loss=-0.0273 lr=9.82e-06 wasted=3 resampled=3
+[step 32/200] correct=1/4 rewards=['0.01', '0.01', '0.80', '0.01'] loss=-0.0439 lr=9.82e-06 wasted=3 resampled=3
+[step 33/200] correct=4/4 rewards=['0.80', '1.00', '0.80', '1.00'] loss=0.0098 lr=9.72e-06 wasted=3 resampled=3
+  [attempt 37] SKIP (ALL_WRONG, rewards=[0.01, 0.01, 0.01, 0.01]) — resampling
+[step 34/200] correct=3/4 rewards=['0.40', '0.80', '0.80', '0.01'] loss=-0.0040 lr=9.72e-06 wasted=4 resampled=4
+[step 35/200] correct=0/4 rewards=['0.01', '0.01', '0.00', '0.00'] loss=-0.0193 lr=9.72e-06 wasted=4 resampled=4
+[step 36/200] correct=0/4 rewards=['0.01', '0.00', '0.00', '0.01'] loss=0.0032 lr=9.72e-06 wasted=4 resampled=4
+[step 37/200] correct=2/4 rewards=['1.00', '1.00', '0.01', '0.01'] loss=0.0750 lr=9.60e-06 wasted=4 resampled=4
+  [attempt 42] SKIP (ALL_CORRECT, rewards=[1.0, 1.0, 1.0, 1.0]) — resampling
+[step 38/200] correct=4/4 rewards=['1.00', '1.00', '0.80', '1.00'] loss=0.0018 lr=9.60e-06 wasted=5 resampled=5
+[step 39/200] correct=0/4 rewards=['0.01', '0.01', '0.00', '0.01'] loss=0.0364 lr=9.60e-06 wasted=5 resampled=5
+[step 40/200] correct=2/4 rewards=['1.00', '0.80', '0.01', '0.00'] loss=-0.0117 lr=9.60e-06 wasted=5 resampled=5
+  Checkpoint saved at useful_step=40 (total_step=45)
+[step 41/200] correct=2/4 rewards=['0.01', '0.40', '0.01', '0.40'] loss=0.0107 lr=9.46e-06 wasted=5 resampled=5
+[step 42/200] correct=3/4 rewards=['0.80', '0.80', '0.80', '0.01'] loss=-0.0317 lr=9.46e-06 wasted=5 resampled=5
+[step 43/200] correct=1/4 rewards=['0.01', '0.01', '0.40', '0.01'] loss=0.0083 lr=9.46e-06 wasted=5 resampled=5
+  [attempt 49] SKIP (ALL_CORRECT, rewards=[1.0, 1.0, 1.0, 1.0]) — resampling
+[step 44/200] correct=0/4 rewards=['0.01', '0.01', '0.01', '0.00'] loss=-0.0022 lr=9.46e-06 wasted=6 resampled=6
+[step 45/200] correct=4/4 rewards=['1.00', '1.00', '1.00', '0.80'] loss=-0.0156 lr=9.30e-06 wasted=6 resampled=6
+[step 46/200] correct=4/4 rewards=['1.00', '0.80', '0.80', '1.00'] loss=-0.0007 lr=9.30e-06 wasted=6 resampled=6
+[step 47/200] correct=4/4 rewards=['0.80', '1.00', '1.00', '1.00'] loss=-0.0082 lr=9.30e-06 wasted=6 resampled=6
+[step 48/200] correct=1/4 rewards=['0.40', '0.01', '0.01', '0.01'] loss=-0.0105 lr=9.30e-06 wasted=6 resampled=6
+[step 49/200] correct=2/4 rewards=['0.80', '0.80', '0.01', '0.00'] loss=-0.0039 lr=9.12e-06 wasted=6 resampled=6
+  [attempt 56] SKIP (ALL_WRONG, rewards=[0.01, 0.01, 0.01, 0.01]) — resampling
+[step 50/200] correct=1/4 rewards=['0.00', '0.01', '0.40', '0.01'] loss=-0.0416 lr=9.12e-06 wasted=7 resampled=7
+[step 51/200] correct=3/4 rewards=['1.00', '1.00', '1.00', '0.00'] loss=-0.0063 lr=9.12e-06 wasted=7 resampled=7
+  [attempt 59] SKIP (ALL_WRONG, rewards=[0.01, 0.01, 0.01, 0.01]) — resampling
+[step 52/200] correct=0/4 rewards=['0.01', '0.00', '0.00', '0.00'] loss=0.0009 lr=9.12e-06 wasted=8 resampled=8
+[step 53/200] correct=2/4 rewards=['0.40', '0.01', '0.40', '0.01'] loss=0.0013 lr=8.92e-06 wasted=8 resampled=8
+[step 54/200] correct=3/4 rewards=['0.00', '1.00', '0.80', '0.80'] loss=-0.0078 lr=8.92e-06 wasted=8 resampled=8
+[step 55/200] correct=3/4 rewards=['0.80', '0.40', '0.40', '0.01'] loss=-0.0083 lr=8.92e-06 wasted=8 resampled=8
+[step 56/200] correct=1/4 rewards=['0.00', '0.00', '0.00', '1.00'] loss=-0.0299 lr=8.92e-06 wasted=8 resampled=8
+[step 57/200] correct=0/4 rewards=['0.00', '0.01', '0.00', '0.01'] loss=-0.0165 lr=8.71e-06 wasted=8 resampled=8
+[step 58/200] correct=1/4 rewards=['0.01', '0.80', '0.00', '0.00'] loss=-0.0449 lr=8.71e-06 wasted=8 resampled=8
+[step 59/200] correct=3/4 rewards=['0.40', '0.80', '0.01', '0.80'] loss=-0.0057 lr=8.71e-06 wasted=8 resampled=8
+[step 60/200] correct=1/4 rewards=['0.40', '0.01', '0.01', '0.01'] loss=0.0282 lr=8.71e-06 wasted=8 resampled=8
+  Checkpoint saved at useful_step=60 (total_step=68)
+[step 61/200] correct=2/4 rewards=['0.01', '1.00', '0.80', '0.01'] loss=-0.0593 lr=8.48e-06 wasted=8 resampled=8
+[step 62/200] correct=2/4 rewards=['0.80', '0.00', '0.01', '0.80'] loss=-0.0179 lr=8.48e-06 wasted=8 resampled=8
+[step 63/200] correct=4/4 rewards=['0.80', '1.00', '1.00', '1.00'] loss=-0.0099 lr=8.48e-06 wasted=8 resampled=8
+[step 64/200] correct=1/4 rewards=['0.00', '0.00', '0.00', '0.80'] loss=0.0017 lr=8.48e-06 wasted=8 resampled=8
+[step 65/200] correct=1/4 rewards=['1.00', '0.01', '0.01', '0.00'] loss=0.0028 lr=8.23e-06 wasted=8 resampled=8
+[step 66/200] correct=2/4 rewards=['0.40', '0.00', '0.01', '0.40'] loss=-0.0128 lr=8.23e-06 wasted=8 resampled=8
+[step 67/200] correct=2/4 rewards=['0.00', '0.01', '1.00', '1.00'] loss=-0.0046 lr=8.23e-06 wasted=8 resampled=8
+  [attempt 76] SKIP (ALL_WRONG, rewards=[0.01, 0.01, 0.01, 0.01]) — resampling
+  [attempt 77] SKIP (ALL_CORRECT, rewards=[1.0, 1.0, 1.0, 1.0]) — resampling
+[step 68/200] correct=1/4 rewards=['0.80', '0.00', '0.01', '0.01'] loss=0.0079 lr=8.23e-06 wasted=10 resampled=10
+[step 69/200] correct=2/4 rewards=['0.01', '0.40', '0.01', '0.40'] loss=0.0040 lr=7.97e-06 wasted=10 resampled=10
+[step 70/200] correct=4/4 rewards=['1.00', '0.40', '0.40', '0.80'] loss=0.0022 lr=7.97e-06 wasted=10 resampled=10
+  [attempt 81] SKIP (ALL_CORRECT, rewards=[1.0, 1.0, 1.0, 1.0]) — resampling
+  [attempt 82] SKIP (ALL_CORRECT, rewards=[1.0, 1.0, 1.0, 1.0]) — resampling
+  [attempt 83] SKIP (ALL_WRONG, rewards=[0.01, 0.01, 0.01, 0.01]) — resampling
+[step 71/200] correct=1/4 rewards=['0.40', '0.00', '0.01', '0.01'] loss=-0.0106 lr=7.97e-06 wasted=13 resampled=13
+[step 72/200] correct=2/4 rewards=['0.80', '0.01', '0.01', '0.40'] loss=0.0157 lr=7.97e-06 wasted=13 resampled=13
+[step 73/200] correct=3/4 rewards=['0.40', '0.80', '0.00', '1.00'] loss=0.0128 lr=7.69e-06 wasted=13 resampled=13
+[step 74/200] correct=3/4 rewards=['0.01', '0.80', '1.00', '0.40'] loss=-0.0023 lr=7.69e-06 wasted=13 resampled=13
+[step 75/200] correct=3/4 rewards=['1.00', '0.01', '0.80', '0.80'] loss=0.0236 lr=7.69e-06 wasted=13 resampled=13
+[step 76/200] correct=4/4 rewards=['0.80', '1.00', '0.80', '0.80'] loss=-0.0031 lr=7.69e-06 wasted=13 resampled=13
+[step 77/200] correct=4/4 rewards=['0.40', '0.80', '0.40', '0.40'] loss=0.0005 lr=7.40e-06 wasted=13 resampled=13
+[step 78/200] correct=1/4 rewards=['1.00', '0.01', '0.01', '0.00'] loss=0.0036 lr=7.40e-06 wasted=13 resampled=13
+[step 79/200] correct=4/4 rewards=['0.80', '0.80', '1.00', '1.00'] loss=0.0032 lr=7.40e-06 wasted=13 resampled=13
+[step 80/200] correct=4/4 rewards=['1.00', '0.80', '1.00', '1.00'] loss=-0.0051 lr=7.40e-06 wasted=13 resampled=13
+  Checkpoint saved at useful_step=80 (total_step=93)
+[step 81/200] correct=1/4 rewards=['0.01', '0.01', '0.00', '0.80'] loss=0.0046 lr=7.10e-06 wasted=13 resampled=13
+[step 82/200] correct=1/4 rewards=['0.01', '0.01', '0.00', '1.00'] loss=-0.0231 lr=7.10e-06 wasted=13 resampled=13
+[step 83/200] correct=3/4 rewards=['1.00', '1.00', '0.01', '1.00'] loss=-0.0432 lr=7.10e-06 wasted=13 resampled=13
+  [attempt 97] SKIP (ALL_CORRECT, rewards=[1.0, 1.0, 1.0, 1.0]) — resampling
+  [attempt 98] SKIP (ALL_WRONG, rewards=[0.01, 0.01, 0.01, 0.01]) — resampling
+[step 84/200] correct=1/4 rewards=['0.00', '0.40', '0.00', '0.01'] loss=0.0289 lr=7.10e-06 wasted=15 resampled=15
+  [attempt 100] SKIP (ALL_CORRECT, rewards=[0.8, 0.8, 0.8, 0.8]) — resampling
+[step 85/200] correct=1/4 rewards=['0.40', '0.01', '0.01', '0.01'] loss=-0.0190 lr=6.80e-06 wasted=16 resampled=16
+[step 86/200] correct=3/4 rewards=['1.00', '0.01', '1.00', '1.00'] loss=-0.0234 lr=6.80e-06 wasted=16 resampled=16
+[step 87/200] correct=4/4 rewards=['0.80', '0.80', '0.80', '1.00'] loss=-0.0117 lr=6.80e-06 wasted=16 resampled=16
+[step 88/200] correct=3/4 rewards=['0.80', '0.40', '0.00', '0.40'] loss=-0.0044 lr=6.80e-06 wasted=16 resampled=16
+  [attempt 105] SKIP (ALL_CORRECT, rewards=[0.8, 0.8, 0.8, 0.8]) — resampling
+[step 89/200] correct=2/4 rewards=['0.40', '0.01', '0.80', '0.01'] loss=-0.0186 lr=6.48e-06 wasted=17 resampled=17
+[step 90/200] correct=1/4 rewards=['0.00', '0.01', '0.01', '0.40'] loss=-0.0039 lr=6.48e-06 wasted=17 resampled=17
+  [attempt 108] SKIP (ALL_WRONG, rewards=[0.01, 0.01, 0.01, 0.01]) — resampling
+[step 91/200] correct=0/4 rewards=['0.00', '0.00', '0.00', '0.01'] loss=0.0161 lr=6.48e-06 wasted=18 resampled=18
+[step 92/200] correct=3/4 rewards=['1.00', '0.80', '0.01', '1.00'] loss=-0.0464 lr=6.48e-06 wasted=18 resampled=18
+[step 93/200] correct=2/4 rewards=['1.00', '0.01', '1.00', '0.01'] loss=-0.0082 lr=6.16e-06 wasted=18 resampled=18
+[step 94/200] correct=2/4 rewards=['0.01', '0.80', '0.40', '0.01'] loss=-0.0405 lr=6.16e-06 wasted=18 resampled=18
+[step 95/200] correct=2/4 rewards=['0.80', '0.80', '0.01', '0.01'] loss=-0.0140 lr=6.16e-06 wasted=18 resampled=18
+[step 96/200] correct=2/4 rewards=['0.01', '1.00', '0.40', '0.01'] loss=-0.0154 lr=6.16e-06 wasted=18 resampled=18
+[step 97/200] correct=3/4 rewards=['0.80', '1.00', '0.01', '1.00'] loss=-0.0042 lr=5.83e-06 wasted=18 resampled=18
+  [attempt 116] SKIP (ALL_CORRECT, rewards=[1.0, 1.0, 1.0, 1.0]) — resampling
+  [attempt 117] SKIP (ALL_WRONG, rewards=[0.01, 0.01, 0.01, 0.01]) — resampling
+  [attempt 118] SKIP (ALL_WRONG, rewards=[0.01, 0.01, 0.01, 0.01]) — resampling
+[step 98/200] correct=3/4 rewards=['0.80', '0.80', '0.80', '0.01'] loss=-0.0018 lr=5.83e-06 wasted=21 resampled=21
+[step 99/200] correct=0/4 rewards=['0.01', '0.00', '0.01', '0.01'] loss=-0.0116 lr=5.83e-06 wasted=21 resampled=21
+[step 100/200] correct=3/4 rewards=['1.00', '1.00', '0.80', '0.01'] loss=-0.0029 lr=5.83e-06 wasted=21 resampled=21
+  Checkpoint saved at useful_step=100 (total_step=121)
+[step 101/200] correct=3/4 rewards=['0.80', '0.80', '0.01', '1.00'] loss=0.0311 lr=5.50e-06 wasted=21 resampled=21
+[step 102/200] correct=3/4 rewards=['0.01', '0.80', '0.80', '1.00'] loss=0.0120 lr=5.50e-06 wasted=21 resampled=21
+[step 103/200] correct=2/4 rewards=['0.01', '0.01', '0.80', '0.40'] loss=-0.0294 lr=5.50e-06 wasted=21 resampled=21
+[step 104/200] correct=1/4 rewards=['0.80', '0.01', '0.01', '0.01'] loss=0.0007 lr=5.50e-06 wasted=21 resampled=21
+[step 105/200] correct=4/4 rewards=['0.80', '0.80', '0.40', '0.80'] loss=0.0193 lr=5.17e-06 wasted=21 resampled=21
+[step 106/200] correct=2/4 rewards=['0.01', '0.01', '1.00', '1.00'] loss=-0.0453 lr=5.17e-06 wasted=21 resampled=21
+[step 107/200] correct=1/4 rewards=['0.01', '1.00', '0.01', '0.01'] loss=0.0083 lr=5.17e-06 wasted=21 resampled=21
+[step 108/200] correct=2/4 rewards=['0.80', '0.00', '0.80', '0.01'] loss=-0.0100 lr=5.17e-06 wasted=21 resampled=21
+[step 109/200] correct=2/4 rewards=['0.01', '0.00', '0.40', '0.80'] loss=0.0192 lr=4.83e-06 wasted=21 resampled=21
+[step 110/200] correct=2/4 rewards=['1.00', '0.01', '0.80', '0.01'] loss=-0.0353 lr=4.83e-06 wasted=21 resampled=21
+[step 111/200] correct=3/4 rewards=['1.00', '0.80', '0.80', '0.01'] loss=-0.0047 lr=4.83e-06 wasted=21 resampled=21
+  [attempt 133] SKIP (ALL_CORRECT, rewards=[1.0, 1.0, 1.0, 1.0]) — resampling
+[step 112/200] correct=3/4 rewards=['0.80', '0.80', '0.40', '0.01'] loss=-0.0316 lr=4.83e-06 wasted=22 resampled=22
+  [attempt 135] SKIP (ALL_WRONG, rewards=[0.01, 0.01, 0.01, 0.01]) — resampling
+[step 113/200] correct=3/4 rewards=['1.00', '0.01', '1.00', '1.00'] loss=0.0212 lr=4.50e-06 wasted=23 resampled=23
+[step 114/200] correct=3/4 rewards=['0.01', '0.80', '0.80', '0.40'] loss=-0.0145 lr=4.50e-06 wasted=23 resampled=23
+[step 115/200] correct=1/4 rewards=['0.01', '0.01', '0.01', '0.40'] loss=-0.0017 lr=4.50e-06 wasted=23 resampled=23
+  [attempt 139] SKIP (ALL_CORRECT, rewards=[1.0, 1.0, 1.0, 1.0]) — resampling
+  [attempt 140] SKIP (ALL_CORRECT, rewards=[0.8, 0.8, 0.8, 0.8]) — resampling
+[step 116/200] correct=3/4 rewards=['0.01', '0.40', '0.80', '0.80'] loss=-0.0450 lr=4.50e-06 wasted=25 resampled=25
+  [attempt 142] SKIP (ALL_WRONG, rewards=[0.0, 0.0, 0.0, 0.0]) — resampling
+[step 117/200] correct=0/4 rewards=['0.01', '0.01', '0.00', '0.00'] loss=-0.0643 lr=4.17e-06 wasted=26 resampled=26
+  [attempt 144] SKIP (ALL_CORRECT, rewards=[1.0, 1.0, 1.0, 1.0]) — resampling
+[step 118/200] correct=2/4 rewards=['0.80', '0.01', '0.01', '1.00'] loss=-0.0369 lr=4.17e-06 wasted=27 resampled=27
+  [attempt 146] SKIP (ALL_WRONG, rewards=[0.01, 0.01, 0.01, 0.01]) — resampling
+[step 119/200] correct=0/4 rewards=['0.01', '0.01', '0.01', '0.00'] loss=0.0173 lr=4.17e-06 wasted=28 resampled=28
+[step 120/200] correct=1/4 rewards=['0.01', '0.40', '0.01', '0.01'] loss=-0.0035 lr=4.17e-06 wasted=28 resampled=28
+  Checkpoint saved at useful_step=120 (total_step=148)
+[step 121/200] correct=2/4 rewards=['0.01', '0.01', '0.80', '0.80'] loss=-0.0341 lr=3.84e-06 wasted=28 resampled=28
+[step 122/200] correct=3/4 rewards=['1.00', '0.01', '0.80', '1.00'] loss=-0.0183 lr=3.84e-06 wasted=28 resampled=28
+[step 123/200] correct=2/4 rewards=['0.80', '0.80', '0.01', '0.01'] loss=-0.0198 lr=3.84e-06 wasted=28 resampled=28
+  [attempt 152] SKIP (ALL_WRONG, rewards=[0.01, 0.01, 0.01, 0.01]) — resampling
+[step 124/200] correct=3/4 rewards=['0.80', '0.01', '0.80', '0.80'] loss=-0.0085 lr=3.84e-06 wasted=29 resampled=29
+  [attempt 154] SKIP (ALL_CORRECT, rewards=[0.8, 0.8, 0.8, 0.8]) — resampling
+  [attempt 155] SKIP (ALL_CORRECT, rewards=[1.0, 1.0, 1.0, 1.0]) — resampling
+[step 125/200] correct=3/4 rewards=['0.01', '1.00', '1.00', '0.40'] loss=-0.0146 lr=3.52e-06 wasted=31 resampled=31
+[step 126/200] correct=1/4 rewards=['0.01', '1.00', '0.01', '0.01'] loss=-0.0063 lr=3.52e-06 wasted=31 resampled=31
+[step 127/200] correct=1/4 rewards=['0.40', '0.01', '0.01', '0.01'] loss=-0.0245 lr=3.52e-06 wasted=31 resampled=31
+  [attempt 159] SKIP (ALL_CORRECT, rewards=[1.0, 1.0, 1.0, 1.0]) — resampling
+  [attempt 160] SKIP (ALL_CORRECT, rewards=[1.0, 1.0, 1.0, 1.0]) — resampling
+[step 128/200] correct=3/4 rewards=['1.00', '0.40', '0.01', '1.00'] loss=-0.0276 lr=3.52e-06 wasted=33 resampled=33
+  [attempt 162] SKIP (ALL_CORRECT, rewards=[1.0, 1.0, 1.0, 1.0]) — resampling
+  [attempt 163] SKIP (ALL_WRONG, rewards=[0.0, 0.0, 0.0, 0.0]) — resampling
+[step 129/200] correct=4/4 rewards=['1.00', '0.80', '1.00', '0.40'] loss=-0.0167 lr=3.20e-06 wasted=35 resampled=35
+[step 130/200] correct=2/4 rewards=['0.80', '0.01', '0.80', '0.01'] loss=-0.0190 lr=3.20e-06 wasted=35 resampled=35
+[step 131/200] correct=2/4 rewards=['0.80', '0.01', '0.40', '0.01'] loss=-0.0378 lr=3.20e-06 wasted=35 resampled=35
+[step 132/200] correct=1/4 rewards=['0.01', '0.00', '0.40', '0.01'] loss=-0.0125 lr=3.20e-06 wasted=35 resampled=35
+  [attempt 168] SKIP (ALL_CORRECT, rewards=[1.0, 1.0, 1.0, 1.0]) — resampling
+[step 133/200] correct=1/4 rewards=['0.01', '0.00', '0.40', '0.00'] loss=-0.0132 lr=2.90e-06 wasted=36 resampled=36
+[step 134/200] correct=2/4 rewards=['0.00', '0.40', '0.01', '1.00'] loss=0.0129 lr=2.90e-06 wasted=36 resampled=36
+[step 135/200] correct=2/4 rewards=['1.00', '1.00', '0.01', '0.00'] loss=-0.0403 lr=2.90e-06 wasted=36 resampled=36
+[step 136/200] correct=2/4 rewards=['1.00', '0.01', '0.00', '1.00'] loss=0.0088 lr=2.90e-06 wasted=36 resampled=36
+  [attempt 173] SKIP (ALL_CORRECT, rewards=[1.0, 1.0, 1.0, 1.0]) — resampling
+  [attempt 174] SKIP (ALL_CORRECT, rewards=[1.0, 1.0, 1.0, 1.0]) — resampling
+[step 137/200] correct=3/4 rewards=['1.00', '0.01', '0.40', '0.80'] loss=-0.0026 lr=2.60e-06 wasted=38 resampled=38
+[step 138/200] correct=2/4 rewards=['0.80', '0.01', '0.01', '0.40'] loss=-0.0580 lr=2.60e-06 wasted=38 resampled=38
+[step 139/200] correct=3/4 rewards=['0.80', '0.01', '1.00', '0.80'] loss=-0.0032 lr=2.60e-06 wasted=38 resampled=38
+  [attempt 178] SKIP (ALL_CORRECT, rewards=[1.0, 1.0, 1.0, 1.0]) — resampling
+[step 140/200] correct=2/4 rewards=['1.00', '1.00', '0.01', '0.01'] loss=-0.0100 lr=2.60e-06 wasted=39 resampled=39
+  Checkpoint saved at useful_step=140 (total_step=179)
+  [attempt 180] SKIP (ALL_CORRECT, rewards=[1.0, 1.0, 1.0, 1.0]) — resampling
+[step 141/200] correct=0/4 rewards=['0.00', '0.00', '0.01', '0.00'] loss=0.0083 lr=2.31e-06 wasted=40 resampled=40
+[step 142/200] correct=1/4 rewards=['0.01', '0.01', '1.00', '0.01'] loss=-0.0435 lr=2.31e-06 wasted=40 resampled=40
+[step 143/200] correct=0/4 rewards=['0.00', '0.01', '0.01', '0.01'] loss=-0.0286 lr=2.31e-06 wasted=40 resampled=40
+[step 144/200] correct=1/4 rewards=['0.01', '0.01', '0.40', '0.01'] loss=-0.0146 lr=2.31e-06 wasted=40 resampled=40
+[step 145/200] correct=3/4 rewards=['0.40', '0.80', '0.01', '0.80'] loss=-0.0281 lr=2.03e-06 wasted=40 resampled=40
+[step 146/200] correct=1/4 rewards=['0.80', '0.01', '0.00', '0.01'] loss=-0.0370 lr=2.03e-06 wasted=40 resampled=40
+[step 147/200] correct=4/4 rewards=['0.80', '1.00', '1.00', '0.80'] loss=-0.0081 lr=2.03e-06 wasted=40 resampled=40
+  [attempt 188] SKIP (ALL_CORRECT, rewards=[1.0, 1.0, 1.0, 1.0]) — resampling
+[step 148/200] correct=4/4 rewards=['0.80', '0.80', '1.00', '0.80'] loss=-0.0134 lr=2.03e-06 wasted=41 resampled=41
+[step 149/200] correct=2/4 rewards=['0.01', '1.00', '1.00', '0.01'] loss=-0.0359 lr=1.77e-06 wasted=41 resampled=41
+[step 150/200] correct=1/4 rewards=['0.40', '0.01', '0.01', '0.01'] loss=0.0179 lr=1.77e-06 wasted=41 resampled=41
+  [attempt 192] SKIP (ALL_CORRECT, rewards=[1.0, 1.0, 1.0, 1.0]) — resampling
+[step 151/200] correct=1/4 rewards=['0.00', '0.01', '0.01', '0.40'] loss=-0.0308 lr=1.77e-06 wasted=42 resampled=42
+[step 152/200] correct=1/4 rewards=['1.00', '0.01', '0.01', '0.01'] loss=-0.0190 lr=1.77e-06 wasted=42 resampled=42
+[step 153/200] correct=4/4 rewards=['0.80', '1.00', '0.80', '1.00'] loss=-0.0111 lr=1.52e-06 wasted=42 resampled=42
+[step 154/200] correct=1/4 rewards=['0.01', '1.00', '0.01', '0.01'] loss=-0.0251 lr=1.52e-06 wasted=42 resampled=42
+  [attempt 197] SKIP (ALL_WRONG, rewards=[0.01, 0.01, 0.01, 0.01]) — resampling
+[step 155/200] correct=0/4 rewards=['0.00', '0.00', '0.01', '0.01'] loss=-0.0186 lr=1.52e-06 wasted=43 resampled=43
+[step 156/200] correct=2/4 rewards=['0.80', '0.01', '0.80', '0.01'] loss=-0.0238 lr=1.52e-06 wasted=43 resampled=43
+[step 157/200] correct=4/4 rewards=['1.00', '1.00', '0.80', '1.00'] loss=0.0176 lr=1.29e-06 wasted=43 resampled=43
+[step 158/200] correct=2/4 rewards=['0.01', '0.01', '0.40', '0.80'] loss=-0.0393 lr=1.29e-06 wasted=43 resampled=43
+[step 159/200] correct=3/4 rewards=['1.00', '1.00', '0.01', '1.00'] loss=0.0009 lr=1.29e-06 wasted=43 resampled=43
+[step 160/200] correct=1/4 rewards=['0.01', '1.00', '0.01', '0.01'] loss=-0.0165 lr=1.29e-06 wasted=43 resampled=43
+  Checkpoint saved at useful_step=160 (total_step=203)
+[step 161/200] correct=2/4 rewards=['1.00', '0.01', '1.00', '0.01'] loss=0.0133 lr=1.08e-06 wasted=43 resampled=43
+[step 162/200] correct=3/4 rewards=['0.80', '0.01', '0.80', '0.80'] loss=-0.0066 lr=1.08e-06 wasted=43 resampled=43
+  [attempt 206] SKIP (ALL_WRONG, rewards=[0.01, 0.01, 0.01, 0.01]) — resampling
+[step 163/200] correct=3/4 rewards=['1.00', '0.80', '0.80', '0.00'] loss=0.0245 lr=1.08e-06 wasted=44 resampled=44
+[step 164/200] correct=4/4 rewards=['1.00', '0.80', '0.80', '0.80'] loss=-0.0077 lr=1.08e-06 wasted=44 resampled=44
+[step 165/200] correct=1/4 rewards=['0.01', '0.01', '0.01', '0.80'] loss=-0.0038 lr=1.00e-06 wasted=44 resampled=44
+[step 166/200] correct=1/4 rewards=['0.01', '0.00', '0.01', '0.80'] loss=-0.0153 lr=1.00e-06 wasted=44 resampled=44
+[step 167/200] correct=1/4 rewards=['0.00', '0.40', '0.01', '0.01'] loss=0.0305 lr=1.00e-06 wasted=44 resampled=44
+  [attempt 212] SKIP (ALL_WRONG, rewards=[0.01, 0.01, 0.01, 0.01]) — resampling
+  [attempt 213] SKIP (ALL_CORRECT, rewards=[1.0, 1.0, 1.0, 1.0]) — resampling
+[step 168/200] correct=3/4 rewards=['0.01', '1.00', '0.80', '0.80'] loss=-0.0419 lr=1.00e-06 wasted=46 resampled=46
+[step 169/200] correct=1/4 rewards=['0.01', '0.01', '0.00', '0.80'] loss=0.0077 lr=1.00e-06 wasted=46 resampled=46
+[step 170/200] correct=0/4 rewards=['0.00', '0.00', '0.01', '0.01'] loss=0.0291 lr=1.00e-06 wasted=46 resampled=46
+[step 171/200] correct=4/4 rewards=['0.80', '1.00', '0.40', '1.00'] loss=-0.0054 lr=1.00e-06 wasted=46 resampled=46
+[step 172/200] correct=0/4 rewards=['0.00', '0.01', '0.00', '0.01'] loss=0.0033 lr=1.00e-06 wasted=46 resampled=46
+[step 173/200] correct=1/4 rewards=['1.00', '0.01', '0.01', '0.00'] loss=-0.0013 lr=1.00e-06 wasted=46 resampled=46
+[step 174/200] correct=2/4 rewards=['0.00', '0.40', '0.01', '0.40'] loss=-0.0420 lr=1.00e-06 wasted=46 resampled=46
+  [attempt 221] SKIP (ALL_WRONG, rewards=[0.0, 0.0, 0.0, 0.0]) — resampling
+[step 175/200] correct=3/4 rewards=['1.00', '0.01', '1.00', '1.00'] loss=-0.0649 lr=1.00e-06 wasted=47 resampled=47
+[step 176/200] correct=3/4 rewards=['0.40', '0.01', '0.40', '0.80'] loss=-0.0115 lr=1.00e-06 wasted=47 resampled=47
+[step 177/200] correct=0/4 rewards=['0.01', '0.01', '0.00', '0.01'] loss=-0.0366 lr=1.00e-06 wasted=47 resampled=47
+  [attempt 225] SKIP (ALL_WRONG, rewards=[0.0, 0.0, 0.0, 0.0]) — resampling
+[step 178/200] correct=3/4 rewards=['1.00', '0.80', '0.80', '0.01'] loss=-0.0325 lr=1.00e-06 wasted=48 resampled=48
+[step 179/200] correct=3/4 rewards=['0.80', '1.00', '1.00', '0.01'] loss=0.0137 lr=1.00e-06 wasted=48 resampled=48
+  [attempt 228] SKIP (ALL_CORRECT, rewards=[1.0, 1.0, 1.0, 1.0]) — resampling
+[step 180/200] correct=1/4 rewards=['0.40', '0.00', '0.01', '0.00'] loss=-0.0330 lr=1.00e-06 wasted=49 resampled=49
+  Checkpoint saved at useful_step=180 (total_step=229)
+[step 181/200] correct=3/4 rewards=['0.40', '0.01', '1.00', '0.40'] loss=-0.0409 lr=1.00e-06 wasted=49 resampled=49
+  [attempt 231] SKIP (ALL_CORRECT, rewards=[1.0, 1.0, 1.0, 1.0]) — resampling
+[step 182/200] correct=3/4 rewards=['0.40', '0.80', '0.80', '0.01'] loss=-0.0198 lr=1.00e-06 wasted=50 resampled=50
+[step 183/200] correct=3/4 rewards=['0.01', '0.40', '0.80', '0.40'] loss=0.0091 lr=1.00e-06 wasted=50 resampled=50
+  [attempt 234] SKIP (ALL_WRONG, rewards=[0.0, 0.0, 0.0, 0.0]) — resampling
+[step 184/200] correct=2/4 rewards=['1.00', '0.80', '0.01', '0.01'] loss=-0.0111 lr=1.00e-06 wasted=51 resampled=51
+[step 185/200] correct=2/4 rewards=['1.00', '0.01', '1.00', '0.00'] loss=-0.0205 lr=1.00e-06 wasted=51 resampled=51
+[step 186/200] correct=1/4 rewards=['0.01', '0.00', '0.01', '1.00'] loss=0.0212 lr=1.00e-06 wasted=51 resampled=51
+[step 187/200] correct=0/4 rewards=['0.00', '0.00', '0.01', '0.01'] loss=-0.0303 lr=1.00e-06 wasted=51 resampled=51
+  [attempt 239] SKIP (ALL_WRONG, rewards=[0.01, 0.01, 0.01, 0.01]) — resampling
+  [attempt 240] SKIP (ALL_CORRECT, rewards=[1.0, 1.0, 1.0, 1.0]) — resampling
+  [attempt 241] SKIP (ALL_CORRECT, rewards=[1.0, 1.0, 1.0, 1.0]) — resampling
+  [attempt 242] SKIP (ALL_WRONG, rewards=[0.0, 0.0, 0.0, 0.0]) — resampling
+[step 188/200] correct=2/4 rewards=['0.80', '0.80', '0.01', '0.01'] loss=-0.0006 lr=1.00e-06 wasted=55 resampled=55
+[step 189/200] correct=2/4 rewards=['1.00', '0.01', '0.01', '1.00'] loss=-0.0271 lr=1.00e-06 wasted=55 resampled=55
+  [attempt 245] SKIP (ALL_CORRECT, rewards=[1.0, 1.0, 1.0, 1.0]) — resampling
+[step 190/200] correct=0/4 rewards=['0.01', '0.00', '0.01', '0.01'] loss=-0.0410 lr=1.00e-06 wasted=56 resampled=56
+[step 191/200] correct=2/4 rewards=['0.01', '0.01', '0.80', '0.40'] loss=-0.0142 lr=1.00e-06 wasted=56 resampled=56
+[step 192/200] correct=1/4 rewards=['1.00', '0.01', '0.01', '0.01'] loss=-0.0092 lr=1.00e-06 wasted=56 resampled=56
+  [attempt 249] SKIP (ALL_CORRECT, rewards=[1.0, 1.0, 1.0, 1.0]) — resampling
+[step 193/200] correct=3/4 rewards=['0.01', '1.00', '1.00', '1.00'] loss=0.0095 lr=1.00e-06 wasted=57 resampled=57
+  [attempt 251] SKIP (ALL_CORRECT, rewards=[1.0, 1.0, 1.0, 1.0]) — resampling
+[step 194/200] correct=3/4 rewards=['1.00', '0.40', '0.01', '0.80'] loss=-0.0178 lr=1.00e-06 wasted=58 resampled=58
+[step 195/200] correct=3/4 rewards=['0.80', '0.80', '0.80', '0.01'] loss=-0.0459 lr=1.00e-06 wasted=58 resampled=58
+  [attempt 254] SKIP (ALL_WRONG, rewards=[0.0, 0.0, 0.0, 0.0]) — resampling
+  [attempt 255] SKIP (ALL_CORRECT, rewards=[1.0, 1.0, 1.0, 1.0]) — resampling
+[step 196/200] correct=0/4 rewards=['0.01', '0.00', '0.01', '0.00'] loss=0.0111 lr=1.00e-06 wasted=60 resampled=60
+[step 197/200] correct=2/4 rewards=['1.00', '0.01', '0.80', '0.01'] loss=0.0199 lr=1.00e-06 wasted=60 resampled=60
+[step 198/200] correct=4/4 rewards=['1.00', '0.80', '0.80', '1.00'] loss=-0.0187 lr=1.00e-06 wasted=60 resampled=60
+[step 199/200] correct=3/4 rewards=['1.00', '1.00', '0.01', '1.00'] loss=-0.0453 lr=1.00e-06 wasted=60 resampled=60
+[step 200/200] correct=2/4 rewards=['1.00', '0.01', '1.00', '0.01'] loss=-0.0084 lr=1.00e-06 wasted=60 resampled=60
+  Checkpoint saved at useful_step=200 (total_step=260)
+
+Final LoRA saved to: /gpfs/workdir/drouilheel/fine_tuning_qwen/outputs_exp7/lora_final
+
+============================================================
+Training complete.
+  Useful steps: 200
+  Wasted steps: 60
+  Resample events: 60
+  Waste rate: 23.1%
+  Total attempts: 260
+============================================================
+Job finished at Sat Apr 11 19:49:47 CEST 2026

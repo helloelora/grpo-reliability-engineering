@@ -1,0 +1,24 @@
+Job started at Sun Apr 12 10:58:38 CEST 2026
+🦥 Unsloth: Will patch your computer to enable 2x faster free finetuning.
+🦥 Unsloth Zoo will now patch everything to make training faster!
+Dataset: /gpfs/workdir/drouilheel/fine_tuning_qwen/dataset_grpo_v4_mixed.json
+Total questions: 266
+Evaluating slice [262:266] (4 questions)
+LoRA: 
+==((====))==  Unsloth 2026.2.1: Fast Qwen3 patching. Transformers: 4.57.1. vLLM: 0.11.2.
+   \\   /|    NVIDIA A100-SXM4-40GB. Num GPUs = 1. Max memory: 39.494 GB. Platform: Linux.
+O^O/ \_/ \    Torch: 2.9.0+cu128. CUDA: 8.0. CUDA Toolkit: 12.8. Triton: 3.5.0
+\        /    Bfloat16 = TRUE. FA [Xformers = 0.0.33.post1. FA2 = False]
+ "-____-"     Free license: http://github.com/unslothai/unsloth
+Unsloth: Fast downloading is enabled - ignore downloading bars which are red colored!
+
+Evaluating BASE model (no LoRA)
+Evaluating BASE model (resume slice)...
+  [263/266] CORRECT | target=6.0 pred=6.0
+  [264/266] CORRECT | target=0.487 pred=0.4867
+  [265/266] WRONG | target=0.5929 pred=0.175
+  [266/266] CORRECT | target=5.235e-05 pred=5.19e-05
+
+Done. 3/4 correct on slice [262:266]
+Saved: /gpfs/workdir/drouilheel/fine_tuning_qwen/eval_ft_qwen3_base_eval_266q_resume.json
+Job finished at Sun Apr 12 11:02:33 CEST 2026
