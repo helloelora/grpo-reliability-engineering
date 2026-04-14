@@ -26,7 +26,7 @@ We implement a custom GRPO training loop (no TRL dependency) with **dynamic samp
 ### DeepSeek-R1-style pipeline: SFT then GRPO
 
 Following the DeepSeek-R1 approach, the best configuration uses a **two-stage pipeline**:
-1. **SFT warm-start**: load Alex's SFT LoRA (trained on 600 "easy" questions where the base model already scores 4/4)
+1. **SFT warm-start**: load Alex's SFT LoRA (trained on 600 non-mixed questions where the base model scores 0/4 or 4/4)
 2. **GRPO**: train on 266 "mixed" questions (where the base model scores 1/4 to 3/4) — these are the questions with actual learning signal
 
 ## Datasets
@@ -37,7 +37,7 @@ All datasets are derived from textbook problems in reliability engineering (Moda
 |---------|:---------:|-------------|---------|
 | `master_dataset_v4` | 866 | Full dataset: 280 base + 586 paraphrases | Source for all splits |
 | 266 "mixed" questions | 266 | Pre-screened from v4: base model gets 1/4 to 3/4 correct (has contrastive signal for RL) | GRPO training |
-| 600 "easy" questions | 600 | Base model gets 4/4 correct — used for SFT warm-start only | SFT (Alex) |
+| 600 non-mixed questions | 600 | Base model gets 0/4 or 4/4 correct (no contrastive signal for RL) — used for SFT warm-start only | SFT (Alex) |
 | 54 independent holdout | 54 | Never seen during SFT or GRPO training | Out-of-distribution evaluation |
 
 **Lineage**: v2 (280) ⊂ v3 (501) ⊂ v4 (866). Strict subsets, growing only via paraphrases.

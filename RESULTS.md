@@ -6,7 +6,7 @@ All experiments use **Qwen3-8B** (4-bit quantized via Unsloth) with a custom GRP
 
 - **Training dataset**: 266 pre-screened "mixed" questions from master_dataset_v4 (questions where the base model gets 1/4 to 3/4 correct)
 - **Holdout**: 54 independent questions never seen during SFT or GRPO training
-- **SFT baseline**: Alex's fold_4 LoRA, trained on the 600 "easy" questions from v4 (4/4 correct by base)
+- **SFT baseline**: Alex's fold_4 LoRA, trained on the 600 non-mixed questions from v4 (0/4 or 4/4 correct by base — no contrastive signal for RL)
 - **Evaluation**: greedy-style (temperature=1.0, top_p=0.95, deterministic seed per question), 5% relative tolerance
 
 ---
