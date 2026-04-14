@@ -644,35 +644,36 @@ $\to$ Waste rate: \textbf{42\% $\to$ 23\%}
 \begin{columns}[T]
 \column{0.55\textwidth}
 
+\textbf{298 questions unseen by GRPO during training:}
+\vspace{0.3em}
+
 \centering
-\begin{tabular}{@{}lcc@{}}
+\begin{tabular}{@{}lc@{}}
   \toprule
-  \textbf{Model} & \textbf{v4 (500q)} & \textbf{Holdout (54q)} \\
+  \textbf{Model} & \textbf{Accuracy (298q)} \\
   \midrule
-  Claude Sonnet 4.6      & 92.4\% & 81.1\% \\
-  o3-mini                & 86.4\% & 77.1\% \\
-  Gemini 3.1 Pro         & 76.4\% & 82.6\%$^\dagger$ \\
-  \midrule
-  Qwen3-8B (base)        & 63.6\%$^*$ & 53.7\% \\
-  Qwen3-8B (SFT)         & 82.2\%$^*$ & 33.3\% \\
-  Qwen3-8B (SFT+GRPO)   & \textit{pending} & 50.0\% \\
+  Claude Sonnet 4.6      & \textbf{93.0\%} \\
+  o3-mini                & 85.6\% \\
+  \textbf{Qwen3-8B (SFT+GRPO)}   & \textbf{77.2\%} \\
+  Gemini 3.1 Pro         & 70.1\% \\
+  Qwen3-8B (base)        & \textit{pending} \\
   \bottomrule
 \end{tabular}
 
-\vspace{0.3em}
-{\scriptsize $^*$10-fold CV. $^\dagger$23/54 extracted.}
+\vspace{0.5em}
+{\scriptsize All models evaluated on the exact same 298 questions.\\These questions were never seen by GRPO during training.}
 
 \column{0.43\textwidth}
 \textbf{Key takeaways:}
 \begin{itemize}\small
-  \item Our SFT model (82.2\%) places \textbf{between o3-mini and Gemini 3.1 Pro}
+  \item GRPO places \textbf{between Gemini 3.1 Pro and o3-mini} on unseen questions
   \item Despite being \textbf{$\sim$100$\times$ smaller} (8B vs.\ frontier)
-  \item SFT accuracy measured via 10-fold CV (not directly comparable but informative)
-  \item Gap to Claude Sonnet 4.6 (92.4\%) remains substantial
+  \item +7.1pp over Gemini 3.1 Pro (70.1\%)
+  \item Gap to Claude Sonnet 4.6 (93.0\%) remains substantial ($-15.8$pp)
 \end{itemize}
 
 \vspace{0.5em}
-{\footnotesize\color{gray} \textit{Note: holdout = 54 questions only. Results are directional, not statistically significant comparisons.}}
+{\footnotesize\color{gray} \textit{298 questions from master\_v4 (866q), excluding the 266 GRPO training questions. Fair comparison: same questions, same scoring (5\% tolerance).}}
 \end{columns}
 \end{frame}
 
