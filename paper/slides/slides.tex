@@ -559,112 +559,84 @@ $\to$ Waste rate: \textbf{42\% $\to$ 23\%}
 
 % ════════════════════════════════════════════════════════════════
 \section{Results}
-% ── Slide 14: GRPO Results ────────────────────────────────────
-\begin{frame}{GRPO results \& ablations}
+% ── Slide 14: GRPO Results (merged) ──────────────────────────
+\begin{frame}{GRPO Results: In-Distribution vs.\ Holdout}
 \begin{columns}[T]
-\column{0.52\textwidth}
-\textbf{On 266 mixed-difficulty questions:}
-\vspace{0.3em}
+\column{0.55\textwidth}
 
 \centering
-\begin{tabular}{@{}lcc@{}}
-  \toprule
-  \textbf{Model} & \textbf{Acc.} & $\Delta$ \\
-  \midrule
-  Base Qwen3-8B         & 50.4\% & --- \\
-  SFT                   & 50.8\% & ref \\
-  \midrule
-  GRPO from scratch (step 80)    & 50.8\% & +0.4 \\
-  \textbf{GRPO from SFT (step 80)} & \textbf{57.9\%} & \textbf{+7.5} \\
-  GRPO from SFT (step 100) & 54.1\% & +3.7 \\
-  GRPO from SFT (step 200) & 52.3\% & +1.9 \\
-  \bottomrule
-\end{tabular}
+\begin{tikzpicture}[scale=0.78]
+  % Axes
+  \draw[->] (0,0) -- (9.5,0);
+  \draw[->] (0,0) -- (0,5.5) node[above,font=\small] {Accuracy (\%)};
 
-\vspace{0.5em}
-\textbf{SFT warm-start ablation:}
-\vspace{0.2em}
-
-\centering
-\begin{tabular}{@{}lccc@{}}
-  \toprule
-  \textbf{Init} & \textbf{Acc.} & $\Delta$ & \textbf{Waste} \\
-  \midrule
-  Fresh LoRA & 50.8\% & +0.4 vs base & 29.3\% \\
-  \textbf{SFT} & \textbf{57.9\%} & \textbf{+7.5 vs base} & 23.1\% \\
-  \bottomrule
-\end{tabular}
-
-\column{0.44\textwidth}
-\textbf{Overfitting dynamics:}
-\vspace{0.3em}
-
-\centering
-
-\begin{tikzpicture}[scale=0.72]
-  \draw[->] (0,0) -- (5.2,0) node[right] {\tiny Steps};
-  \draw[->] (0,0) -- (0,4.2) node[above] {\tiny Acc.\%};
-  \foreach \y/\l in {0.8/50,1.6/52,2.4/54,3.2/56,4.0/58} {
-    \draw[gray!30] (0,\y) -- (5,\y);
+  % Y-axis labels and grid
+  \foreach \y/\l in {0/0, 1/20, 1.5/30, 2/40, 2.5/50, 3/60} {
+    \draw[gray!20] (0,\y) -- (9.2,\y);
     \node[left,font=\tiny] at (0,\y) {\l};
   }
-  \foreach \x/\l in {1/80,2.5/100,5/200} {
-    \node[below,font=\tiny] at (\x,0) {\l};
-  }
-  \draw[dashed, gray] (0,0.88) -- (5,0.88);
-  \node[right,font=\tiny,gray] at (3.5,0.65) {SFT baseline};
-  \draw[thick, csblue, mark=*] plot coordinates {(0,0.88) (1,3.96) (2.5,2.44) (5,1.52)};
-  \node[above right,font=\tiny,csblue] at (1,3.96) {57.9\%};
-  \draw[thick, red!60, dashed, mark=square*] plot coordinates {(0,0.4) (1,0.88)};
-  \node[right,font=\tiny,red!60] at (1.1,0.88) {from scratch};
+
+  % Bar width and group positions
+  % Group 1: Base (x=1), Group 2: SFT (x=3.5), Group 3: GRPO scratch (x=6), Group 4: GRPO SFT (x=8.5)
+  % Blue = 266q in-dist, Orange = 54q holdout
+
+  % Base: 50.4%, 53.7%
+  \fill[csblue!70] (0.5,0) rectangle (1.1,2.52);
+  \fill[orange!70] (1.2,0) rectangle (1.8,2.685);
+  \node[above,font=\tiny,csblue] at (0.8,2.52) {50.4};
+  \node[above,font=\tiny,orange!80!black] at (1.5,2.685) {53.7};
+  \node[below,font=\tiny,align=center] at (1.15,-0.15) {Base};
+
+  % SFT: 50.8%, 33.3%
+  \fill[csblue!70] (2.8,0) rectangle (3.4,2.54);
+  \fill[orange!70] (3.5,0) rectangle (4.1,1.665);
+  \node[above,font=\tiny,csblue] at (3.1,2.54) {50.8};
+  \node[above,font=\tiny,red] at (3.8,1.665) {\textbf{33.3}};
+  \node[below,font=\tiny,align=center] at (3.45,-0.15) {SFT};
+
+  % GRPO scratch: 50.8%, 55.6%
+  \fill[csblue!70] (5.1,0) rectangle (5.7,2.54);
+  \fill[orange!70] (5.8,0) rectangle (6.4,2.78);
+  \node[above,font=\tiny,csblue] at (5.4,2.54) {50.8};
+  \node[above,font=\tiny,orange!80!black] at (6.1,2.78) {55.6};
+  \node[below,font=\tiny,align=center] at (5.75,-0.15) {GRPO\\scratch};
+
+  % GRPO from SFT: 57.9%, 50.0%
+  \fill[csblue!70] (7.4,0) rectangle (8.0,2.895);
+  \fill[orange!70] (8.1,0) rectangle (8.7,2.5);
+  \node[above,font=\tiny,csblue] at (7.7,2.895) {\textbf{57.9}};
+  \node[above,font=\tiny,orange!80!black] at (8.4,2.5) {50.0};
+  \node[below,font=\tiny,align=center] at (8.05,-0.15) {GRPO\\from SFT};
+
+  % Legend
+  \fill[csblue!70] (5.5,4.8) rectangle (6.0,5.1);
+  \node[right,font=\tiny] at (6.1,4.95) {266q in-dist};
+  \fill[orange!70] (5.5,4.3) rectangle (6.0,4.6);
+  \node[right,font=\tiny] at (6.1,4.45) {54q holdout};
+
+  % Annotations
+  \draw[-{Stealth},thick,red] (3.8,1.5) -- (3.8,0.5) node[below,font=\tiny,red,align=center] {$-20.4$pp\\$p\!=\!0.019$};
+  \draw[-{Stealth},thick,green!50!black] (7.7,3.1) -- (7.7,3.8) node[above,font=\tiny,green!50!black] {$+7.5$pp};
 \end{tikzpicture}
 
+\column{0.43\textwidth}
+
+\begin{alertblock}{\small The SFT Paradox}
+{\small SFT \textbf{degrades} holdout ($-20.4$pp, $p\!=\!0.019$) yet is \textbf{essential} for GRPO: $+7.5$pp in-dist from SFT vs $+0.4$pp from scratch.}
+\end{alertblock}
+
 \vspace{0.3em}
-\small
-\textbf{Findings:}
+\textbf{\small Key findings:}
 \begin{itemize}\footnotesize
-  \item Peak at step 80, then degradation
-  \item 266 questions insufficient for sustained RL
-  \item SFT init: lower waste rate (23\% vs 29\%)\\$\to$ more efficient learning
-  \item GRPO from scratch: \textbf{no improvement}
+  \item \textbf{GRPO from SFT:} best in-dist (57.9\%) but peaks at step 80, then overfits (54.1\% at 100, 52.3\% at 200)
+  \item \textbf{GRPO from scratch:} no in-dist gain, but best holdout preservation (55.6\%)
+  \item \textbf{SFT alone:} catastrophic forgetting on holdout (McNemar $p\!=\!0.019$)
+  \item \textbf{Neither GRPO} significantly degrades holdout ($p > 0.8$)
 \end{itemize}
+
+\vspace{0.3em}
+{\footnotesize\color{gray} \textit{Holdout = 54 questions ($\approx$1.85pp each). Directional only.}}
 \end{columns}
-\end{frame}
-
-% ── Slide 13: Holdout & Frontier ──────────────────────────────
-\begin{frame}{Generalization \& comparison with frontier models}
-    
-    \textbf{54-question independent holdout:}
-    \vspace{0.5em}
-
-    % Tableau étalé sur toute la largeur
-    \centering
-    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lccccc@{}}
-        \toprule
-        \textbf{Model} & \textbf{Acc.} & $\Delta$ & W$\to$R & R$\to$W & $p$ \\
-        \midrule
-        Base Qwen3-8B & 53.7\% & --- & --- & --- & --- \\
-        SFT & \textcolor{red}{\textbf{33.3\%}} & \textcolor{red}{$-20.4$} & 4 & 15 & \textbf{0.019} \\
-        GRPO from scratch & 55.6\% & $+1.9$ & 3 & 2 & 1.000 \\
-        GRPO from SFT & 50.0\% & $-3.7$ & 9 & 7 & 0.803 \\
-        \bottomrule
-    \end{tabular*}
-
-    \vspace{1em}
-
-    \begin{alertblock}{The SFT Paradox}
-        SFT \textbf{degrades} generalization ($-20.4$pp, $p=0.019$) yet is \textbf{essential} as GRPO initialization: $+7.5$pp in-distribution from SFT vs $+0.4$pp from scratch.
-
-        \vspace{0.3em}
-        \small Neither GRPO variant significantly changes holdout performance (both $p > 0.8$).
-    \end{alertblock}
-
-    \vspace{0.5em}
-    \textbf{Hypothesis:} SFT teaches domain format/vocabulary; GRPO optimizes reasoning on that foundation.
-
-    \vfill % Pousse la note en bas de page
-    {\footnotesize\color{gray} \textit{Note: 54 questions ($\approx$1.85pp each) --- insufficient to reliably detect small improvements or regressions. Results should be interpreted as directional.}}
-
 \end{frame}
 
 % ── Slide: Frontier Model Comparison ───────────────────────────
