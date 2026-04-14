@@ -90,10 +90,9 @@ EVAL_MAX_NEW_TOKENS = 16384
 EVAL_TEMPERATURE = 0.0
 
 # Judge configuration (OpenRouter)
-JUDGE_API_KEY = os.environ.get(
-    "OPENROUTER_API_KEY",
-    "REDACTED",
-)
+JUDGE_API_KEY = os.environ.get("OPENROUTER_API_KEY")
+if not JUDGE_API_KEY:
+    raise ValueError("Set OPENROUTER_API_KEY environment variable")
 JUDGE_BASE_URL = "https://openrouter.ai/api/v1"
 JUDGE_MODEL = "anthropic/claude-3.5-sonnet"
 
