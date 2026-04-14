@@ -335,11 +335,10 @@
 
 \begin{enumerate}\small
   \item \textbf{LLM judge} (Claude 3.5 Sonnet via OpenRouter)\\
-    Accurate but \textbf{costly}: \$0.01/question $\times$ 4 generations $\times$ 200 steps $= \sim$\$8 per training run
+    Accurate but \textbf{costly}
   \item \textbf{Single numeric answer constraint}\\
-    All questions reformulated to have exactly one numerical answer $\to$ enables \textbf{rule-based scoring} (no LLM needed during training)
+    All questions reformulated to have exactly one numerical answer $\to$ enables \textbf{rule-based scoring}
   \item \textbf{Robust regex extraction}\\
-    Handles all model output formats:
 \end{enumerate}
 
 \vspace{0.2em}
@@ -360,7 +359,7 @@
 \textbf{Thinking mode decision:}
 \vspace{0.3em}
 
-Qwen3-8B has a \verb|<think>| mode (chain-of-thought scratchpad before answering).
+Qwen3-8B has a \texttt{\textbf{<think>}} mode (chain-of-thought scratchpad before answering).
 
 \vspace{0.3em}
 \textbf{Problem:} thinking mode generates \textbf{2--5$\times$ more tokens} per completion.
@@ -372,13 +371,6 @@ Qwen3-8B has a \verb|<think>| mode (chain-of-thought scratchpad before answering
 \vspace{0.3em}
 \textbf{Decision:} \textcolor{red}{disabled} for both SFT and GRPO.
 
-\vspace{0.5em}
-\textbf{Consequence:}
-\begin{itemize}\small
-  \item Faster training (fits in 24h SLURM jobs)
-  \item Model reasons directly in its output
-  \item Same eval conditions as training
-\end{itemize}
 \end{columns}
 \end{frame}
 
@@ -408,6 +400,7 @@ Qwen3-8B has a \verb|<think>| mode (chain-of-thought scratchpad before answering
 \end{itemize}
 
 \column{0.44\textwidth}
+\vspace{2em}
 \textbf{Graded reward function:}
 \vspace{0.3em}
 
@@ -426,10 +419,6 @@ Qwen3-8B has a \verb|<think>| mode (chain-of-thought scratchpad before answering
 \end{tabular}
 
 \vspace{0.5em}
-\small Graded structure provides \textbf{smooth reward landscape}: partially correct answers get positive signal, encouraging refinement rather than abandonment.
-
-\vspace{0.3em}
-Anti-hedging penalty discourages\\outputting multiple candidate answers.
 \end{columns}
 \end{frame}
 
@@ -444,7 +433,7 @@ Each question evaluated \textbf{4 times} with base Qwen3-8B:
 
 \vspace{0.3em}
 \centering
-\resizebox{\linewidth}{!}{ % <--- Ajout ici
+\resizebox{\linewidth}{!}{
 \begin{tikzpicture}[scale=0.8, every node/.style={font=\small}]
   \node[draw, rounded corners, fill=csblue!8, text width=5cm, align=center] (all) at (0,3) {\textbf{866 questions}};
   \node[draw, rounded corners, fill=green!10, text width=4.8cm, align=center] (sft) at (-2.8,0.8) {\textbf{600 questions}\\0/4 correct\ + 4/4 correct \\$\to$ SFT training};
@@ -463,7 +452,6 @@ Each question evaluated \textbf{4 times} with base Qwen3-8B:
 \vspace{0.3em}
 \begin{itemize}\small
   \item If all 4 generations produce the \textbf{same reward} $\to$ prompt is \textbf{discarded} (zero gradient signal)
-  \item All correct (too easy) or all wrong (no positive signal)
   \item \textbf{Waste rate} = diagnostic metric:
   \begin{itemize}\footnotesize
     \item Rising $\to$ model is converging
@@ -485,7 +473,6 @@ Each question evaluated \textbf{4 times} with base Qwen3-8B:
   Learning rate & $1\!\times\!10^{-5}$ (cosine) \\
   KL coefficient ($\beta$) & 0 \\
   LoRA rank / alpha & $r\!=\!32$, $\alpha\!=\!32$ \\
-  Max completion & 3072 tokens \\
   Temperature & 1.0 \\
   \bottomrule
 \end{tabular}
@@ -496,7 +483,7 @@ Each question evaluated \textbf{4 times} with base Qwen3-8B:
 \begin{frame}{From TRL to Custom Training Loop}
 \begin{columns}[T]
 \column{0.50\textwidth}
-\textbf{Phase 1: TRL GRPOTrainer (exp 1--6)}
+\textbf{Phase 1: TRL GRPOTrainer}
 \vspace{0.3em}
 
 \centering
@@ -511,7 +498,7 @@ Each question evaluated \textbf{4 times} with base Qwen3-8B:
   \bottomrule
 \end{tabular}
 
-\vspace{0.5em}
+\vspace{1em}
 \textbf{But:} 42\% of steps still produced \textbf{zero gradient}:
 
 \vspace{0.2em}
@@ -520,122 +507,136 @@ Each question evaluated \textbf{4 times} with base Qwen3-8B:
   \toprule
   \textbf{Generations} & \textbf{Steps} & \textbf{Status} \\
   \midrule
-  0/4 correct & 11 & wasted \\
+  0/4 correct & 11 & \textcolor{red}{wasted} \\
   1--3/4 correct & 46 & useful \\
-  4/4 correct & 23 & wasted \\
+  4/4 correct & 23 & \textcolor{red}{wasted} \\
   \midrule
-  \textbf{Total wasted} & \textbf{34/80} & \textbf{42\%} \\
+  \textbf{Total wasted} &  & \textbf{42\%} \\
   \bottomrule
 \end{tabular}
 
 \column{0.46\textwidth}
-\textbf{Phase 2: Custom loop + DAPO (exp 7--10)}
+\textbf{Phase 2: Custom loop + DAPO}
 
 \vspace{0.3em}
-Replaced TRL with pure PyTorch loop implementing DAPO dynamic sampling: if all $G$ generations agree, \textbf{discard and re-sample}.
+Pure PyTorch loop: if all $G$ generations agree, \textbf{discard and re-sample}.
 
 \vspace{0.3em}
 $\to$ Waste rate: \textbf{42\% $\to$ 23\%}
 
 \vspace{0.5em}
-\textbf{Difficulty-dependent behavior:}
+\textbf{Before vs.\ after (difficulty analysis):}
 
 \vspace{0.2em}
+{\small\textbf{Exp 1--5} (TRL, 281q, no screening):}
+\vspace{0.1em}
+
 \centering
-\begin{tabular}{@{}lccc@{}}
+\begin{tabular}{@{}lcc@{}}
   \toprule
-  \textbf{Difficulty} & $n$ & \textbf{Base} & $\Delta$ \textbf{GRPO} \\
+  \textbf{Difficulty} & $n$ & $\Delta$ \textbf{GRPO} \\
   \midrule
-  Easy ($<$1.5k chars) & 126 & 83\% & \textcolor{green!50!black}{\textbf{+5.6}} \\
-  Medium & 100 & 53\% & \textcolor{green!50!black}{+4.0} \\
-  Hard ($>$3k chars) & 55 & 38\% & \textcolor{red}{\textbf{$-$14.5}} \\
+  Easy & 126 & \textcolor{green!50!black}{+5.6} \\
+  Hard & 55 & \textcolor{red}{\textbf{$-$14.5}} \\
   \bottomrule
 \end{tabular}
 
 \vspace{0.3em}
-\small GRPO learns shortcuts that work on easy questions but \textbf{catastrophically fail} on hard ones (errors up to 1000$\times$). The gains and losses \textbf{cancel out} globally.
+{\small\textbf{Exp 7} (custom loop, 298q unseen, with screening):}
+\vspace{0.1em}
+
+\centering
+\begin{tabular}{@{}lcc@{}}
+  \toprule
+  \textbf{Base screening} & $n$ & \textbf{GRPO acc.} \\
+  \midrule
+  4/4 (base correct) & 186 & \textcolor{green!50!black}{\textbf{95.2\%}} \\
+  0/4 (base wrong) & 112 & \textcolor{green!50!black}{\textbf{47.3\%}} \\
+  \bottomrule
+\end{tabular}
+
+\vspace{0.3em}
+\small GRPO \textbf{preserves} easy questions (95\%) and \textbf{solves 47\%} of questions the base couldn't answer at all
 \end{columns}
 \end{frame}
 
 % ════════════════════════════════════════════════════════════════
 \section{Results}
 % ── Slide 14: GRPO Results (merged) ──────────────────────────
-\begin{frame}{GRPO Results: In-Distribution vs.\ Holdout}
+\begin{frame}{GRPO results: In-Distribution vs.\ Holdout}
 \begin{columns}[T]
 \column{0.55\textwidth}
-
 \centering
-\begin{tikzpicture}[scale=0.78]
+\vspace*{1cm} % Ajustez cette valeur pour descendre plus ou moins le graphique
+
+\begin{tikzpicture}[scale=0.75] % Échelle légèrement réduite pour gagner de l'espace
   % Axes
   \draw[->] (0,0) -- (9.5,0);
-  \draw[->] (0,0) -- (0,5.5) node[above,font=\small] {Accuracy (\%)};
+  \draw[->] (0,0) -- (0,6.2) node[above,font=\small] {Accuracy (\%)};
 
   % Y-axis labels and grid
-  \foreach \y/\l in {0/0, 1/20, 1.5/30, 2/40, 2.5/50, 3/60} {
+  \foreach \y/\l in {0/0, 1.6/20, 2.4/30, 3.2/40, 4.0/50, 4.8/60} {
     \draw[gray!20] (0,\y) -- (9.2,\y);
     \node[left,font=\tiny] at (0,\y) {\l};
   }
 
-  % Bar width and group positions
-  % Group 1: Base (x=1), Group 2: SFT (x=3.5), Group 3: GRPO scratch (x=6), Group 4: GRPO SFT (x=8.5)
-  % Blue = 266q in-dist, Orange = 54q holdout
-
-  % Base: 50.4%, 53.7%
-  \fill[csblue!70] (0.5,0) rectangle (1.1,2.52);
-  \fill[orange!70] (1.2,0) rectangle (1.8,2.685);
-  \node[above,font=\tiny,csblue] at (0.8,2.52) {50.4};
-  \node[above,font=\tiny,orange!80!black] at (1.5,2.685) {53.7};
+  % Base
+  \fill[csblue!70] (0.5,0) rectangle (1.1,4.03);
+  \fill[orange!70] (1.2,0) rectangle (1.8,4.30);
+  \node[above,font=\tiny,csblue] at (0.8,4.03) {50.4};
+  \node[above,font=\tiny,orange!80!black] at (1.5,4.30) {53.7};
   \node[below,font=\tiny,align=center] at (1.15,-0.15) {Base};
 
-  % SFT: 50.8%, 33.3%
-  \fill[csblue!70] (2.8,0) rectangle (3.4,2.54);
-  \fill[orange!70] (3.5,0) rectangle (4.1,1.665);
-  \node[above,font=\tiny,csblue] at (3.1,2.54) {50.8};
-  \node[above,font=\tiny,red] at (3.8,1.665) {\textbf{33.3}};
+  % SFT
+  \fill[csblue!70] (2.8,0) rectangle (3.4,4.06);
+  \fill[orange!70] (3.5,0) rectangle (4.1,2.66);
+  \node[above,font=\tiny,csblue] at (3.1,4.06) {50.8};
+  \node[above,font=\tiny,red] at (3.8,2.66) {\textbf{33.3}};
   \node[below,font=\tiny,align=center] at (3.45,-0.15) {SFT};
 
-  % GRPO scratch: 50.8%, 55.6%
-  \fill[csblue!70] (5.1,0) rectangle (5.7,2.54);
-  \fill[orange!70] (5.8,0) rectangle (6.4,2.78);
-  \node[above,font=\tiny,csblue] at (5.4,2.54) {50.8};
-  \node[above,font=\tiny,orange!80!black] at (6.1,2.78) {55.6};
+  % GRPO scratch
+  \fill[csblue!70] (5.1,0) rectangle (5.7,4.06);
+  \fill[orange!70] (5.8,0) rectangle (6.4,4.45);
+  \node[above,font=\tiny,csblue] at (5.4,4.06) {50.8};
+  \node[above,font=\tiny,orange!80!black] at (6.1,4.45) {55.6};
   \node[below,font=\tiny,align=center] at (5.75,-0.15) {GRPO\\scratch};
 
-  % GRPO from SFT: 57.9%, 50.0%
-  \fill[csblue!70] (7.4,0) rectangle (8.0,2.895);
-  \fill[orange!70] (8.1,0) rectangle (8.7,2.5);
-  \node[above,font=\tiny,csblue] at (7.7,2.895) {\textbf{57.9}};
-  \node[above,font=\tiny,orange!80!black] at (8.4,2.5) {50.0};
+  % GRPO from SFT
+  \fill[csblue!70] (7.4,0) rectangle (8.0,4.63);
+  \fill[orange!70] (8.1,0) rectangle (8.7,4.00);
+  \node[above,font=\tiny,csblue] at (7.7,4.63) {\textbf{57.9}};
+  \node[above,font=\tiny,orange!80!black] at (8.4,4.00) {50.0};
   \node[below,font=\tiny,align=center] at (8.05,-0.15) {GRPO\\from SFT};
 
-  % Legend
-  \fill[csblue!70] (5.5,4.8) rectangle (6.0,5.1);
-  \node[right,font=\tiny] at (6.1,4.95) {266q in-dist};
-  \fill[orange!70] (5.5,4.3) rectangle (6.0,4.6);
-  \node[right,font=\tiny] at (6.1,4.45) {54q holdout};
+  % Légende (repositionnée et un peu plus basse que le haut de l'axe)
+  \fill[csblue!70] (4.5,5.8) rectangle (5.0,6.0);
+  \node[right,font=\tiny] at (5.1,5.9) {266q in-dist};
+  \fill[orange!70] (4.5,5.3) rectangle (5.0,5.5);
+  \node[right,font=\tiny] at (5.1,5.4) {54q holdout};
 
   % Annotations
-  \draw[-{Stealth},thick,red] (3.8,1.5) -- (3.8,0.5) node[below,font=\tiny,red,align=center] {$-20.4$pp\\$p\!=\!0.019$};
-  \draw[-{Stealth},thick,green!50!black] (7.7,3.1) -- (7.7,3.8) node[above,font=\tiny,green!50!black] {$+7.5$pp};
+  \draw[-{Stealth},thick,red] (3.8,2.4) -- (3.8,1.2) node[below,font=\tiny,red,align=center] {$-20.4$pp\\$p\!=\!0.019$};
+  
+  % Flèche verte bien dégagée du 57.9
+  \draw[-{Stealth},thick,green!50!black] (7.7,5.0) -- (7.7,5.8) node[above,font=\tiny,green!50!black] {$+7.5$pp};
 \end{tikzpicture}
 
 \column{0.43\textwidth}
 
 \begin{alertblock}{\small The SFT Paradox}
-{\small SFT \textbf{degrades} holdout ($-20.4$pp, $p\!=\!0.019$) yet is \textbf{essential} for GRPO: $+7.5$pp in-dist from SFT vs $+0.4$pp from scratch.}
+{\small SFT \textbf{degrades} holdout yet is \textbf{essential} for GRPO: $+7.5$pp in-dist from SFT vs $+0.4$pp from scratch.}
 \end{alertblock}
 
 \vspace{0.3em}
 \textbf{\small Key findings:}
 \begin{itemize}\footnotesize
-  \item \textbf{GRPO from SFT:} best in-dist (57.9\%) but peaks at step 80, then overfits (54.1\% at 100, 52.3\% at 200)
-  \item \textbf{GRPO from scratch:} no in-dist gain, but best holdout preservation (55.6\%)
+  \item \textbf{GRPO from SFT:} peaks at step 80, then overfits (54.1\% at 100, 52.3\% at 200)
+  \item \textbf{GRPO from scratch:} no in-dist gain
   \item \textbf{SFT alone:} catastrophic forgetting on holdout (McNemar $p\!=\!0.019$)
   \item \textbf{Neither GRPO} significantly degrades holdout ($p > 0.8$)
 \end{itemize}
 
 \vspace{0.3em}
-{\footnotesize\color{gray} \textit{Holdout = 54 questions ($\approx$1.85pp each). Directional only.}}
 \end{columns}
 \end{frame}
 
@@ -650,7 +651,7 @@ $\to$ Waste rate: \textbf{42\% $\to$ 23\%}
 \centering
 \begin{tabular}{@{}lc@{}}
   \toprule
-  \textbf{Model} & \textbf{Accuracy (298q)} \\
+  \textbf{Model} & \textbf{Accuracy} \\
   \midrule
   Claude Sonnet 4.6      & \textbf{93.0\%} \\
   o3-mini                & 85.6\% \\
@@ -661,19 +662,32 @@ $\to$ Waste rate: \textbf{42\% $\to$ 23\%}
 \end{tabular}
 
 \vspace{0.5em}
-{\scriptsize All models evaluated on the exact same 298 questions.\\These questions were never seen by GRPO during training.}
 
 \column{0.43\textwidth}
 \textbf{Key takeaways:}
 \begin{itemize}\small
   \item GRPO places \textbf{between Gemini 3.1 Pro and o3-mini} on unseen questions
   \item Despite being \textbf{$\sim$100$\times$ smaller} (8B vs.\ frontier)
-  \item +7.1pp over Gemini 3.1 Pro (70.1\%)
-  \item Gap to Claude Sonnet 4.6 (93.0\%) remains substantial ($-15.8$pp)
 \end{itemize}
 
 \vspace{0.5em}
-{\footnotesize\color{gray} \textit{298 questions from master\_v4 (866q), excluding the 266 GRPO training questions. Fair comparison: same questions, same scoring (5\% tolerance).}}
+\textbf{GRPO breakdown on 298q:}
+\vspace{0.2em}
+
+\centering
+\begin{tabular}{@{}lcc@{}}
+  \toprule
+  \textbf{Base screening} & $n$ & \textbf{GRPO} \\
+  \midrule
+  4/4 (base correct) & 186 & 95.2\% \\
+  0/4 (base wrong) & 112 & 47.3\% \\
+  \midrule
+  \textbf{Total} & \textbf{298} & \textbf{77.2\%} \\
+  \bottomrule
+\end{tabular}
+
+\vspace{0.3em}
+{\footnotesize GRPO solves \textbf{47\% of questions the base couldn't answer} while preserving 95\% of what it already knew.}
 \end{columns}
 \end{frame}
 
