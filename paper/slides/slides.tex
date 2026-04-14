@@ -525,38 +525,29 @@ Pure PyTorch loop: if all $G$ generations agree, \textbf{discard and re-sample}.
 $\to$ Waste rate: \textbf{42\% $\to$ 23\%}
 
 \vspace{0.5em}
-\textbf{Before vs.\ after (difficulty analysis):}
+\textbf{Difficulty analysis: before vs.\ after}
 
-\vspace{0.2em}
-{\small\textbf{Exp 1--5} (TRL, 281q, no screening):}
-\vspace{0.1em}
-
+\vspace{0.3em}
 \centering
-\begin{tabular}{@{}lcc@{}}
+\begin{tabular}{@{}lccc@{}}
   \toprule
-  \textbf{Difficulty} & $n$ & $\Delta$ \textbf{GRPO} \\
+  & & \textbf{Exp 1--5} & \textbf{Exp 7} \\
+  \textbf{Difficulty} & $n$ & (TRL) & (custom) \\
   \midrule
-  Easy & 126 & \textcolor{green!50!black}{+5.6} \\
-  Hard & 55 & \textcolor{red}{\textbf{$-$14.5}} \\
+  Easy & 126/186 & \textcolor{green!50!black}{+5.6pp} & \textcolor{green!50!black}{\textbf{95.2\%}} \\
+  Hard & 55/112 & \textcolor{red}{\textbf{$-$14.5pp}} & \textcolor{green!50!black}{\textbf{47.3\%}} \\
   \bottomrule
 \end{tabular}
 
 \vspace{0.3em}
-{\small\textbf{Exp 7} (custom loop, 298q unseen, with screening):}
-\vspace{0.1em}
-
-\centering
-\begin{tabular}{@{}lcc@{}}
-  \toprule
-  \textbf{Base screening} & $n$ & \textbf{GRPO acc.} \\
-  \midrule
-  4/4 (base correct) & 186 & \textcolor{green!50!black}{\textbf{95.2\%}} \\
-  0/4 (base wrong) & 112 & \textcolor{green!50!black}{\textbf{47.3\%}} \\
-  \bottomrule
-\end{tabular}
+\raggedright
+{\footnotesize
+\textbf{Exp 1--5:} $\Delta$ vs base on 281q (no screening).\\
+\textbf{Exp 7:} accuracy on 298 unseen questions, split by base screening score (4/4 = easy, 0/4 = hard).
+}
 
 \vspace{0.3em}
-\small GRPO \textbf{preserves} easy questions (95\%) and \textbf{solves 47\%} of questions the base couldn't answer at all
+\small \textbf{Key:} screening + dynamic sampling + custom loop fixed the hard-question problem. GRPO now \textbf{solves 47\%} of previously impossible questions while preserving 95\% of easy ones.
 \end{columns}
 \end{frame}
 
