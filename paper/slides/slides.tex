@@ -326,7 +326,63 @@
 \end{columns}
 \end{frame}
 
-% ── Slide 10: GRPO Algorithm ──────────────────────────────────
+% ── Slide 10: Evaluation Design ──────────────────────────────
+\begin{frame}{GRPO: Evaluation Design \& Thinking Mode}
+\begin{columns}[T]
+\column{0.52\textwidth}
+\textbf{Answer extraction evolution:}
+\vspace{0.3em}
+
+\begin{enumerate}\small
+  \item \textbf{LLM judge} (Claude 3.5 Sonnet via OpenRouter)\\
+    Accurate but \textbf{costly}: \$0.01/question $\times$ 4 generations $\times$ 200 steps $= \sim$\$8 per training run
+  \item \textbf{Single numeric answer constraint}\\
+    All questions reformulated to have exactly one numerical answer $\to$ enables \textbf{rule-based scoring} (no LLM needed during training)
+  \item \textbf{Robust regex extraction}\\
+    Handles all model output formats:
+\end{enumerate}
+
+\vspace{0.2em}
+\centering
+\begin{tabular}{@{}ll@{}}
+  \toprule
+  \textbf{Model output} & \textbf{Extracted} \\
+  \midrule
+  \verb|\boxed{3.1\%}| & 0.031 \\
+  \verb|\boxed{2.52 \times 10^{5}}| & 252000 \\
+  \verb|\boxed{14/33}| & 0.4242 \\
+  \verb|\boxed{23,717}| & 23717 \\
+  \verb|\boxed{0,001}| & 0.001 \\
+  \bottomrule
+\end{tabular}
+
+\column{0.44\textwidth}
+\textbf{Thinking mode decision:}
+\vspace{0.3em}
+
+Qwen3-8B has a \verb|<think>| mode (chain-of-thought scratchpad before answering).
+
+\vspace{0.3em}
+\textbf{Problem:} thinking mode generates \textbf{2--5$\times$ more tokens} per completion.
+\begin{itemize}\small
+  \item Training: 4 completions/step $\to$ \textbf{4$\times$ slower}
+  \item SFT: polished training data \textbf{misaligns} with model's raw scratch work $\to$ hurts reasoning
+\end{itemize}
+
+\vspace{0.3em}
+\textbf{Decision:} \textcolor{red}{disabled} for both SFT and GRPO.
+
+\vspace{0.5em}
+\textbf{Consequence:}
+\begin{itemize}\small
+  \item Faster training (fits in 24h SLURM jobs)
+  \item Model reasons directly in its output
+  \item Same eval conditions as training
+\end{itemize}
+\end{columns}
+\end{frame}
+
+% ── Slide 11: GRPO Algorithm ──────────────────────────────────
 \begin{frame}{GRPO: Algorithm \& Reward Design}
 \begin{columns}[T]
 \column{0.52\textwidth}
@@ -436,9 +492,74 @@ Each question evaluated \textbf{4 times} with base Qwen3-8B:
 \end{columns}
 \end{frame}
 
+% ── Slide 13b: Journey from TRL to custom loop ───────────────
+\begin{frame}{From TRL to Custom Training Loop}
+\begin{columns}[T]
+\column{0.50\textwidth}
+\textbf{Phase 1: TRL GRPOTrainer (exp 1--6)}
+\vspace{0.3em}
+
+\centering
+\begin{tabular}{@{}lccc@{}}
+  \toprule
+  \textbf{Fix applied} & \textbf{Before} & \textbf{After} \\
+  \midrule
+  \texttt{mask\_truncated=F} & \multirow{4}{*}{$-3.6$\%} & \multirow{4}{*}{$+1.1$\%} \\
+  \texttt{importance=seq} & & \\
+  \texttt{max\_grad\_norm=0.1} & & \\
+  \texttt{loss=dr\_grpo} & & \\
+  \bottomrule
+\end{tabular}
+
+\vspace{0.5em}
+\textbf{But:} 42\% of steps still produced \textbf{zero gradient}:
+
+\vspace{0.2em}
+\centering
+\begin{tabular}{@{}lcc@{}}
+  \toprule
+  \textbf{Generations} & \textbf{Steps} & \textbf{Status} \\
+  \midrule
+  0/4 correct & 11 & wasted \\
+  1--3/4 correct & 46 & useful \\
+  4/4 correct & 23 & wasted \\
+  \midrule
+  \textbf{Total wasted} & \textbf{34/80} & \textbf{42\%} \\
+  \bottomrule
+\end{tabular}
+
+\column{0.46\textwidth}
+\textbf{Phase 2: Custom loop + DAPO (exp 7--10)}
+
+\vspace{0.3em}
+Replaced TRL with pure PyTorch loop implementing DAPO dynamic sampling: if all $G$ generations agree, \textbf{discard and re-sample}.
+
+\vspace{0.3em}
+$\to$ Waste rate: \textbf{42\% $\to$ 23\%}
+
+\vspace{0.5em}
+\textbf{Difficulty-dependent behavior:}
+
+\vspace{0.2em}
+\centering
+\begin{tabular}{@{}lccc@{}}
+  \toprule
+  \textbf{Difficulty} & $n$ & \textbf{Base} & $\Delta$ \textbf{GRPO} \\
+  \midrule
+  Easy ($<$1.5k chars) & 126 & 83\% & \textcolor{green!50!black}{\textbf{+5.6}} \\
+  Medium & 100 & 53\% & \textcolor{green!50!black}{+4.0} \\
+  Hard ($>$3k chars) & 55 & 38\% & \textcolor{red}{\textbf{$-$14.5}} \\
+  \bottomrule
+\end{tabular}
+
+\vspace{0.3em}
+\small GRPO learns shortcuts that work on easy questions but \textbf{catastrophically fail} on hard ones (errors up to 1000$\times$). The gains and losses \textbf{cancel out} globally.
+\end{columns}
+\end{frame}
+
 % ════════════════════════════════════════════════════════════════
 \section{Results}
-% ── Slide 12: GRPO Results ────────────────────────────────────
+% ── Slide 14: GRPO Results ────────────────────────────────────
 \begin{frame}{GRPO results \& ablations}
 \begin{columns}[T]
 \column{0.52\textwidth}
