@@ -36,7 +36,7 @@
 \usepackage{hyperref}
 
 % ── Metadata ────────────────────────────────────────────────────
-\title[Domain-Specific LLM for Reliability]{Developing a domain-specific LLM through\\self-instruct for Reliability Engineering}
+\title[Domain-specific LLM for Reliability Engineering]{Developing a domain-specific LLM through\\self-instruct fine-tuning for Reliability Engineering}
 \author[Dalban \& Drouilhet]{Alexandre Dalban \and Elora Drouilhet}
 \institute[CentraleSup\'elec]{%
   Laboratoire G\'enie Industriel (LGI)\\
@@ -65,7 +65,7 @@
 % ════════════════════════════════════════════════════════════════
 \section{Motivation}
 % ── Slide 3: Motivation ────────────────────────────────────────
-\begin{frame}{Why Reliability Engineering Needs Specialized LLMs}
+\begin{frame}{Why Reliability Engineering needs specialized LLMs}
 \begin{columns}[T]
 \column{0.55\textwidth}
 \textbf{The problem:}
@@ -95,7 +95,7 @@
 \end{frame}
 
 % ── Slide 4: Bootstrapping Challenge ──────────────────────────
-\begin{frame}{The Bootstrapping Challenge}
+\begin{frame}{The bootstrapping challenge}
 \begin{block}{Central question}
   How can you create a high-quality training dataset from a \textbf{small dataset}?
 \end{block}
@@ -119,9 +119,9 @@
 \end{frame}
 
 % ════════════════════════════════════════════════════════════════
-\section{Research Problem}
+\section{Research problem}
 % ── Slide 5: Research Questions ────────────────────────────────
-\begin{frame}{Research Problem}
+\begin{frame}{Research problem}
 \begin{alertblock}{Central question}
   How can we adapt a general-purpose LLM to reliability engineering using only \textbf{56 seed questions}?
 \end{alertblock}
@@ -137,9 +137,9 @@
 \end{frame}
 
 % ════════════════════════════════════════════════════════════════
-\section{State of the Art}
+\section{State of the art}
 % ── Slide 6: Related Work ──────────────────────────────────────
-\begin{frame}{State of the Art}
+\begin{frame}{State of the art}
 \begin{columns}[T]
 \column{0.48\textwidth}
 \textbf{Self-Instruct \& Synthetic Data}
@@ -180,7 +180,7 @@
 % ════════════════════════════════════════════════════════════════
 \section{Methodology}
 % ── Slide 7: Pipeline Overview ─────────────────────────────────
-\begin{frame}{Methodology Overview: 5-Stage Pipeline}
+\begin{frame}{Methodology overview: 5-stage pipeline}
 \centering
 \begin{tikzpicture}[
   node distance=0.4cm and 0.15cm,
@@ -226,7 +226,7 @@
 \end{frame}
 
 % ── Slide 8: SFT Setup & Hyperparameters ──────────────────────
-\begin{frame}{Supervised Fine-Tuning: Setup \& Hyperparameters}
+\begin{frame}{Supervised fine-tuning: setup \& Hyperparameters}
 \begin{columns}[T]
 \column{0.48\textwidth}
 \textbf{Model selection:}
@@ -273,7 +273,7 @@
 \end{frame}
 
 % ── Slide 9: SFT Results ─────────────────────────────────────
-\begin{frame}{Supervised Fine-Tuning: Results \& Ablations}
+\begin{frame}{Supervised fine-tuning: results \& Ablations}
 \begin{columns}[T]
 \column{0.48\textwidth}
 \textbf{Results by dataset size:}
@@ -325,8 +325,33 @@
 \end{columns}
 \end{frame}
 
-% ── Slide 10: Evaluation Design ──────────────────────────────
-\begin{frame}{GRPO: Evaluation Design \& Thinking Mode}
+% ── Slide 10: GRPO ──────────────────────────────────
+\begin{frame}{GRPO}
+\begin{block}{Group Relative Policy Optimization}
+\begin{algorithmic}[1]\small
+  \For{each question $q$}
+    \State Sample $G\!=\!4$ completions $\{o_1, \ldots, o_G\}$ from $\pi_\theta$
+    \State Score each with graded reward $r(o_i, q)$
+    \If{$\sigma(\{r_i\}) = 0$} \textbf{skip} (DAPO filtering)
+    \EndIf
+    \State Normalize: $\hat{A}_i = \frac{r_i - \bar{r}}{\sigma_r + \varepsilon}$
+    \State Update: $\mathcal{L} = -\frac{1}{G}\sum_i \hat{A}_i \cdot \frac{\log \pi_\theta(o_i|q)}{|o_i|}$
+  \EndFor
+\end{algorithmic}
+\end{block}
+
+\vspace{0.3em}
+\textbf{Advantages over PPO / DPO:}
+\begin{itemize}\small
+  \item No critic model needed (group-relative baseline)
+  \item No pre-computed preference pairs
+  \item Verifiable numerical rewards: no learned reward model
+\end{itemize}
+\end{frame}
+
+
+% ── Slide 11: GRPO Algorithm ──────────────────────────────────
+\begin{frame}{GRPO: algorithm \& reward design}
 \begin{columns}[T]
 \column{0.52\textwidth}
 \textbf{Answer extraction evolution:}
@@ -355,50 +380,6 @@
 \end{tabular}
 
 \column{0.44\textwidth}
-\textbf{Thinking mode decision:}
-\vspace{0.3em}
-
-Qwen3-8B has a \texttt{\textbf{<think>}} mode (chain-of-thought scratchpad before answering).
-
-\vspace{0.3em}
-\textbf{Problem:} thinking mode generates \textbf{2--5$\times$ more tokens} per completion.
-\begin{itemize}\small
-  \item Training: 4 completions/step $\to$ \textbf{4$\times$ slower}
-  \item SFT: polished training data \textbf{misaligns} with model's raw scratch work $\to$ hurts reasoning
-\end{itemize}
-
-\vspace{0.3em}
-\textbf{Decision:} \textcolor{red}{disabled} for both SFT and GRPO.
-
-\end{columns}
-\end{frame}
-
-% ── Slide 11: GRPO Algorithm ──────────────────────────────────
-\begin{frame}{GRPO: Algorithm \& Reward Design}
-\begin{columns}[T]
-\column{0.52\textwidth}
-\begin{block}{Group Relative Policy Optimization}
-\begin{algorithmic}[1]\small
-  \For{each question $q$}
-    \State Sample $G\!=\!4$ completions $\{o_1, \ldots, o_G\}$ from $\pi_\theta$
-    \State Score each with graded reward $r(o_i, q)$
-    \If{$\sigma(\{r_i\}) = 0$} \textbf{skip} (DAPO filtering)
-    \EndIf
-    \State Normalize: $\hat{A}_i = \frac{r_i - \bar{r}}{\sigma_r + \varepsilon}$
-    \State Update: $\mathcal{L} = -\frac{1}{G}\sum_i \hat{A}_i \cdot \frac{\log \pi_\theta(o_i|q)}{|o_i|}$
-  \EndFor
-\end{algorithmic}
-\end{block}
-
-\vspace{0.3em}
-\textbf{Advantages over PPO / DPO:}
-\begin{itemize}\small
-  \item No critic model needed (group-relative baseline)
-  \item No pre-computed preference pairs
-  \item Verifiable numerical rewards: no learned reward model
-\end{itemize}
-
-\column{0.44\textwidth}
 \vspace{2em}
 \textbf{Graded reward function:}
 \vspace{0.3em}
@@ -419,7 +400,7 @@ Qwen3-8B has a \texttt{\textbf{<think>}} mode (chain-of-thought scratchpad befor
 
 \vspace{0.5em}
 \end{columns}
-\end{frame}
+z\end{frame}
 
 % ── Slide 11: GRPO Data Split & Dynamic Sampling ─────────────
 \begin{frame}{GRPO: Data split \& dynamic sampling (DAPO)}
@@ -485,18 +466,10 @@ Each question evaluated \textbf{4 times} with base Qwen3-8B:
 \textbf{Phase 1: TRL GRPOTrainer}
 \vspace{0.3em}
 
-\centering
-\begin{tabular}{@{}lccc@{}}
-  \toprule
-  \textbf{Fix applied} & \textbf{Before} & \textbf{After} \\
-  \midrule
-  \texttt{mask\_truncated=F} & \multirow{4}{*}{$-3.6$\%} & \multirow{4}{*}{$+1.1$\%} \\
-  \texttt{importance=seq} & & \\
-  \texttt{max\_grad\_norm=0.1} & & \\
-  \texttt{loss=dr\_grpo} & & \\
-  \bottomrule
-\end{tabular}
-
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{loss3.PNG}
+\end{figure}
 \vspace{1em}
 \textbf{But:} 42\% of steps still produced \textbf{zero gradient}:
 
@@ -550,11 +523,11 @@ Easy = base scores 4/4. Hard = base scores 0/4.\\
 % ════════════════════════════════════════════════════════════════
 \section{Results}
 % ── Slide 14: GRPO Results (merged) ──────────────────────────
-\begin{frame}{GRPO results: In-Distribution vs.\ Holdout}
+\begin{frame}{GRPO results: in-Distribution vs.\ holdout}
 \begin{columns}[T]
 \column{0.55\textwidth}
 \centering
-\vspace*{1cm} % Ajustez cette valeur pour descendre plus ou moins le graphique
+
 
 \begin{tikzpicture}[scale=0.75] % Échelle légèrement réduite pour gagner de l'espace
   % Axes
@@ -608,9 +581,9 @@ Easy = base scores 4/4. Hard = base scores 0/4.\\
   \draw[-{Stealth},thick,green!50!black] (7.7,5.0) -- (7.7,5.8) node[above,font=\tiny,green!50!black] {$+7.5$pp};
 \end{tikzpicture}
 
-\vspace{0.3em}
+\vspace{0.1em}
 {\small\textbf{Fig.\ 1:} Accuracy on 266q in-distribution (blue) vs.\ 54q holdout (orange)}\\
-{\footnotesize\color{gray} Holdout = 54 questions only ($\approx$1.85pp each), too small for statistically significant conclusions.}
+{\footnotesize\color{gray} Holdout = 54 questions only, too small for significant conclusions}
 
 \column{0.43\textwidth}
 
@@ -632,7 +605,7 @@ Easy = base scores 4/4. Hard = base scores 0/4.\\
 \end{frame}
 
 % ── Slide: Frontier Model Comparison ───────────────────────────
-\begin{frame}{Comparison with Frontier Models}
+\begin{frame}{Comparison with frontier models}
 \begin{columns}[T]
 \column{0.55\textwidth}
 
@@ -648,7 +621,7 @@ Easy = base scores 4/4. Hard = base scores 0/4.\\
   o3-mini                & 85.6\% \\
   \textbf{Qwen3-8B (SFT+GRPO)}   & \textbf{77.2\%} \\
   Gemini 3.1 Pro         & 70.1\% \\
-  Qwen3-8B (base)        & \textit{pending} \\
+  Qwen3-8B (base)        & 63.4\% \\
   \bottomrule
 \end{tabular}
 
@@ -677,9 +650,7 @@ Easy = base scores 4/4. Hard = base scores 0/4.\\
   \item \textbf{Data-efficient:} 56 seeds $\to$ 866 verified examples
   \item \textbf{Statistically rigorous:} 10-fold CV, Wilcoxon test ($p=0.002$)
   \item \textbf{Cross-model verification:} higher quality than self-consistency
-  \item \textbf{Paraphrase $\gg$ difficulty:} +18.6\% vs +2.0\%
   \item \textbf{8B model competitive with frontier} on domain tasks
-  \item \textbf{Self-instruct ceiling effect} identified: novel finding for synthetic data
   \item \textbf{Reproducible:} open-source code and data
 \end{itemize}
 
@@ -704,8 +675,7 @@ Easy = base scores 4/4. Hard = base scores 0/4.\\
 \textbf{Key contributions:}
 \begin{enumerate}\small
   \item \textbf{Data augmentation pipeline:} 56 textbook seeds $\to$ 866 verified examples via cross-model generation and paraphrase augmentation
-  \item \textbf{Adapted self-instruct} with cross-model verification (replaces same-model consistency)
-  \item \textbf{Self-instruct ceiling effect} identified: generators stay within their capability envelope
+  \item \textbf{Adapted self-instruct} with cross-model verification
   \item \textbf{SFT pipeline:} 8B model competitive with frontier models on reliability engineering
   \item \textbf{GRPO exploration:} +7.5pp in-distribution, no significant holdout degradation, but limited by data scale
 \end{enumerate}
@@ -715,7 +685,6 @@ Easy = base scores 4/4. Hard = base scores 0/4.\\
 \begin{enumerate}\small
   \item Broader domain coverage: reliability engineering spans many sub-fields (Bayesian, Markov, fault trees, \ldots) $\to$ need more diverse seed data beyond 56 questions to cover the full scope
   \item Introduce KL penalty ($\beta > 0$) to reduce GRPO overfitting
-  \item Early stopping on holdout validation rather than training loss
   \item Ground data generation in textbook source material (SearchInstruct approach)
   \item Extend to formula derivation and other engineering domains
 \end{enumerate}
@@ -740,7 +709,7 @@ Easy = base scores 4/4. Hard = base scores 0/4.\\
   SFT training \& hyperparameter search  & \textbullet\textbullet\textbullet & \textbullet\textbullet\textbullet \\
   Evaluation framework                   & \textbullet\textbullet\textbullet & \textbullet\textbullet\textbullet \\
   Base model evaluation                  & \textbullet\textbullet\textbullet & \textbullet\textbullet\textbullet \\
-  Frontier model baselines               & \textbullet\textbullet\textbullet & \\
+  Frontier model baselines               & \textbullet\textbullet\textbullet & \textbullet\textbullet\textbullet \\
   GRPO implementation \& training        & \textbullet & \textbullet\textbullet\textbullet \\
   GRPO reward design \& ablations        & \textbullet & \textbullet\textbullet\textbullet \\
   Paper writing                          & \textbullet\textbullet\textbullet & \textbullet\textbullet \\

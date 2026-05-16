@@ -57,8 +57,8 @@ The graded structure provides a smoother reward landscape than binary correct/in
 The 866-question dataset (v4) is split based on base-model screening: each question is evaluated 4 times with the base Qwen3-8B model, and questions are categorized by success rate:
 
 \begin{itemize}
-    \item \textbf{600 questions (0/4 or 4/4 correct):} Used for SFT training. These include 210 questions the base model always fails (0/4) and 390 it always solves (4/4). Both extremes produce zero reward variance under GRPO---either all generations are correct or all are wrong---so they cannot provide a gradient signal for RL. However, they are suitable for supervised learning from ground-truth answers.
-    \item \textbf{266 questions (1/4 to 3/4 correct):} Used for GRPO training. These have natural reward variance---some generations succeed, others fail---making them ideal for group-relative optimization.
+    \item \textbf{600 questions (0/4 or 4/4 correct):} Used for SFT training. These include 210 questions the base model always fails (0/4) and 390 it always solves (4/4). Both extremes produce zero reward variance under GRPO, either all generations are correct or all are wrong, so they cannot provide a gradient signal for RL. However, they are suitable for supervised learning from ground-truth answers.
+    \item \textbf{266 questions (1/4 to 3/4 correct):} Used for GRPO training. These have natural reward variance, some generations succeed, others fail, making them ideal for group-relative optimization.
 \end{itemize}
 
 This split ensures zero data leakage between SFT and GRPO stages and targets GRPO training at the model's learning frontier---questions where the base model sometimes succeeds and sometimes fails, providing the contrastive signal that GRPO requires.
