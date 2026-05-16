@@ -44,7 +44,7 @@ All datasets are derived from textbook problems in reliability engineering (Moda
 
 **Dataset screening process**: for each candidate question, generate 4 answers with the base model (temperature=0.8), score against ground truth (5% tolerance), keep only "mixed" questions (not 100% correct, not 0% correct). Discard "all correct" (no room to improve) and "all wrong" (no positive signal for RL).
 
-## Key Results
+## Key results
 
 ### In-distribution: 266 mixed questions
 
@@ -62,19 +62,43 @@ All datasets are derived from textbook problems in reliability engineering (Moda
 | Model | Accuracy | Delta vs Base | McNemar p |
 |-------|:--------:|:-------------:|:---------:|
 | **Qwen3-8B base** | 53.7% (29/54) | - | - |
-| SFT fold_4 (Alex) | 33.3% (18/54) | **-20.4pp** | **0.022** |
+| SFT fold_4 (Alex) | 33.3% (18/54) | **-20.4pp** | **0.019** |
 | GRPO exp7 ckpt-80 | 50.0% (27/54) | -3.7pp | 0.803 |
 | GRPO exp10 ckpt-200 (no SFT) | 55.6% (30/54) | +1.9pp | 1.000 |
 
 **Main findings**:
 - **GRPO with SFT warm-start achieves +7.5pp** on in-distribution questions (exp7 ckpt-80)
-- **GRPO preserves base-model generalization** on holdout - unlike SFT which causes -20.4pp catastrophic forgetting (p=0.022, significant)
+- **GRPO preserves base-model generalization** on holdout - unlike SFT which causes -20.4pp catastrophic forgetting (p=0.019, significant)
 - **SFT warm-start is essential**: GRPO from scratch (exp10) barely improves over base (+0.4pp)
 - **Early stopping is critical**: performance peaks at ~80 useful steps then declines (57.9% → 52.3% at step 200)
 
+### Accuracy by question difficulty
+
+Difficulty is defined by the base model's screening score (4 generations per question). The custom training loop with DAPO dynamic sampling (exp7) fixes a regression on hard questions that the TRL-based runs (exp1–5) introduced.
+
+| Difficulty | Base | Exp 1–5 (TRL) | Exp 7 (custom + DAPO) |
+|------------|:----:|:-------------:|:---------------------:|
+| Easy (base 4/4) | 83% | 89% | **95%** |
+| Hard (base 0/4) | 38% | 24% | **47%** |
+
+DAPO dynamic sampling dropped the share of zero-gradient steps from **42% → 23%**, which is what made gains on hard questions possible.
+
+### Comparison with frontier models
+
+Evaluated on 298 questions unseen by GRPO during training:
+
+| Model | Accuracy |
+|-------|:--------:|
+| Claude Sonnet 4.6 | 93.0% |
+| o3-mini | 85.6% |
+| **Qwen3-8B (SFT + GRPO)** | **77.2%** |
+| Gemini 3.1 Pro | 70.1% |
+
+The 8B fine-tuned model lands between Gemini 3.1 Pro and o3-mini on this domain, despite being roughly two orders of magnitude smaller than the frontier baselines.
+
 See [RESULTS.md](RESULTS.md) for full experiment details, training dynamics, and analysis.
 
-## GRPO Configuration
+## GRPO configuration
 
 | Parameter | Value |
 |-----------|-------|
@@ -94,7 +118,7 @@ See [RESULTS.md](RESULTS.md) for full experiment details, training dynamics, and
 | Evaluation | Greedy-style (temp=1.0, top_p=0.95, deterministic seed per question) |
 | Scoring tolerance | 5% relative |
 
-## Project Structure
+## Project structure
 
 ```
 grpo-reliability-engineering/

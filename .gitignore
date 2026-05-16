@@ -40,9 +40,6 @@ Thumbs.db
 # Temporary
 mytmp*/
 
-# Local tool config
-.claude/
-
 # Secrets
 key.txt
 *.key
